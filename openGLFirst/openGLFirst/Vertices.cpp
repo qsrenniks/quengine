@@ -1,6 +1,6 @@
 #include "Vertices.h"
 
-Vertices::Vertices(float x = 0, float y = 0, float z = 0)
+Vertices::Vertices(float x, float y, float z)
   : x_(x)
   , y_(y)
   , z_(z)

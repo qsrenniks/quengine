@@ -73,6 +73,12 @@
     <Filter Include="Source Files\Modules">
       <UniqueIdentifier>{5e2d933f-de99-4bb9-85a0-cd150bc21689}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Modules\Interface">
+      <UniqueIdentifier>{724c894f-9ddf-4a9e-bb18-94031d51d7d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Modules\MemoryModule">
+      <UniqueIdentifier>{ede0315e-71a9-4d6f-be92-7d03a7148945}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -121,10 +127,10 @@
       <Filter>Source Files\Systems\Interface</Filter>
     </ClCompile>
     <ClCompile Include="IModule.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Modules\Interface</Filter>
     </ClCompile>
     <ClCompile Include="MemoryModule.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Modules\MemoryModule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

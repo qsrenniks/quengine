@@ -8,26 +8,18 @@ class Mesh
 {
 public:
 
-  Mesh();
-
-  void AddVertexToMesh(float x, float y, float z);
-
-  size_t GetVerticeSize();
-  size_t GetIndicesSize();
-
-  void *GetVerticeAddress();
-  void *GetIndicesAddress();
-
-  unsigned int GetVAO();
-  unsigned int GetVBO();
-  unsigned int GetEBO();
+  Mesh(float width, float height, const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z = 0);
 
 private:
   unsigned int VAO_;
   unsigned int VBO_;
   unsigned int EBO_;
 
-  std::vector<Vertices> vertices_;
+  glm::vec4 color_{ 1.0f };
+
+  Shader shader_;
+
+  Vertices vertices_[4];
 
   std::vector<unsigned int> indices_;
 };
