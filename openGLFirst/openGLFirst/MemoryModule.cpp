@@ -12,12 +12,12 @@ MemoryModule::~MemoryModule()
   delete[] memHeap_;
 }
 
-void MemoryModule::ModuleLoad()
+void MemoryModule::LoadModule()
 {
   std::cout << "Memory Module Loaded" << std::endl;
 }
 
-void MemoryModule::ModuleUnload()
+void MemoryModule::UnloadModule()
 {
   std::cout << "Memory Module Unloaded" << std::endl;
 }

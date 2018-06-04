@@ -1,4 +1,7 @@
 #include "Engine.h"
+#include "GameObjectSystem.h"
+#include "InputSystem.h"
+#include "MemoryModule.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 Engine* Engine::instance_ = nullptr;
@@ -20,7 +23,7 @@ void Engine::AddSystem(IGameplaySystem *system)
 
 void Engine::AddModule(IModule *module)
 {
-  
+  moduleList_.push_back(module);
 }
 
 void Engine::Update(float dt)
@@ -45,21 +48,42 @@ glm::mat4& Engine::GetViewTransform()
   return instance()->viewTransform;
 }
 
+void Engine::SetWindow(GLFWwindow * window)
+{
+  currentWindow_ = window;
+}
+
 void Engine::EngineShutDown()
 {
-  for (unsigned int i = 0; i < systemList_.size(); i++)
+  for (auto system : systemList_)
   {
-    instance_->systemList_[i]->UnloadSystem();
-    delete instance_->systemList_[i];
+    system->UnloadSystem();
+    delete system;
   }
+
+  for (auto module : moduleList_)
+  {
+    module->UnloadModule();
+    delete module;
+  }
+
 
   delete instance_;
 }
 
 void Engine::EngineLoad()
 {
-  for (unsigned int i = 0; i < systemList_.size(); i++)
+  AddModule(new MemoryModule(100));
+  AddSystem(new InputSystem(currentWindow_));
+  AddSystem(new GameObjectSystem());
+
+  for (auto system : systemList_)
   {
-    instance_->systemList_[i]->LoadSystem();
+    system->LoadSystem();
+  }
+
+  for (auto module : moduleList_)
+  {
+    module->LoadModule();
   }
 }

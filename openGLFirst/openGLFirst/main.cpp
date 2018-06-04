@@ -1,10 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW\glfw3.h>
 #include <iostream>
-#include "DebugGameObject.h"
-#include "InputSystem.h"
 #include "GameObjectSystem.h"
-#include "MemoryModule.h"
+#include "DebugGameObject.h"
 #include "BackgroundGameObject.h"
 #include "Engine.h"
 
@@ -53,13 +51,11 @@ int main()
 {
   initWindow();
 
+  //this starts the engine up and gets it ready to deal with input and things
   Engine* engine = Engine::instance();
-    
-  //engine->AddSystem(new MemoryModule(100));
-  engine->AddSystem(new InputSystem(window));
-  engine->AddSystem(new GameObjectSystem());
-
+  engine->SetWindow(window);
   engine->EngineLoad();
+
 
   GameObjectSystem* goS = engine->GetSystem<GameObjectSystem>();
   goS->AddGameObject(new BackgroundGameObject()); 

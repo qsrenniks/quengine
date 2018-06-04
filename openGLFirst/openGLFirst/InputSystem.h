@@ -1,6 +1,4 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW\glfw3.h>
 #include <vector>
 #include <map>
 #include <string>
@@ -12,7 +10,7 @@ class InputSystem : public IGameplaySystem
 
 public:
 
-  InputSystem(GLFWwindow * window);
+  InputSystem(struct GLFWwindow * window);
   //for polymorphic destruction
   virtual ~InputSystem() override
   {
@@ -46,8 +44,8 @@ public:
 private:
   struct KeyActionPair
   {
-    KeyActionPair(unsigned int key, std::string actionName, bool consumeInput = false) :
-      Key_(key)
+    KeyActionPair(unsigned int key, std::string actionName, bool consumeInput = false) 
+      : Key_(key)
       , ActionName_(actionName)
       , consumeInput_(consumeInput)
       , executeDelegate_(true)
@@ -61,12 +59,12 @@ private:
 
 
 
-  GLFWwindow * currentWindow_;
+  struct GLFWwindow * currentWindow_;
 
   std::vector<KeyActionPair> registeredInputs_;
 
   //TODO: Make this auto pointers
-  typedef std::map<std::string, delegate<void()>> DelegateMap;
+  using DelegateMap = std::map<std::string, delegate<void(void)>>;
 
   DelegateMap delegateFunctionMap_;
 

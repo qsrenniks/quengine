@@ -48,6 +48,15 @@ public:
     return nullptr;
   };
 
+  template <typename T>
+  T* GetModule()
+  {
+    for (auto moduleIter : moduleList_)
+    {
+      T *module = nullptr;
+    }
+  }
+
   void EngineLoad();
 
   void Update(float dt);
@@ -56,42 +65,17 @@ public:
   glm::mat4& GetCameraTransform();
   glm::mat4& GetViewTransform();
 
+  void SetWindow(struct GLFWwindow * window);
+
 protected:
   Engine();
 
 private:
   static Engine* instance_;
+  struct GLFWwindow * currentWindow_;
+
   std::vector<IGameplaySystem*> systemList_;
-
-
-  //struct DrawFunction
-  //{
-  //  template<class UserClass, typename Method>
-  //  DrawFunction(unsigned int z, UserClass userClass, Method function)
-  //    : z_(z)
-  //    , drawFunction_(userClass, function)
-  //  {}
-
-  //  unsigned int z_;
-  //  Delegate<void> drawFunction_;
-  //};
-
-  //struct DrawFunctionComparator
-  //{
-  //  bool operator()(const DrawFunction* a, const DrawFunction* b)
-  //  {
-  //    return a->z_ < b->z_;
-  //  }
-  //};
-
-  //draw list
-
-  //TODO: free memory allocated in this array
-  //std::multiset<DrawFunction*, DrawFunctionComparator> drawList_;
-  //update list
-
-  //TODO: free memory allocated in this object
-  //DynamicDelegateSingleParam<void, float> updateList_;
+  std::vector<IModule*> moduleList_;
 
   glm::mat4 cameraTransform;
   glm::mat4 viewTransform;

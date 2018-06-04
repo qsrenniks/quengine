@@ -5,8 +5,8 @@ public:
   IModule() = default;
   virtual ~IModule() = default;
 
-  virtual void ModuleLoad() = 0;
-  virtual void ModuleUnload() = 0;
+  virtual void LoadModule() = 0;
+  virtual void UnloadModule() = 0;
 
 private:
 

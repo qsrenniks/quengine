@@ -7,8 +7,8 @@ public:
   MemoryModule(size_t numOfBytes);
   virtual ~MemoryModule();
 
-  virtual void ModuleLoad() override;
-  virtual void ModuleUnload() override;
+  virtual void LoadModule() override;
+  virtual void UnloadModule() override;
 
 private:
 
