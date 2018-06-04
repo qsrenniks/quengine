@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{ee693914-9f66-43b8-a1af-af587d82b112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Interface">
+      <UniqueIdentifier>{adc35d76-aacf-480c-8f10-d0a5e3742de1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Sprite Component">
+      <UniqueIdentifier>{2b143743-e1c7-49ef-872f-883217fb4133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Transform Component">
+      <UniqueIdentifier>{61388cde-2b8a-43b8-8e89-056a6f4995af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{56a25f4b-7b1d-41fe-8136-03e809c816ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Objects">
+      <UniqueIdentifier>{3976fe36-a06a-40dd-a063-cb9a1256e4da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Objects\Interface">
+      <UniqueIdentifier>{bbcdd829-ea46-4aba-8b2f-1ab5adab692f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Objects\Debug Game Object">
+      <UniqueIdentifier>{279178b8-c28b-4665-8dbd-bc5a1aa93837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{55b8d9f9-007c-4f89-8cf4-d59515e53d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Input System">
+      <UniqueIdentifier>{56360c79-772c-4554-a395-c5ee9a6a19c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Game Object System">
+      <UniqueIdentifier>{62c0f9ef-e3e5-47b8-ae84-8ef6b8dd5ba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Interface">
+      <UniqueIdentifier>{81dcc77a-f904-4cc0-bb7a-97982638bc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Physics Component">
+      <UniqueIdentifier>{8cbfafa3-3a06-447c-9ecd-59b4731ad3d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Delegates">
+      <UniqueIdentifier>{7319b735-dde3-4f57-94ae-469cfc076d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Objects\Debug Background Game Object">
+      <UniqueIdentifier>{c0668559-e30e-404f-b4f7-5c8f0cc4b6d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Transform Component\Transform Type">
+      <UniqueIdentifier>{72c67f17-0306-4874-9b94-48e1b737075a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Sprite Component\Mesh">
+      <UniqueIdentifier>{46d122ee-15cd-4d32-8a01-4eb0fe05e874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Sprite Component\Vertices">
+      <UniqueIdentifier>{1276a953-69cc-4a59-9ebb-517c71544f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Game State System">
+      <UniqueIdentifier>{3868ba49-1162-4441-a674-334bcd6c4574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Modules">
+      <UniqueIdentifier>{5e2d933f-de99-4bb9-85a0-cd150bc21689}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IComponent.cpp">
+      <Filter>Source Files\Components\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Source Files\Components\Sprite Component</Filter>
+    </ClCompile>
+    <ClCompile Include="IGameObject.cpp">
+      <Filter>Source Files\Game Objects\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugGameObject.cpp">
+      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectSystem.cpp">
+      <Filter>Source Files\Systems\Game Object System</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Source Files\Components\Physics Component</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundGameObject.cpp">
+      <Filter>Source Files\Game Objects\Debug Background Game Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertices.cpp">
+      <Filter>Source Files\Components\Sprite Component\Vertices</Filter>
+    </ClCompile>
+    <ClCompile Include="IDrawable.cpp">
+      <Filter>Source Files\Components\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IGameplaySystem.cpp">
+      <Filter>Source Files\Systems\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IComponent.h">
+      <Filter>Source Files\Components\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Source Files\Components\Sprite Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Source Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameObject.h">
+      <Filter>Source Files\Game Objects\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugGameObject.h">
+      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Source Files\Systems\Input System</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Source Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectSystem.h">
+      <Filter>Source Files\Systems\Game Object System</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>Source Files\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Source Files\Components\Physics Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundGameObject.h">
+      <Filter>Source Files\Game Objects\Debug Background Game Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertices.h">
+      <Filter>Source Files\Components\Sprite Component\Vertices</Filter>
+    </ClInclude>
+    <ClInclude Include="IDrawable.h">
+      <Filter>Source Files\Components\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameplaySystem.h">
+      <Filter>Source Files\Systems\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertexShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="fragmentShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
