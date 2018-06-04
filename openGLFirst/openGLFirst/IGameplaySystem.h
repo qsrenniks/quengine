@@ -4,18 +4,19 @@ class IGameplaySystem : public IDrawable
 {
 public:
 
-  enum SystemTypes { InputSystem, GameObjectSystem, NumOfSystems };
+  //enum SystemTypes { InputSystem, GameObjectSystem, NumOfSystems };
 
-  IGameplaySystem(SystemTypes systemType);
+  //IGameplaySystem(SystemTypes systemType);
+  IGameplaySystem() = default;
 
-  virtual ~IGameplaySystem() {};
+  virtual ~IGameplaySystem() = default;
 
   virtual void LoadSystem() = 0;
   virtual void UpdateSystem(float dt) = 0;
   virtual void UnloadSystem() = 0;
 
-  SystemTypes GetSystemType() const { return systemType_; };
+  //SystemTypes GetSystemType() const { return systemType_; };
 
 private:
-  SystemTypes systemType_;
+  //SystemTypes systemType_;
 };

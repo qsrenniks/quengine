@@ -8,9 +8,7 @@ class GameObjectSystem : public IGameplaySystem
 
 
 public:
-  GameObjectSystem()
-    : IGameplaySystem(IGameplaySystem::GameObjectSystem)
-  {};
+  GameObjectSystem() = default;
 
   virtual ~GameObjectSystem();
   
@@ -39,8 +37,8 @@ private:
   //  bool operator()(class IGameObject* lhs, class IGameObject* rhs)const;
   //};
 
-  typedef std::vector<class IGameObject *> GameObjectList;
-  typedef std::vector<class IComponent *> ComponentList;
+  using GameObjectList = std::vector<class IGameObject *>;
+  using ComponentList = std::vector<class IComponent *>;
   GameObjectList gameObjectRegistry_;
   ComponentList componentRegistry_;
   

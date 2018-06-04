@@ -61,7 +61,7 @@ protected:
 
 private:
   static Engine* instance_;
-  IGameplaySystem * systemList_[IGameplaySystem::NumOfSystems];
+  std::vector<IGameplaySystem*> systemList_;
 
 
   //struct DrawFunction

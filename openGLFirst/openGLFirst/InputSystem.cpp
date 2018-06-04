@@ -4,8 +4,8 @@
 #include "Engine.h"
 
 InputSystem::InputSystem(GLFWwindow * window) 
-  : IGameplaySystem(IGameplaySystem::InputSystem)
-  , currentWindow_(window)
+  //: IGameplaySystem(IGameplaySystem::InputSystem)
+  : currentWindow_(window)
 {
   //this should determine what symbols are queried
   //if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
