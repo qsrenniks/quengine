@@ -19,7 +19,17 @@ private:
 
   Shader shader_;
 
-  Vertices vertices_[4];
+  Vertices vertices_[4] = 
+  {
+    { 0.5f,  0.5f, 0.0f },
+    { 0.5f, -0.5f, 0.0f },
+    { -0.5f, -0.5f, 0.0f },
+    { -0.5f,  0.5f, 0.0f },
+  };
 
-  std::vector<unsigned int> indices_;
+  unsigned int indices_[6] = 
+  {
+    0, 1, 3,
+    1, 2, 3
+  };
 };

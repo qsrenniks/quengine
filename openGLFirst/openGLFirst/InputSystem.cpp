@@ -2,6 +2,8 @@
 #include <glad/glad.h>
 #include <GLFW\glfw3.h>
 #include "Engine.h"
+#include "rapidjson/document.h"
+#include <fstream>
 
 InputSystem::InputSystem(GLFWwindow * window) 
   //: IGameplaySystem(IGameplaySystem::InputSystem)
@@ -12,6 +14,16 @@ InputSystem::InputSystem(GLFWwindow * window)
   //{
   //  glfwSetWindowShouldClose(window, true);
   //}
+
+
+  //rapidjson::Document inputFile;
+  //std::ifstream configInputFile("ConfigFile/input.txt");
+  ////configInputFile;
+  //
+
+  //inputFile.ParseStream(configInputFile);
+  //inputFile.
+
   registeredInputs_.push_back(KeyActionPair(GLFW_KEY_W, "Move Up"));
   registeredInputs_.push_back(KeyActionPair(GLFW_KEY_A, "Move Left"));
   registeredInputs_.push_back(KeyActionPair(GLFW_KEY_S, "Move Down"));
