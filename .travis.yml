@@ -1,2 +1,3 @@
 language: C++
+os: windows
 sudo: false
