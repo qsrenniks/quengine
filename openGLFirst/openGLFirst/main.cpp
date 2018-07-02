@@ -57,7 +57,6 @@ int main()
   engine->EngineLoad();
 
   GameObjectSystem* goS = engine->GetSystem<GameObjectSystem>();
-  goS->AddGameObject(new BackgroundGameObject()); 
   goS->AddGameObject(new DebugGameObject());
 
   float dt = 0.01667f;
