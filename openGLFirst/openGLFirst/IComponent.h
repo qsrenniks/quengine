@@ -1,7 +1,6 @@
 #pragma once
-#include "IDrawable.h"
 
-class IComponent : public IDrawable
+class IComponent 
 {
 public:
   enum ComponentType{Sprite, Physics, CompCount};
@@ -11,9 +10,12 @@ public:
 
   //virtual void Draw() const = 0;
   virtual void Update(float dt) = 0;
+  virtual void Draw() = 0;
 
   void Parent(class IGameObject * parent);
+
   class IGameObject *GetParent() const;
+
   ComponentType GetComponentType() const;
 
 private:

@@ -65,23 +65,24 @@ public:
   }
 
   //template <typename T>
-  void addFunction(CallableFunctionWrapper functionCall)
+  void AddFunction(CallableFunctionWrapper functionCall)
   {
     invocationList.push_back(new nonMemberCB(functionCall));
   };
 
   //member functions
   template<class ObjectInstance>
-  void addFunction(ObjectInstance& oI, void (ObjectInstance::*mFunc)(Args...))
+  void AddFunction(ObjectInstance& oI, void (ObjectInstance::*mFunc)(Args...))
   {
     invocationList.push_back(new memberCB<ObjectInstance>(&oI, mFunc));
   }
 
   template<class ObjectInstance>
-  void addFunction(ObjectInstance* oI, void (ObjectInstance::*mFunc)(Args...))
+  void AddFunction(ObjectInstance* oI, void (ObjectInstance::*mFunc)(Args...))
   {
     invocationList.push_back(new memberCB<ObjectInstance>(oI, mFunc));
   }
+
   void broadcast(Args... args)
   {
     for (auto a : invocationList)

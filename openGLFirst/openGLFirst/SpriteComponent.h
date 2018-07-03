@@ -1,7 +1,6 @@
 #pragma once
 #include "IComponent.h"
 #include "Shader.h"
-#include "Vertices.h"
 #include <vector>
 
 class SpriteComponent : public IComponent
@@ -10,8 +9,10 @@ public:
   SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z = 0);
   virtual ~SpriteComponent();
 
-  virtual void Draw() override;
+  //virtual void Draw() override;
   virtual void Update(float dt) override;
+
+  virtual void Draw() override;
 
 private:
   unsigned int VAO_;
@@ -23,7 +24,7 @@ private:
   Shader shader_;
 
   //triangle setup
-  std::vector<Vertices> vertices_{
+  float vertices_[4][3] = {
     { 0.5f,  0.5f, 0.0f },  // top right
     {0.5f, -0.5f, 0.0f }, // bottom right
     {-0.5f, -0.5f, 0.0f},  // bottom left

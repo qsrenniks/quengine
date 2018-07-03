@@ -20,7 +20,7 @@ public:
   virtual void UpdateSystem(float dt) override;
   virtual void UnloadSystem() override;
 
-  virtual void Draw() override;
+  //virtual void Draw() override;
 
   void MoveCameraUp();
   void MoveCameraDown();
@@ -36,9 +36,9 @@ public:
   //}
 
   template<class UserClass>
-  void BindDelegate(std::string actionName, UserClass* instigatorObject, void (UserClass::*objectAction)(void))
+  void AddInputAction(std::string actionName, UserClass* instigatorObject, void (UserClass::*objectAction)(void))
   {
-    delegateFunctionMap_[actionName].addFunction(instigatorObject, objectAction);
+    delegateFunctionMap_[actionName].AddFunction(instigatorObject, objectAction);
   }
 
 private:

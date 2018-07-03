@@ -24,10 +24,10 @@ GameObjectSystem::~GameObjectSystem()
   }
 }
 
-void GameObjectSystem::Draw()
-{
-
-}
+//void GameObjectSystem::Draw()
+//{
+//
+//}
 
 void GameObjectSystem::LoadSystem()
 {
@@ -36,11 +36,7 @@ void GameObjectSystem::LoadSystem()
 
 void GameObjectSystem::UpdateSystem(float dt)
 {
-  for (IGameObject * i : gameObjectRegistry_)
-  {
-    i->UpdateGameObject(dt);
-    i->DrawGameObject();
-  }
+  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), [&](IGameObject * i) { i->UpdateGameObject(dt); });
 }
 
 void GameObjectSystem::UnloadSystem()

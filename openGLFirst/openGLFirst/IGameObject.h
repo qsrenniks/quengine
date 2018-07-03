@@ -17,23 +17,22 @@ public:
   void AddComponent(IComponent *component)
   {
     component->Parent(this);
-
-    updateDelegate_.addFunction(component, &IComponent::Update);
-    drawDelegate_.addFunction(dynamic_cast<IDrawable*>(component), &IDrawable::Draw);
+    //drawDelegate_.addFunction(dynamic_cast<IDrawable*>(component), &IDrawable::Draw); 
+    componentUpdateList_.AddFunction(component, &IComponent::Update);
+    componentDrawList_.AddFunction(component, &IComponent::Draw);
   }
 
   void UpdateGameObject(float dt);
-  void DrawGameObject();
 
   virtual void Update(float dt) = 0;
 
   glm::mat4& GetTransform();
 
 private:
-  //typedef std::vector<delegate<void(float)>> UpdateDelegateList;
-  delegate<void(float)> updateDelegate_;
+  delegate<void(float)> gameObjectUpdateList_;
 
-  delegate<void()> drawDelegate_;
+  delegate<void(float)> componentUpdateList_;
+  delegate<void(void)> componentDrawList_;
 
   glm::mat4 transform_;
 };

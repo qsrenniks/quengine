@@ -1,6 +1,6 @@
 #pragma once
-#include "IDrawable.h"
-class IGameplaySystem : public IDrawable
+
+class IGameplaySystem 
 {
 public:
 

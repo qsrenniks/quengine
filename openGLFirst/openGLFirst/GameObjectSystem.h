@@ -16,7 +16,7 @@ public:
   virtual void UpdateSystem(float dt) override;
   virtual void UnloadSystem() override;
 
-  virtual void Draw() override;
+  //virtual void Draw() override;
 
   void AddGameObject(class IGameObject *gameObject);
 

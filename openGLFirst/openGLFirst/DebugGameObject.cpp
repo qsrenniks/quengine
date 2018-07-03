@@ -12,21 +12,21 @@
 DebugGameObject::DebugGameObject()
 {
   sprite_ = std::make_unique<SpriteComponent>("vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f });
-  //TransformComponent *transform = new TransformComponent();
   physics_ = std::make_unique<PhysicsComponent>();
 
   AddComponent(sprite_.get());
-  //AddComponent(transform);
   AddComponent(physics_.get());
 
   InputSystem* inSystem = Engine::instance()->GetSystem<InputSystem>();
 
-  inSystem->BindDelegate("Move Up", this, &DebugGameObject::WKeyPress);
-  inSystem->BindDelegate("Move Down", this, &DebugGameObject::SKeyPress);
-  inSystem->BindDelegate("Move Left", this, &DebugGameObject::AKeyPress);
-  inSystem->BindDelegate("Move Right", this, &DebugGameObject::DKeyPress);
+  inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
+  inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress);
+  inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
+  inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
 
-  GetTransform() = glm::scale(glm::mat4(1.0f), glm::vec3{0.25f});
+  GetTransform() = glm::scale(glm::mat4(1.0f), glm::vec3{ 0.25f });
+
+  physics_->SetAcceleration({ 0.0f, 0.0f, 0.0f });
 }
 
 DebugGameObject::~DebugGameObject()
@@ -35,46 +35,27 @@ DebugGameObject::~DebugGameObject()
 
 void DebugGameObject::Update(float dt)
 {
-  //PhysicsComponent *physics = GetComponent<PhysicsComponent *>(IComponent::Physics);
-  //TransformComponent *transform = GetComponent<TransformComponent *>(IComponent::Transform);
-
-  if (GetTransform()[3].y < -0.5)
-  {
-    physics_->SetAcceleration({ 0, 0, 0 });
-    physics_->SetVelocity({ 0, 0, 0 });
-  }
-
-  glm::vec4 modded = GetTransform()[3] * Engine::instance()->GetCameraTransform();
-  //glm::translate()
-  Engine::instance()->GetViewTransform()[3] = modded;
+  physics_->SetVelocity({ 0.0f, 0.0f, 0.0f });
 }
 
-static float dt = 0.016667f;
 void DebugGameObject::WKeyPress()
 {
-  //TransformComponent *transformComp = GetComponent<TransformComponent*>(IComponent::Transform);
-  GetTransform()[3].y += dt;
+  physics_->GetVelocity().y = 1.0f;
 }
 
 void DebugGameObject::SKeyPress()
 {
-  //TransformComponent *transformComp = GetComponent<TransformComponent*>(IComponent::Transform);
-
-  GetTransform()[3].y += -dt;
+  physics_->GetVelocity().y = -1.0f;
 }
 
 void DebugGameObject::AKeyPress()
 {
-  //TransformComponent *transformComp = GetComponent<TransformComponent*>(IComponent::Transform);
-
-  GetTransform()[3].x += -dt;
+  physics_->GetVelocity().x = -1.0f;
 }
 
 void DebugGameObject::DKeyPress()
 {
-  //TransformComponent *transformComp = GetComponent<TransformComponent*>(IComponent::Transform);
-
-  GetTransform()[3].x += dt;
+  physics_->GetVelocity().x = 1.0f;
 }
 
 

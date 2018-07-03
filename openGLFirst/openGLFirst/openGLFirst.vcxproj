@@ -126,42 +126,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BackgroundGameObject.cpp" />
     <ClCompile Include="DebugGameObject.cpp" />
     <ClCompile Include="GameObjectSystem.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="IComponent.cpp" />
-    <ClCompile Include="IDrawable.cpp" />
     <ClCompile Include="IGameObject.cpp" />
-    <ClCompile Include="IModule.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="IGameplaySystem.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MemoryModule.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Vertices.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BackgroundGameObject.h" />
     <ClInclude Include="DebugGameObject.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="GameObjectSystem.h" />
     <ClInclude Include="IComponent.h" />
-    <ClInclude Include="IDrawable.h" />
     <ClInclude Include="IGameObject.h" />
-    <ClInclude Include="IModule.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="IGameplaySystem.h" />
-    <ClInclude Include="MemoryModule.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Engine.h" />
-    <ClInclude Include="Vertices.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.fs" />

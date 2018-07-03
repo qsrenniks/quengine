@@ -5,15 +5,14 @@ PhysicsComponent::PhysicsComponent()
   : IComponent(IComponent::Physics)
   , velocity_(0)
   , acceleration_({0})
-  , objectGravity_({0.0f, -5.0f, 0.0f})
 {
 
 }
 
-void PhysicsComponent::Draw()
-{
-
-}
+//void PhysicsComponent::Draw()
+//{
+//
+//}
 
 void PhysicsComponent::Update(float dt)
 {
@@ -27,8 +26,12 @@ void PhysicsComponent::Update(float dt)
 
   transformComp[3] = glm::vec4(translation, 1.0f);
 
-  //resets the objects variables
-  acceleration_ = objectGravity_;
+  //resets the objects variables 
+}
+
+void PhysicsComponent::Draw()
+{
+  //do nothing. nothing needs to be drawn here.
 }
 
 void PhysicsComponent::SetAcceleration(const glm::vec3& newAccleration)
@@ -39,4 +42,9 @@ void PhysicsComponent::SetAcceleration(const glm::vec3& newAccleration)
 void PhysicsComponent::SetVelocity(const glm::vec3& newVelocity)
 {
   velocity_ = newVelocity;
+}
+
+glm::vec3& PhysicsComponent::GetVelocity()
+{
+  return velocity_;
 }

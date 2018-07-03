@@ -55,29 +55,11 @@
     <Filter Include="Source Files\Delegates">
       <UniqueIdentifier>{7319b735-dde3-4f57-94ae-469cfc076d2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game Objects\Debug Background Game Object">
-      <UniqueIdentifier>{c0668559-e30e-404f-b4f7-5c8f0cc4b6d6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Components\Transform Component\Transform Type">
       <UniqueIdentifier>{72c67f17-0306-4874-9b94-48e1b737075a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Sprite Component\Mesh">
-      <UniqueIdentifier>{46d122ee-15cd-4d32-8a01-4eb0fe05e874}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Sprite Component\Vertices">
-      <UniqueIdentifier>{1276a953-69cc-4a59-9ebb-517c71544f1b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Systems\Game State System">
       <UniqueIdentifier>{3868ba49-1162-4441-a674-334bcd6c4574}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules">
-      <UniqueIdentifier>{5e2d933f-de99-4bb9-85a0-cd150bc21689}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules\Interface">
-      <UniqueIdentifier>{724c894f-9ddf-4a9e-bb18-94031d51d7d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules\MemoryModule">
-      <UniqueIdentifier>{ede0315e-71a9-4d6f-be92-7d03a7148945}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,26 +93,8 @@
     <ClCompile Include="PhysicsComponent.cpp">
       <Filter>Source Files\Components\Physics Component</Filter>
     </ClCompile>
-    <ClCompile Include="BackgroundGameObject.cpp">
-      <Filter>Source Files\Game Objects\Debug Background Game Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertices.cpp">
-      <Filter>Source Files\Components\Sprite Component\Vertices</Filter>
-    </ClCompile>
-    <ClCompile Include="IDrawable.cpp">
-      <Filter>Source Files\Components\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="IGameplaySystem.cpp">
       <Filter>Source Files\Systems\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="IModule.cpp">
-      <Filter>Source Files\Modules\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryModule.cpp">
-      <Filter>Source Files\Modules\MemoryModule</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,26 +128,8 @@
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Source Files\Components\Physics Component</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundGameObject.h">
-      <Filter>Source Files\Game Objects\Debug Background Game Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertices.h">
-      <Filter>Source Files\Components\Sprite Component\Vertices</Filter>
-    </ClInclude>
-    <ClInclude Include="IDrawable.h">
-      <Filter>Source Files\Components\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="IGameplaySystem.h">
       <Filter>Source Files\Systems\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="IModule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryModule.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

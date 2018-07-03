@@ -81,10 +81,10 @@ void InputSystem::UnloadSystem()
 
 }
 
-void InputSystem::Draw()
-{
-
-}
+//void InputSystem::Draw()
+//{
+//
+//}
 
 static float dt = 0.0166667f;
 

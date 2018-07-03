@@ -2,8 +2,7 @@
 #include "Engine.h"
 
 IComponent::IComponent(ComponentType compType, int z)
-  : IDrawable(z)
-  , compType_(compType)
+  : compType_(compType)
 {
 }
 

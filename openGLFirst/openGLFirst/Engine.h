@@ -1,6 +1,5 @@
 #pragma once
 #include "IGameplaySystem.h"
-#include "IModule.h"
 #include "Delegate.h"
 #include <glm/glm.hpp>
 #include <array>
@@ -26,7 +25,6 @@ public:
   void EngineShutDown();
   void AddSystem(IGameplaySystem *system);
   
-  void AddModule(IModule *module);
 
   template <typename T>
   T* GetSystem()
@@ -75,7 +73,6 @@ private:
   struct GLFWwindow * currentWindow_;
 
   std::vector<IGameplaySystem*> systemList_;
-  std::vector<IModule*> moduleList_;
 
   glm::mat4 cameraTransform;
   glm::mat4 viewTransform;

@@ -3,7 +3,6 @@
 #include <iostream>
 #include "GameObjectSystem.h"
 #include "DebugGameObject.h"
-#include "BackgroundGameObject.h"
 #include "Engine.h"
 
 static GLFWwindow* window;
