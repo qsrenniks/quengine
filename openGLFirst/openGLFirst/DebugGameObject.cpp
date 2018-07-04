@@ -17,7 +17,7 @@ DebugGameObject::DebugGameObject()
   AddComponent(sprite_.get());
   AddComponent(physics_.get());
 
-  InputSystem* inSystem = Engine::instance()->GetSystem<InputSystem>();
+  InputSystem* inSystem = Engine::Instance()->GetSystem<InputSystem>();
 
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress);

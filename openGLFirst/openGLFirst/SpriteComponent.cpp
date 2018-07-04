@@ -43,7 +43,7 @@ void SpriteComponent::Draw()
   //set engine camera transform
 
 
-  shader_.setMat4("view", glm::inverse(Engine::instance()->GetViewTransform()));
+  shader_.setMat4("view", glm::inverse(Engine::Instance()->GetViewTransform()));
   shader_.setMat4("transform", GetParent()->GetTransform());
   shader_.setVec4("aColor", color_);
 

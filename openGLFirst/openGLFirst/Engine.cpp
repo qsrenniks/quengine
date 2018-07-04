@@ -2,6 +2,7 @@
 #include "GameObjectSystem.h"
 #include "InputSystem.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "ICommand.h"
 
 Engine* Engine::instance_ = nullptr;
 
@@ -10,8 +11,6 @@ Engine::Engine()
   , viewTransform(1.0f)
 {
 }
-
-
 
 void Engine::AddSystem(IGameplaySystem *system)
 {
@@ -22,9 +21,21 @@ void Engine::AddSystem(IGameplaySystem *system)
    systemList_.push_back(system);
 }
 
+void Engine::AddCommand(class ICommand* command)
+{
+  commandStack_.push(command);
+}
+
 void Engine::Update(float dt)
 {
   //Engine *engine = instance();
+  if (commandStack_.empty() == false)
+  {
+    ICommand* command = commandStack_.top();
+    command->Execute();
+    commandStack_.pop();
+  }
+
 
   for (IGameplaySystem* i : systemList_)
   {
@@ -34,19 +45,24 @@ void Engine::Update(float dt)
 
 glm::mat4& Engine::GetCameraTransform()
 {
-  Engine* engine = instance();
+  Engine* engine = Instance();
 
   return engine->cameraTransform;
 }
 
 glm::mat4& Engine::GetViewTransform()
 {
-  return instance()->viewTransform;
+  return Instance()->viewTransform;
 }
 
 void Engine::SetWindow(GLFWwindow * window)
 {
   currentWindow_ = window;
+}
+
+struct GLFWwindow* Engine::GetWindow()
+{
+  return currentWindow_;
 }
 
 void Engine::EngineShutDown()

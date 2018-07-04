@@ -51,7 +51,7 @@ int main()
   initWindow();
 
   //this starts the engine up and gets it ready to deal with input and things
-  Engine* engine = Engine::instance();
+  Engine* engine = Engine::Instance();
   engine->SetWindow(window);
   engine->EngineLoad();
 

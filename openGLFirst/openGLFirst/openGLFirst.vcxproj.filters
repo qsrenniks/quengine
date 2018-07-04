@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Systems\Game State System">
       <UniqueIdentifier>{3868ba49-1162-4441-a674-334bcd6c4574}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Commands">
+      <UniqueIdentifier>{f038fdc9-0e54-4d5f-a3f7-d3ea73696c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Commands\EngineCommands">
+      <UniqueIdentifier>{460b5dc0-f3e1-4407-9dc7-4440ff1df0ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -96,6 +102,12 @@
     <ClCompile Include="IGameplaySystem.cpp">
       <Filter>Source Files\Systems\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="ICommand.cpp">
+      <Filter>Source Files\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineCmder.cpp">
+      <Filter>Source Files\Commands\EngineCommands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -130,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="IGameplaySystem.h">
       <Filter>Source Files\Systems\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ICommand.h">
+      <Filter>Source Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineCmder.h">
+      <Filter>Source Files\Commands\EngineCommands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

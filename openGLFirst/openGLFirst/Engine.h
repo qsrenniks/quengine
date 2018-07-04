@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <array>
 #include <vector>
+#include <stack>
 #include <set>
 
 class Engine
@@ -12,7 +13,7 @@ public:
 
   //Engine();
 
-  static Engine* instance()
+  static Engine* Instance()
   {
     if (instance_ == nullptr)
     {
@@ -23,8 +24,10 @@ public:
   }
 
   void EngineShutDown();
+
   void AddSystem(IGameplaySystem *system);
   
+  void AddCommand(class ICommand* command);
 
   template <typename T>
   T* GetSystem()
@@ -65,10 +68,15 @@ public:
 
   void SetWindow(struct GLFWwindow * window);
 
+  struct GLFWwindow* GetWindow();
+
 protected:
   Engine();
 
 private:
+
+  std::stack<class ICommand*> commandStack_;
+
   static Engine* instance_;
   struct GLFWwindow * currentWindow_;
 

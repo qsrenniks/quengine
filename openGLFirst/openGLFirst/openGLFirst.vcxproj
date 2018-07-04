@@ -127,8 +127,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DebugGameObject.cpp" />
+    <ClCompile Include="EngineCmder.cpp" />
     <ClCompile Include="GameObjectSystem.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="ICommand.cpp" />
     <ClCompile Include="IComponent.cpp" />
     <ClCompile Include="IGameObject.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -141,7 +143,9 @@
   <ItemGroup>
     <ClInclude Include="DebugGameObject.h" />
     <ClInclude Include="Delegate.h" />
+    <ClInclude Include="EngineCmder.h" />
     <ClInclude Include="GameObjectSystem.h" />
+    <ClInclude Include="ICommand.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="IGameObject.h" />
     <ClInclude Include="InputSystem.h" />

@@ -90,20 +90,20 @@ static float dt = 0.0166667f;
 
 void InputSystem::MoveCameraUp()
 {
-  Engine::instance()->GetCameraTransform()[3].y += dt;
+  Engine::Instance()->GetCameraTransform()[3].y += dt;
 }
 
 void InputSystem::MoveCameraDown()
 {
-  Engine::instance()->GetCameraTransform()[3].y += -dt;
+  Engine::Instance()->GetCameraTransform()[3].y += -dt;
 }
 
 void InputSystem::MoveCameraLeft()
 {
-  Engine::instance()->GetCameraTransform()[3].x += -dt;
+  Engine::Instance()->GetCameraTransform()[3].x += -dt;
 }
 
 void InputSystem::MoveCameraRight()
 {
-  Engine::instance()->GetCameraTransform()[3].x += dt;
+  Engine::Instance()->GetCameraTransform()[3].x += dt;
 }
