@@ -1,12 +1,14 @@
-#include <glad/glad.h>
-#include <GLFW\glfw3.h>
+#include "stdafx.h"
 #include <iostream>
 #include "GameObjectSystem.h"
 #include "DebugGameObject.h"
 #include "Engine.h"
+#include <chrono>
 
 static GLFWwindow* window;
 //static Engine engine;
+
+static int frames = 0;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -54,9 +56,6 @@ int main()
   Engine* engine = Engine::Instance();
   engine->SetWindow(window);
   engine->EngineLoad();
-
-  GameObjectSystem* goS = engine->GetSystem<GameObjectSystem>();
-  goS->AddGameObject(new DebugGameObject());
 
   float dt = 0.01667f;
   while (!glfwWindowShouldClose(window))

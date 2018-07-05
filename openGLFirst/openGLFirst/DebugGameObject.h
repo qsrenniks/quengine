@@ -1,6 +1,6 @@
 #pragma once
 #include "IGameObject.h"
-#include <memory>
+
 class DebugGameObject : public IGameObject
 {
 public:
@@ -9,6 +9,8 @@ public:
 
   virtual void Update(float dt) override;
 
+  virtual IGameObject *Clone() override;
+  
   void WKeyPress();
   void SKeyPress();
   void DKeyPress();
@@ -17,5 +19,7 @@ public:
 private:
   class std::unique_ptr<class SpriteComponent> sprite_;
   class std::unique_ptr<class PhysicsComponent> physics_;
+  class std::unique_ptr<class CollisionComponent> collision_;
+
 };
 

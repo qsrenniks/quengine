@@ -1,33 +1,30 @@
+#include "stdafx.h"
 #include "InputSystem.h"
-#include <glad/glad.h>
-#include <GLFW\glfw3.h>
 #include "Engine.h"
 #include "rapidjson/document.h"
+#include "rapidjson/istreamwrapper.h"
 #include <fstream>
 
 InputSystem::InputSystem(GLFWwindow * window) 
-  //: IGameplaySystem(IGameplaySystem::InputSystem)
   : currentWindow_(window)
 {
-  //this should determine what symbols are queried
-  //if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
-  //{
-  //  glfwSetWindowShouldClose(window, true);
-  //}
+  std::ifstream fileStream(R"(ConfigFiles\inputs.json)");
+  rapidjson::IStreamWrapper isw(fileStream);
 
+  rapidjson::Document inputFile;
+  inputFile.ParseStream(isw);
+  
+  assert(inputFile.IsObject());
 
-  //rapidjson::Document inputFile;
-  //std::ifstream configInputFile("ConfigFile/input.txt");
-  ////configInputFile;
-  //
+  for (rapidjson::Value::ConstMemberIterator itr = inputFile.MemberBegin(); itr != inputFile.MemberEnd(); ++itr)
+  {
+    const rapidjson::Value& inputArray = inputFile[itr->name.GetString()];
 
-  //inputFile.ParseStream(configInputFile);
-  //inputFile.
-
-  registeredInputs_.push_back(KeyActionPair(GLFW_KEY_W, "Move Up"));
-  registeredInputs_.push_back(KeyActionPair(GLFW_KEY_A, "Move Left"));
-  registeredInputs_.push_back(KeyActionPair(GLFW_KEY_S, "Move Down"));
-  registeredInputs_.push_back(KeyActionPair(GLFW_KEY_D, "Move Right"));
+    for (auto& v : inputArray.GetArray())
+    {
+      registeredInputs_.push_back(KeyActionPair(*v.GetString(), itr->name.GetString()));
+    }
+  }
 }
 
 void InputSystem::LoadSystem()

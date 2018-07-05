@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Engine.h"
 #include "GameObjectSystem.h"
 #include "InputSystem.h"
@@ -14,16 +15,12 @@ Engine::Engine()
 
 void Engine::AddSystem(IGameplaySystem *system)
 {
-  //IGameplaySystem::SystemTypes systemType = system->GetSystemType();
-
-  //Engine* engine = instance();
-
-   systemList_.push_back(system);
+  systemList_.push_back(system);
 }
 
 void Engine::AddCommand(class ICommand* command)
 {
-  commandStack_.push(command);
+  commandStack_.push_back(command);
 }
 
 void Engine::Update(float dt)
@@ -31,11 +28,11 @@ void Engine::Update(float dt)
   //Engine *engine = instance();
   if (commandStack_.empty() == false)
   {
-    ICommand* command = commandStack_.top();
-    command->Execute();
-    commandStack_.pop();
-  }
+    auto commandExecuteLambda = [&](ICommand *i) {i->Execute(); };
+    std::for_each(commandStack_.begin(), commandStack_.end(), commandExecuteLambda);
 
+    commandStack_.clear();
+  }
 
   for (IGameplaySystem* i : systemList_)
   {

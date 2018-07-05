@@ -1,6 +1,0 @@
-{
-  "Move Up" : [w],
-  "Move Left" : [a],
-  "Move Down" : [s],
-  "Move Right" : [d],
-}

@@ -1,10 +1,11 @@
+#include "stdafx.h"
 #include "SpriteComponent.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "IGameObject.h"
 #include "Engine.h"
 
 SpriteComponent::SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z) 
-  : IComponent(IComponent::Sprite, z)
+  : IComponent(z)
   , shader_(vertexShader, fragmentShader)
   , color_(color)
 {

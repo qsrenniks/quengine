@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "IGameObject.h"
 #include "Engine.h"
 
@@ -21,7 +22,32 @@ void IGameObject::UpdateGameObject(float dt)
   componentDrawList_.broadcast();
 }
 
+void IGameObject::DestroyGameObject()
+{
+  markForDestroy_ = true;
+}
+
+bool IGameObject::IsMarkedForDestroy()
+{
+  return markForDestroy_;
+}
+
 glm::mat4& IGameObject::GetTransform()
 {
   return transform_;
+}
+
+delegate<void(float)>& IGameObject::GetUpdateList()
+{
+  return gameObjectUpdateList_;
+}
+
+delegate<void(float)>& IGameObject::GetComponentUpdateList()
+{
+  return componentUpdateList_;
+}
+
+delegate<void(void)>& IGameObject::GetDrawList()
+{
+  return componentDrawList_;
 }

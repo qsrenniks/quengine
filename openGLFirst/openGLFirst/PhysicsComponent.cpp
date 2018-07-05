@@ -1,9 +1,10 @@
+#include "stdafx.h"
 #include "PhysicsComponent.h"
 #include "IGameObject.h"
 
 PhysicsComponent::PhysicsComponent()
-  : IComponent(IComponent::Physics)
-  , velocity_(0)
+  //: IComponent(IComponent::Physics)
+  : velocity_(0)
   , acceleration_({0})
 {
 

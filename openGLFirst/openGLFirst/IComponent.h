@@ -3,23 +3,20 @@
 class IComponent 
 {
 public:
-  enum ComponentType{Sprite, Physics, CompCount};
-
-  IComponent(ComponentType compType, int z = 0);
+  IComponent(int z = 0);
   virtual ~IComponent();
 
-  //virtual void Draw() const = 0;
   virtual void Update(float dt) = 0;
   virtual void Draw() = 0;
 
-  void Parent(class IGameObject * parent);
+  virtual void Parent(class IGameObject * parent);
 
   class IGameObject *GetParent() const;
 
-  ComponentType GetComponentType() const;
+  virtual void Register();
 
 private:
   class IGameObject * parent_;
-  ComponentType compType_;
+  int zDraw_;
 };
 

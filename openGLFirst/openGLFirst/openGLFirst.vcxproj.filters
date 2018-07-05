@@ -67,6 +67,9 @@
     <Filter Include="Source Files\Commands\EngineCommands">
       <UniqueIdentifier>{460b5dc0-f3e1-4407-9dc7-4440ff1df0ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Collision Component">
+      <UniqueIdentifier>{4527abf4-2e99-4186-ad3a-b0e16cbf1c9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -108,6 +111,15 @@
     <ClCompile Include="EngineCmder.cpp">
       <Filter>Source Files\Commands\EngineCommands</Filter>
     </ClCompile>
+    <ClCompile Include="TileGameObject.cpp">
+      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Source Files\Components\Collision Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -134,9 +146,6 @@
     <ClInclude Include="GameObjectSystem.h">
       <Filter>Source Files\Systems\Game Object System</Filter>
     </ClInclude>
-    <ClInclude Include="Delegate.h">
-      <Filter>Source Files\Delegates</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Source Files\Components\Physics Component</Filter>
     </ClInclude>
@@ -148,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="EngineCmder.h">
       <Filter>Source Files\Commands\EngineCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="TileGameObject.h">
+      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>Source Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Source Files\Components\Collision Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

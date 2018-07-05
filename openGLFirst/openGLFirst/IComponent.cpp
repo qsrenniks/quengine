@@ -1,8 +1,10 @@
+#include "stdafx.h"
 #include "IComponent.h"
 #include "Engine.h"
+#include "IGameObject.h"
 
-IComponent::IComponent(ComponentType compType, int z)
-  : compType_(compType)
+IComponent::IComponent(int z)
+  : zDraw_(z)
 {
 }
 
@@ -21,8 +23,10 @@ class IGameObject *IComponent::GetParent() const
   return parent_;
 }
 
-IComponent::ComponentType IComponent::GetComponentType() const
+void IComponent::Register()
 {
-  return compType_;
+  IGameObject * parent = GetParent();
+
+  parent->GetComponentUpdateList().AddFunction(this, &IComponent::Update);
+  parent->GetDrawList().AddFunction(this, &IComponent::Draw);
 }
- 

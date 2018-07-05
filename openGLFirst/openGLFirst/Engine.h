@@ -75,7 +75,7 @@ protected:
 
 private:
 
-  std::stack<class ICommand*> commandStack_;
+  std::vector<class ICommand*> commandStack_;
 
   static Engine* instance_;
   struct GLFWwindow * currentWindow_;
