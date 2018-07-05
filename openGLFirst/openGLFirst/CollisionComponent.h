@@ -1,33 +1,51 @@
 #pragma once
 #include "IComponent.h"
 
+class CollisionComponent;
+class IGameObject;
+
 class CollisionProfile
 {
-  virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) = 0;
+public:
+
+  CollisionProfile(CollisionComponent *component);
+  virtual bool IsProfileCollidingWith(CollisionProfile *otherProfile) = 0;
+
+  CollisionComponent *GetComponentParent();
+
+protected:
+  CollisionComponent *component_;
 };
 
 class SquareCollisionProfile : public CollisionProfile
 {
+public:
+  SquareCollisionProfile(CollisionComponent *component, float width, float height);
 
+  virtual bool IsProfileCollidingWith(CollisionProfile *otherProfile) override;
+
+private:
+  float width_;
+  float height_;
 };
 
 class CollisionComponent : public IComponent
 {
 public:
-  CollisionComponent(CollisionProfile *profile = nullptr);
+  CollisionComponent(CollisionProfile * = nullptr);
   ~CollisionComponent();
 
   virtual void Update(float dt) override;
   virtual void Draw() override;
 
-  virtual void Parent(class IGameObject * parent) override;
+  virtual void Parent(IGameObject *parent) override;
 
   virtual void Register() override;
 
-  bool IsCollidingWith(CollisionComponent *otherCollider);
+  bool IsCollidingWith(CollisionComponent * otherCollider);
 
 private:
 
-  CollisionProfile *collisionProfile_;
+  CollisionProfile * collisionProfile_;
 };
 

@@ -14,7 +14,7 @@
 
 DebugGameObject::DebugGameObject()
 {
-  AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f });
+  AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 0.25f, 0.25f);
   AddComponent<PhysicsComponent>(physics_);
   AddComponent<CollisionComponent>(collision_);
 
@@ -23,8 +23,6 @@ DebugGameObject::DebugGameObject()
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress);
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
-
-  GetTransform() = glm::scale(glm::mat4(1.0f), glm::vec3{ 0.25f });
 }
 
 DebugGameObject::~DebugGameObject()

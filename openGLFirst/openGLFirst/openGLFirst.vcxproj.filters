@@ -70,6 +70,9 @@
     <Filter Include="Source Files\Components\Collision Component">
       <UniqueIdentifier>{4527abf4-2e99-4186-ad3a-b0e16cbf1c9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Sprite Component\Mesh">
+      <UniqueIdentifier>{5a2b02c8-91b1-4439-a9cc-e2ce54e0a286}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -120,6 +123,9 @@
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -169,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="CollisionComponent.h">
       <Filter>Source Files\Components\Collision Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

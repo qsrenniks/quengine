@@ -17,17 +17,35 @@ public:
   //
   // _Types: Packed parameters for component constructor.
   template <typename Component, class... _Types>
-  void AddComponent(std::unique_ptr<Component>& component, _Types&&... _Args)
+  void AddComponent(Component*& component, _Types&&... _Args)
   {
     //this expands the _Types pack into the parameters passed in to construct the object 
-    component = std::make_unique<Component>(_Args...);
+    component = new Component(_Args...);
 
     component->Parent(this);
     //drawDelegate_.addFunction(dynamic_cast<IDrawable*>(component), &IDrawable::Draw); 
     component->Register();
     
+    componentList_.push_back(component);
+
     //componentUpdateList_.AddFunction(component.get(), &Component::Update);
     //componentDrawList_.AddFunction(component.get(), &Component::Draw);
+  }
+
+  template<typename T>
+  T* GetComponent()
+  {
+    T* tempPtr = nullptr;
+
+    for (auto component : componentList_)
+    {
+      if ((tempPtr = dynamic_cast<T*>(component)) != nullptr)
+      {
+        break;
+      }
+    }
+
+    return tempPtr;
   }
 
   void UpdateGameObject(float dt);
@@ -43,7 +61,9 @@ public:
   glm::mat4& GetTransform();
 
   delegate<void(float)>& GetUpdateList();
+
   delegate<void(float)>& GetComponentUpdateList();
+
   delegate<void(void)>& GetDrawList();
 
 private:
@@ -52,6 +72,10 @@ private:
   delegate<void(float)> componentUpdateList_;
 
   delegate<void(void)> componentDrawList_;
+
+  using ComponentList = std::vector<IComponent*>;
+
+  ComponentList componentList_;
 
   glm::mat4 transform_;
   

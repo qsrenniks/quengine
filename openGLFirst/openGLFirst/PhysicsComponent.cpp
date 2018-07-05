@@ -7,7 +7,6 @@ PhysicsComponent::PhysicsComponent()
   : velocity_(0)
   , acceleration_({0})
 {
-
 }
 
 //void PhysicsComponent::Draw()

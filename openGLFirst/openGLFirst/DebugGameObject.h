@@ -1,6 +1,11 @@
 #pragma once
 #include "IGameObject.h"
 
+
+class SpriteComponent;
+class PhysicsComponent;
+class CollisionComponent;
+
 class DebugGameObject : public IGameObject
 {
 public:
@@ -17,9 +22,9 @@ public:
   void AKeyPress();
 
 private:
-  class std::unique_ptr<class SpriteComponent> sprite_;
-  class std::unique_ptr<class PhysicsComponent> physics_;
-  class std::unique_ptr<class CollisionComponent> collision_;
+  SpriteComponent* sprite_;
+  PhysicsComponent* physics_;
+  CollisionComponent* collision_;
 
 };
 

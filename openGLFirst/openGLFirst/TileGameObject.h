@@ -1,6 +1,8 @@
 #pragma once
 #include "IGameObject.h"
 
+class SpriteComponent;
+
 class TileGameObject : public IGameObject
 {
 public:
@@ -11,6 +13,6 @@ public:
   virtual void Update(float dt) override;
 
 private:
-  std::unique_ptr<class SpriteComponent> sprite_;
+  SpriteComponent *sprite_;
 };
 

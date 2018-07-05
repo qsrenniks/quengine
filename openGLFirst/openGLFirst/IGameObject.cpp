@@ -10,6 +10,10 @@ IGameObject::IGameObject()
 
 IGameObject::~IGameObject()
 {
+  for (auto component : componentList_)
+  {
+    delete component;
+  }
 }
 
 void IGameObject::UpdateGameObject(float dt)

@@ -3,11 +3,17 @@
 #include "IComponent.h"
 #include <list>
 
+class IGameObject;
+class CollisionComponent;
+
 class GameObjectSystem : public IGameplaySystem
 {
 
 
 public:
+  using GameObjectList = std::list<IGameObject*>;
+  using CollisionList = std::list<CollisionComponent*>;
+
   GameObjectSystem() = default;
 
   virtual ~GameObjectSystem();
@@ -16,20 +22,16 @@ public:
   virtual void UpdateSystem(float dt) override;
   virtual void UnloadSystem() override;
 
-  void AddGameObject(class IGameObject *gameObject);
-  void AddCollisionComponent(class CollisionComponent *collisionComponent);
+  void AddGameObject(IGameObject* gameObject);
+  void AddCollisionComponent(CollisionComponent* collisionComponent);
 
-  void DestroyGameObject(class IGameObject* gameObject);
-  void RemoveCollisonComponent(class CollisionComponent *collisionComponent);
+  void DestroyGameObject(IGameObject*& gameObjectToDestroy);
+  void RemoveCollisonComponent(CollisionComponent* collisionComponent);
 
 private:
 
-   
-
-  using GameObjectList = std::list<class IGameObject *>;
   GameObjectList gameObjectRegistry_;
 
-  using CollisionList = std::list<class CollisionComponent *>;
   CollisionList collisionGameObjects_;
   
 };

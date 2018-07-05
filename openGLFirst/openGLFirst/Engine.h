@@ -25,38 +25,30 @@ public:
 
   void EngineShutDown();
 
-  void AddSystem(IGameplaySystem *system);
+  void AddSystem(IGameplaySystem* system);
   
   void AddCommand(class ICommand* command);
 
   template <typename T>
   T* GetSystem()
   {
-    for (auto sysIter : systemList_)
+    T* tempPtr = nullptr;
+
+    for (auto system : systemList_)
     {
-      T *system = nullptr;
-      if (sysIter != nullptr)
+      if (system == nullptr)
       {
-        system = dynamic_cast<T*>(sysIter);
+        continue;
       }
 
-      if (system != nullptr)
+      if ((tempPtr = dynamic_cast<T*>(system)) != nullptr)
       {
-        return system;
+        break;
       }
     }
 
-    return nullptr;
+    return tempPtr;
   };
-
-  template <typename T>
-  T* GetModule()
-  {
-    for (auto moduleIter : moduleList_)
-    {
-      T *module = nullptr;
-    }
-  }
 
   void EngineLoad();
 
@@ -72,6 +64,8 @@ public:
 
 protected:
   Engine();
+  ~Engine();
+  
 
 private:
 

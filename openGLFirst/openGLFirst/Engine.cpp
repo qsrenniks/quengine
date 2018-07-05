@@ -4,6 +4,7 @@
 #include "InputSystem.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "ICommand.h"
+#include <memory>
 
 Engine* Engine::instance_ = nullptr;
 
@@ -13,7 +14,7 @@ Engine::Engine()
 {
 }
 
-void Engine::AddSystem(IGameplaySystem *system)
+void Engine::AddSystem(IGameplaySystem* system)
 {
   systemList_.push_back(system);
 }
@@ -34,7 +35,7 @@ void Engine::Update(float dt)
     commandStack_.clear();
   }
 
-  for (IGameplaySystem* i : systemList_)
+  for (auto i : systemList_)
   {
     i->UpdateSystem(dt);
   }
@@ -62,12 +63,18 @@ struct GLFWwindow* Engine::GetWindow()
   return currentWindow_;
 }
 
+Engine::~Engine()
+{
+
+}
+
 void Engine::EngineShutDown()
 {
-  for (auto system : systemList_)
+  for (auto& system : systemList_)
   {
     system->UnloadSystem();
     delete system;
+    system = nullptr;
   }
 
   delete instance_;

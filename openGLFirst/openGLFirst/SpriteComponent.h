@@ -2,11 +2,12 @@
 #include "IComponent.h"
 #include "Shader.h"
 #include <vector>
+#include "Mesh.h"
 
 class SpriteComponent : public IComponent
 {
 public:
-  SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z = 0);
+  SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z = 0, float width = 1.0f, float height = 1.0f);
   virtual ~SpriteComponent();
 
   //virtual void Draw() override;
@@ -15,25 +16,10 @@ public:
   virtual void Draw() override;
 
 private:
-  unsigned int VAO_;
-  unsigned int VBO_;
-  unsigned int EBO_;
+  Mesh spriteMesh_;
 
   glm::vec4 color_{1.0f};
 
   Shader shader_;
-
-  //triangle setup
-  float vertices_[4][3] = {
-    { 0.5f,  0.5f, 0.0f },  // top right
-    {0.5f, -0.5f, 0.0f }, // bottom right
-    {-0.5f, -0.5f, 0.0f},  // bottom left
-    {-0.5f,  0.5f, 0.0f}   // top left 
-  };
-
-  unsigned int indices_[6] = {  // note that we start from 0!
-    0, 1, 3,   // first triangle
-    1, 2, 3    // second triangle
-  };
 };
 

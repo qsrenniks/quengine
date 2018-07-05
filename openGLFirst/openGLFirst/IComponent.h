@@ -1,4 +1,7 @@
 #pragma once
+#include <memory>
+
+class IGameObject;
 
 class IComponent 
 {
@@ -9,14 +12,14 @@ public:
   virtual void Update(float dt) = 0;
   virtual void Draw() = 0;
 
-  virtual void Parent(class IGameObject * parent);
+  virtual void Parent(IGameObject* parent);
 
-  class IGameObject *GetParent() const;
+  IGameObject *GetParent() const;
 
   virtual void Register();
 
 private:
-  class IGameObject * parent_;
+  IGameObject *parent_;
   int zDraw_;
 };
 

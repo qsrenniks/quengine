@@ -13,19 +13,19 @@ IComponent::~IComponent()
 {
 }
 
-void IComponent::Parent(class IGameObject *parent)
+void IComponent::Parent(IGameObject* parent)
 {
   parent_ = parent;
 }
 
-class IGameObject *IComponent::GetParent() const
+IGameObject *IComponent::GetParent() const
 {
   return parent_;
 }
 
 void IComponent::Register()
 {
-  IGameObject * parent = GetParent();
+  IGameObject* parent = GetParent();
 
   parent->GetComponentUpdateList().AddFunction(this, &IComponent::Update);
   parent->GetDrawList().AddFunction(this, &IComponent::Draw);
