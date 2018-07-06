@@ -2,8 +2,8 @@
 
 #include <array>
 #include "IComponent.h"
-#include <glm/glm.hpp>
 #include "Delegate.h"
+#include "Transform.h"
 
 class IGameObject
 {
@@ -23,13 +23,10 @@ public:
     component = new Component(_Args...);
 
     component->Parent(this);
-    //drawDelegate_.addFunction(dynamic_cast<IDrawable*>(component), &IDrawable::Draw); 
+
     component->Register();
     
     componentList_.push_back(component);
-
-    //componentUpdateList_.AddFunction(component.get(), &Component::Update);
-    //componentDrawList_.AddFunction(component.get(), &Component::Draw);
   }
 
   template<typename T>
@@ -58,7 +55,7 @@ public:
 
   virtual void Update(float dt) = 0;
 
-  glm::mat4& GetTransform();
+  Transform& GetTransform();
 
   delegate<void(float)>& GetUpdateList();
 
@@ -77,7 +74,7 @@ private:
 
   ComponentList componentList_;
 
-  glm::mat4 transform_;
+  Transform transform_;
   
   bool markForDestroy_ = false;
 };

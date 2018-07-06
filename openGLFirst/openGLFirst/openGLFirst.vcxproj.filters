@@ -73,6 +73,9 @@
     <Filter Include="Source Files\Components\Sprite Component\Mesh">
       <UniqueIdentifier>{5a2b02c8-91b1-4439-a9cc-e2ce54e0a286}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game Objects\Transform">
+      <UniqueIdentifier>{5a179636-8a3b-45e5-964f-49ea404a0499}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,6 +129,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -178,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

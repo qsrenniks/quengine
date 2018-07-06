@@ -22,7 +22,7 @@ void SpriteComponent::Draw()
   shader_.use();
 
   shader_.setMat4("view", glm::inverse(Engine::Instance()->GetViewTransform()));
-  shader_.setMat4("transform", GetParent()->GetTransform());
+  shader_.setMat4("transform", GetParent()->GetTransform().BuildTransform());
   shader_.setVec4("aColor", color_);
 
   spriteMesh_.Draw();

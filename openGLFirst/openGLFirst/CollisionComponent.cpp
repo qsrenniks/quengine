@@ -58,8 +58,8 @@ SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
 
 bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile)
 {
-  glm::vec3 position = component_->GetParent()->GetTransform()[3];
-  glm::vec3 otherPosition = otherProfile->GetComponentParent()->GetParent()->GetTransform()[3];
+  glm::vec3 position = component_->GetParent()->GetTransform().GetPosition();
+  glm::vec3 otherPosition = otherProfile->GetComponentParent()->GetParent()->GetTransform().GetPosition();
 
   //do square collision profile check
   //using sat collision check

@@ -63,7 +63,7 @@ glm::vec2 Mesh::GetWidthHeight()
 
 glm::vec2 Mesh::GetVertPos(MeshCorner corner)
 {
-  glm::vec3 spritePosition = spriteComponent_->GetParent()->GetTransform()[3];
+  glm::vec3 spritePosition = spriteComponent_->GetParent()->GetTransform().GetPosition();
 
   glm::vec2 vertPos;
 

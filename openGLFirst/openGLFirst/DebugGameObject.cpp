@@ -19,7 +19,7 @@ DebugGameObject::DebugGameObject()
   AddComponent<PhysicsComponent>(physics_);
   AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(collision_));
 
-  GetTransform() = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+  GetTransform().SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 
   InputSystem* inSystem = Engine::Instance()->GetSystem<InputSystem>();
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);

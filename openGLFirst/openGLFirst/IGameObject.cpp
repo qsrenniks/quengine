@@ -3,7 +3,6 @@
 #include "Engine.h"
 
 IGameObject::IGameObject() 
-  : transform_(1.0f)
 {
   gameObjectUpdateList_.AddFunction(this, &IGameObject::Update);
 }
@@ -36,7 +35,7 @@ bool IGameObject::IsMarkedForDestroy()
   return markForDestroy_;
 }
 
-glm::mat4& IGameObject::GetTransform()
+Transform& IGameObject::GetTransform()
 {
   return transform_;
 }

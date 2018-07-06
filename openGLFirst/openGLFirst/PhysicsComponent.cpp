@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PhysicsComponent.h"
 #include "IGameObject.h"
+#include "Transform.h"
 
 PhysicsComponent::PhysicsComponent()
   //: IComponent(IComponent::Physics)
@@ -16,15 +17,15 @@ PhysicsComponent::PhysicsComponent()
 
 void PhysicsComponent::Update(float dt)
 {
-  glm::mat4& transformComp = GetParent()->GetTransform();
+  Transform& transformComp = GetParent()->GetTransform();
 
   glm::vec3 translation{0};
 
   velocity_ = velocity_ + (acceleration_ * dt);
 
-  translation = (velocity_ * dt) + glm::vec3(transformComp[3]);
+  translation = (velocity_ * dt) + transformComp.GetPosition();
 
-  transformComp[3] = glm::vec4(translation, 1.0f);
+  transformComp.SetPosition(glm::vec3(translation));
 
   //resets the objects variables 
 }
