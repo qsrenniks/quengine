@@ -1,24 +1,26 @@
 #include "stdafx.h"
 #include "Mesh.h"
+#include "SpriteComponent.h"
+#include "IGameObject.h"
 
-Mesh::Mesh(float width, float height)
-  : width_(width)
+Mesh::Mesh(SpriteComponent *spriteComponent, float width, float height)
+  : spriteComponent_(spriteComponent)
+  , width_(width)
+  , halfWidth_(width / 2.0f)
   , height_(height)
+  , halfHeight_(height / 2.0f)
 {
-  float halfWidth = width_ / 2.0f;
-  float halfHeight = height_ / 2.0f;
-
-  vertices_[0][0] = halfWidth;
-  vertices_[0][1] = halfHeight;
+  vertices_[0][0] = halfWidth_;
+  vertices_[0][1] = halfHeight_;
   vertices_[0][2] = 0.0f;
-  vertices_[1][0] = halfWidth;
-  vertices_[1][1] = -halfHeight;
+  vertices_[1][0] = halfWidth_;
+  vertices_[1][1] = -halfHeight_;
   vertices_[1][2] = 0.0f;
-  vertices_[2][0] = -halfWidth;
-  vertices_[2][1] = -halfHeight;
+  vertices_[2][0] = -halfWidth_;
+  vertices_[2][1] = -halfHeight_;
   vertices_[2][2] = 0.0f;
-  vertices_[3][0] = -halfWidth;
-  vertices_[3][1] = halfHeight;
+  vertices_[3][0] = -halfWidth_;
+  vertices_[3][1] = halfHeight_;
   vertices_[3][2] = 0.0f;
 
   glGenBuffers(1, &VBO_);
@@ -57,4 +59,29 @@ void Mesh::Draw()
 glm::vec2 Mesh::GetWidthHeight()
 {
   return glm::vec2(width_, height_);
+}
+
+glm::vec2 Mesh::GetVertPos(MeshCorner corner)
+{
+  glm::vec3 spritePosition = spriteComponent_->GetParent()->GetTransform()[3];
+
+  glm::vec2 vertPos;
+
+  switch (corner)
+  {
+  case MeshCorner::TOP_LEFT:
+    vertPos = glm::vec2(spritePosition.x - halfWidth_, spritePosition.y + halfHeight_);
+    break;
+  case MeshCorner::TOP_RIGHT:
+    vertPos = glm::vec2(spritePosition.x + halfWidth_, spritePosition.y + halfHeight_);
+    break;
+  case MeshCorner::BOTTOM_LEFT:
+    vertPos = glm::vec2(spritePosition.x - halfWidth_, spritePosition.y - halfHeight_);
+    break;
+  case MeshCorner::BOTTOM_RIGHT:
+    vertPos = glm::vec2(spritePosition.x + halfWidth_, spritePosition.y - halfHeight_);
+    break;
+  }
+
+  return vertPos;
 }

@@ -30,6 +30,8 @@ public:
 
 private:
 
+  void UpdateCollision();
+
   GameObjectList gameObjectRegistry_;
 
   CollisionList collisionGameObjects_;

@@ -8,25 +8,23 @@ class CollisionProfile
 {
 public:
 
-  CollisionProfile(CollisionComponent *component);
+  CollisionProfile(CollisionComponent *&component);
   virtual bool IsProfileCollidingWith(CollisionProfile *otherProfile) = 0;
 
   CollisionComponent *GetComponentParent();
 
 protected:
-  CollisionComponent *component_;
+  CollisionComponent *&component_;
 };
 
 class SquareCollisionProfile : public CollisionProfile
 {
 public:
-  SquareCollisionProfile(CollisionComponent *component, float width, float height);
+  SquareCollisionProfile(CollisionComponent *&component);
 
   virtual bool IsProfileCollidingWith(CollisionProfile *otherProfile) override;
 
 private:
-  float width_;
-  float height_;
 };
 
 class CollisionComponent : public IComponent

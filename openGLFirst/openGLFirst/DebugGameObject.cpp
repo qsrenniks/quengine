@@ -7,6 +7,7 @@
 #include "InputSystem.h"
 #include <string>
 #include "PhysicsComponent.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 //engine commands
@@ -14,9 +15,11 @@
 
 DebugGameObject::DebugGameObject()
 {
-  AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 0.25f, 0.25f);
+  AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_);
+  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(collision_));
+
+  GetTransform() = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
   InputSystem* inSystem = Engine::Instance()->GetSystem<InputSystem>();
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);

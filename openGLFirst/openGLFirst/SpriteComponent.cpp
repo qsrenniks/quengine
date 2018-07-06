@@ -6,7 +6,7 @@
 
 SpriteComponent::SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z, float width, float height) 
   : IComponent(z)
-  , spriteMesh_(width, height)
+  , spriteMesh_(this, width, height)
   , shader_(vertexShader, fragmentShader)
   , color_(color)
 {
@@ -26,6 +26,11 @@ void SpriteComponent::Draw()
   shader_.setVec4("aColor", color_);
 
   spriteMesh_.Draw();
+}
+
+Mesh& SpriteComponent::GetMesh()
+{
+  return spriteMesh_;
 }
 
 void SpriteComponent::Update(float dt)

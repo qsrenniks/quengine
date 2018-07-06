@@ -15,6 +15,8 @@ public:
 
   virtual void Draw() override;
 
+  Mesh& GetMesh();
+
 private:
   Mesh spriteMesh_;
 

@@ -9,38 +9,6 @@
 #include "CollisionComponent.h"
 #include <iostream>
 
-struct CollisionUpdater
-{
-
-
-  CollisionUpdater(GameObjectSystem::CollisionList& collisionList)
-    : collisionList_(collisionList)
-  {}
-
-  void operator()(CollisionComponent* collisionComponent)
-  {
-    if (collisionList_.empty())
-    {
-      return;
-    }
-
-    for (auto otherCollider : collisionList_)
-    {
-      if (collisionComponent == otherCollider)
-      {
-        continue;
-      }
-
-      if (collisionComponent->IsCollidingWith(otherCollider))
-      {
-        std::cout << "Objects Colliding!" << std::endl;
-      }
-    }
-  }
-
-  GameObjectSystem::CollisionList& collisionList_;
-};
-
 void GameObjectSystem::AddGameObject(IGameObject* gameObject)
 {
   gameObjectRegistry_.push_back(gameObject);
@@ -64,6 +32,25 @@ void GameObjectSystem::DestroyGameObject(IGameObject*& gameObject)
 void GameObjectSystem::RemoveCollisonComponent(CollisionComponent* collisionComponent)
 {
   collisionGameObjects_.remove(collisionComponent);
+}
+
+void GameObjectSystem::UpdateCollision()
+{
+  for (CollisionList::iterator itr = collisionGameObjects_.begin(); itr != collisionGameObjects_.end(); itr++)
+  {
+    for (CollisionList::iterator otherItr = itr; otherItr != collisionGameObjects_.end(); otherItr++)
+    {
+      if (itr == otherItr)
+      {
+        continue;
+      }
+
+      if ((*itr)->IsCollidingWith(*otherItr))
+      {
+        std::cout << "Objects are colliding! " << std::endl;
+      }
+    }
+  }
 }
 
 GameObjectSystem::~GameObjectSystem()
@@ -92,7 +79,7 @@ void GameObjectSystem::UpdateSystem(float dt)
 
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
 
-  std::for_each(collisionGameObjects_.begin(), collisionGameObjects_.end(), CollisionUpdater(collisionGameObjects_));
+  UpdateCollision();
 
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 

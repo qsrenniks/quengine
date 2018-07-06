@@ -2,6 +2,7 @@
 #include "IGameObject.h"
 
 class SpriteComponent;
+class CollisionComponent;
 
 class TileGameObject : public IGameObject
 {
@@ -14,5 +15,6 @@ public:
 
 private:
   SpriteComponent *sprite_;
+  CollisionComponent *collision_;
 };
 
