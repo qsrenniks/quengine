@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Transform.h"
 #include "glm/gtc/matrix_transform.hpp"
+
+#define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/rotate_vector.hpp"
+
 
 Transform::Transform()
   : position_(0.0f, 0.0f, 0.0f)
@@ -24,7 +27,7 @@ void Transform::SetPosition(glm::vec3 newPosition)
 
 void Transform::SetRotation(float newRotation)
 {
-  rotation_ = newRotation;
+  rotation_ = glm::radians(newRotation);
   isDirty = true;
 }
 
@@ -36,16 +39,16 @@ void Transform::SetScale(glm::vec3 newScale)
 
 glm::vec3 Transform::GetUpVector()
 {
-  glm::vec3 right(1.0f, 0.0f, 0.0f);
+  glm::vec3 up(0.0f, 1.0f, 0.0f);
 
-  return glm::rotate(right, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
+  return glm::rotate(up, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 glm::vec3 Transform::GetRightVector()
 {
-  glm::vec3 up(0.0f, 1.0f, 0.0f);
+  glm::vec3 right(1.0f, 0.0f, 0.0f);
 
-  return glm::rotate(up, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
+  return glm::rotate(right, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 glm::vec3& Transform::GetPosition()
@@ -55,7 +58,7 @@ glm::vec3& Transform::GetPosition()
 
 float Transform::GetRotation()
 {
-  return rotation_;
+  return glm::degrees(rotation_);
 }
 
 glm::vec3& Transform::GetScale()

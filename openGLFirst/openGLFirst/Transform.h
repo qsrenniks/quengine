@@ -21,6 +21,9 @@ public:
   glm::mat4& BuildTransform();
 
 private:
+
+  
+
   bool isDirty = true;
 
   glm::vec3 position_;

@@ -3,6 +3,9 @@
 #include "SpriteComponent.h"
 #include "IGameObject.h"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/rotate_vector.hpp"
+
 Mesh::Mesh(SpriteComponent *spriteComponent, float width, float height)
   : spriteComponent_(spriteComponent)
   , width_(width)
@@ -65,6 +68,8 @@ glm::vec2 Mesh::GetVertPos(MeshCorner corner)
 {
   glm::vec3 spritePosition = spriteComponent_->GetParent()->GetTransform().GetPosition();
 
+  glm::vec2 rotatedHalfWidth = glm::rotate(glm::vec2(halfWidth_, halfHeight_), glm::radians(spriteComponent_->GetParent()->GetTransform().GetRotation()));
+  
   glm::vec2 vertPos;
 
   switch (corner)
@@ -84,4 +89,9 @@ glm::vec2 Mesh::GetVertPos(MeshCorner corner)
   }
 
   return vertPos;
+}
+
+SpriteComponent * Mesh::GetSpriteComponent()
+{
+  return spriteComponent_;
 }

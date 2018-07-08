@@ -19,6 +19,7 @@ DebugGameObject::DebugGameObject()
   AddComponent<PhysicsComponent>(physics_);
   AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(collision_));
 
+  GetTransform().SetRotation(45.0f);
   GetTransform().SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 
   InputSystem* inSystem = Engine::Instance()->GetSystem<InputSystem>();

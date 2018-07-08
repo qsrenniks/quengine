@@ -47,7 +47,7 @@ void GameObjectSystem::UpdateCollision()
 
       if ((*itr)->IsCollidingWith(*otherItr))
       {
-        std::cout << "Objects are colliding! " << std::endl;
+        std::cout << "Objects are colliding!";
       }
     }
   }

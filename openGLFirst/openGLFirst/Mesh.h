@@ -23,6 +23,8 @@ public:
 
   glm::vec2 GetVertPos(MeshCorner corner);
 
+  SpriteComponent *GetSpriteComponent();
+
 private:
   SpriteComponent *spriteComponent_;
 
