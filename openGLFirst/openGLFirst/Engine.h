@@ -25,30 +25,30 @@ public:
 
   void EngineShutDown();
 
-  void AddSystem(IGameplaySystem* system);
+  //void AddSystem(IGameplaySystem* system);
   
   void AddCommand(class ICommand* command);
 
-  template <typename T>
-  T* GetSystem()
-  {
-    T* tempPtr = nullptr;
+  //template <typename T>
+  //T* GetSystem()
+  //{
+  //  T* tempPtr = nullptr;
 
-    for (auto system : systemList_)
-    {
-      if (system == nullptr)
-      {
-        continue;
-      }
+  //  for (auto system : systemList_)
+  //  {
+  //    if (system == nullptr)
+  //    {
+  //      continue;
+  //    }
 
-      if ((tempPtr = dynamic_cast<T*>(system)) != nullptr)
-      {
-        break;
-      }
-    }
+  //    if ((tempPtr = dynamic_cast<T*>(system)) != nullptr)
+  //    {
+  //      break;
+  //    }
+  //  }
 
-    return tempPtr;
-  };
+  //  return tempPtr;
+  //};
 
   void EngineLoad();
 
@@ -62,10 +62,12 @@ public:
 
   struct GLFWwindow* GetWindow();
 
+  class InputSystem* inputSystem_;
+  class GameObjectSystem* gameObjectSystem_;
+
 protected:
   Engine();
   ~Engine();
-  
 
 private:
 
@@ -74,10 +76,10 @@ private:
   static Engine* instance_;
   struct GLFWwindow * currentWindow_;
 
-  std::vector<IGameplaySystem*> systemList_;
+  //std::vector<IGameplaySystem*> systemList_;
 
-  glm::mat4 cameraTransform;
-  glm::mat4 viewTransform;
+  glm::mat4 cameraTransform_;
+  glm::mat4 viewTransform_;
 
 };
 

@@ -3,8 +3,9 @@
 #include "Engine.h"
 #include "IGameObject.h"
 
-IComponent::IComponent(int z)
-  : zDraw_(z)
+IComponent::IComponent(std::string& componentName, int z)
+  : componentName_(componentName)
+  , zDraw_(z)
 {
 }
 

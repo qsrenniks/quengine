@@ -5,7 +5,7 @@
 class PhysicsComponent : public IComponent 
 {
 public:
-  PhysicsComponent();
+  PhysicsComponent(std::string& componentName);
 
   ~PhysicsComponent() = default;
 

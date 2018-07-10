@@ -9,15 +9,15 @@
 Engine* Engine::instance_ = nullptr;
 
 Engine::Engine()
-  : cameraTransform(1.0f)
-  , viewTransform(1.0f)
+  : cameraTransform_(1.0f)
+  , viewTransform_(1.0f)
 {
 }
 
-void Engine::AddSystem(IGameplaySystem* system)
-{
-  systemList_.push_back(system);
-}
+//void Engine::AddSystem(IGameplaySystem* system)
+//{
+//  systemList_.push_back(system);
+//}
 
 void Engine::AddCommand(class ICommand* command)
 {
@@ -35,22 +35,20 @@ void Engine::Update(float dt)
     commandStack_.clear();
   }
 
-  for (auto i : systemList_)
-  {
-    i->UpdateSystem(dt);
-  }
+  inputSystem_->UpdateSystem(dt);
+  gameObjectSystem_->UpdateSystem(dt);
 }
 
 glm::mat4& Engine::GetCameraTransform()
 {
   Engine* engine = Instance();
 
-  return engine->cameraTransform;
+  return engine->cameraTransform_;
 }
 
 glm::mat4& Engine::GetViewTransform()
 {
-  return Instance()->viewTransform;
+  return Instance()->viewTransform_;
 }
 
 void Engine::SetWindow(GLFWwindow * window)
@@ -65,29 +63,24 @@ struct GLFWwindow* Engine::GetWindow()
 
 Engine::~Engine()
 {
-
+  inputSystem_->UnloadSystem();
+  gameObjectSystem_->UnloadSystem();
 }
 
 void Engine::EngineShutDown()
 {
-  for (auto& system : systemList_)
-  {
-    system->UnloadSystem();
-    delete system;
-    system = nullptr;
-  }
-
   delete instance_;
 }
 
 void Engine::EngineLoad()
 {
-  AddSystem(new InputSystem(currentWindow_));
-  AddSystem(new GameObjectSystem());
+  //AddSystem(new InputSystem(currentWindow_));
+  //AddSystem(new GameObjectSystem());
 
-  for (auto system : systemList_)
-  {
-    system->LoadSystem();
-  }
+  inputSystem_ = new InputSystem(currentWindow_);
+  gameObjectSystem_ = new GameObjectSystem();
+
+  inputSystem_->LoadSystem();
+  gameObjectSystem_->LoadSystem();
 
 }

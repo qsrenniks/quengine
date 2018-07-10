@@ -7,15 +7,16 @@
 #include <iostream>
 #include <algorithm>
 
-CollisionComponent::CollisionComponent(CollisionProfile *profile/*= nullptr*/)
-  : collisionProfile_(profile)
+CollisionComponent::CollisionComponent(std::string& componentName, CollisionProfile *profile/*= nullptr*/)
+  : IComponent(componentName)
+  , collisionProfile_(profile)
 {
 
 }
 
 CollisionComponent::~CollisionComponent()
 {
-  GameObjectSystem* sys = Engine::Instance()->GetSystem<GameObjectSystem>();
+  GameObjectSystem* sys = Engine::Instance()->gameObjectSystem_;
   sys->RemoveCollisonComponent(this);
 }
 
@@ -33,7 +34,7 @@ void CollisionComponent::Parent(IGameObject* parent)
 {
   IComponent::Parent(parent);
 
-  GameObjectSystem* sys = Engine::Instance()->GetSystem<GameObjectSystem>();
+  GameObjectSystem* sys = Engine::Instance()->gameObjectSystem_;
   sys->AddCollisionComponent(this);
 }
 

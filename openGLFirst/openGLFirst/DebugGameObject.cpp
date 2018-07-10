@@ -15,14 +15,15 @@
 
 DebugGameObject::DebugGameObject()
 {
-  AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
-  AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(collision_));
+  //TODO: change the component name to something in the base component class like pvars or something similar.
+  AddComponent<SpriteComponent>(sprite_, std::string("SpriteComponent"), "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
+  AddComponent<PhysicsComponent>(physics_, std::string("PhysicsComponent"));
+  AddComponent<CollisionComponent>(collision_, std::string("CollisionComponent"), new SquareCollisionProfile(collision_));
 
   GetTransform().SetRotation(45.0f);
   GetTransform().SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 
-  InputSystem* inSystem = Engine::Instance()->GetSystem<InputSystem>();
+  InputSystem* inSystem = Engine::Instance()->inputSystem_;
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress);
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);

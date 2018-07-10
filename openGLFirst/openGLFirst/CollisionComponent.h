@@ -39,7 +39,7 @@ private:
 class CollisionComponent : public IComponent
 {
 public:
-  CollisionComponent(CollisionProfile * = nullptr);
+  CollisionComponent(std::string& componentName, CollisionProfile * = nullptr);
   ~CollisionComponent();
 
   virtual void Update(float dt) override;

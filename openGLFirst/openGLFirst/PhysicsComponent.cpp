@@ -3,9 +3,9 @@
 #include "IGameObject.h"
 #include "Transform.h"
 
-PhysicsComponent::PhysicsComponent()
-  //: IComponent(IComponent::Physics)
-  : velocity_(0)
+PhysicsComponent::PhysicsComponent(std::string& componentName)
+  : IComponent(componentName)
+  , velocity_(0)
   , acceleration_({0})
 {
 }
