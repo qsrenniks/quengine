@@ -80,7 +80,7 @@ glm::vec2 Mesh::GetVertPos(MeshCorner corner)
   switch (corner)
   {
   case MeshCorner::TOP_LEFT:
-    vertPos = glm::vec2( -halfWidth, halfHeight);
+    vertPos = glm::vec2(-halfWidth, halfHeight);
     break;
   case MeshCorner::TOP_RIGHT:
     vertPos = glm::vec2(halfWidth, halfHeight);

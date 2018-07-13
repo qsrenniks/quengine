@@ -24,7 +24,7 @@ TileGameObject::TileGameObject()
   collision_->onEnterOverlap_.AddFunction(this, &TileGameObject::OnOverlapEnter);
   collision_->onExitOverlap_.AddFunction(this, &TileGameObject::OnOverlapExit);
 
-  GetTransform().SetScale({ 0.1f, 0.1f });
+  GetTransform().SetScale({ 0.05f, 0.05f });
 }
 
 TileGameObject::~TileGameObject()

@@ -83,8 +83,6 @@ SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
 
 bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile)
 {
-  bool intersecting = false;
-
   SpriteComponent* spriteA = component_->GetParent()->GetComponent<SpriteComponent>();
   SpriteComponent* spriteB = otherProfile->GetComponentParent()->GetParent()->GetComponent<SpriteComponent>();
 
@@ -101,35 +99,26 @@ bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
   const glm::vec2& lineUpB = transformB.GetUpVector();
   const glm::vec2& lineRightB = transformB.GetRightVector();
 
-  //im not rotating the fucking mesh in real time. just in rendering time wtf.
-  bool a = ProjectMeshesToAxisAndCompare(meshA, lineUpA, meshB);
-
-  bool b = ProjectMeshesToAxisAndCompare(meshA, lineRightA, meshB);
-
-  bool c = ProjectMeshesToAxisAndCompare(meshA, lineUpB, meshB);
-
-  bool d = ProjectMeshesToAxisAndCompare(meshA, lineRightB, meshB);
-  
-  if (!a || !b || !c || !d)
+  if (!ProjectMeshesToAxisAndCompare(meshA, lineUpA, meshB)
+      || !ProjectMeshesToAxisAndCompare(meshA, lineRightA, meshB)
+      || !ProjectMeshesToAxisAndCompare(meshA, lineUpB, meshB)
+      || !ProjectMeshesToAxisAndCompare(meshA, lineRightB, meshB))
   {
-    intersecting = false;
+    return false;
   }
   else
   {
-    intersecting = true;
+    return true;
   }
-
-  return intersecting;
 }
 
 //returns whether the meshes profiles are overlapping
-bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& lineRightA, Mesh& meshB)
+bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& axisToProjectOn, Mesh& meshB)
 {
   bool overlapping = false;
-  //TODO: im only doing 2 checks here
-  //grep profiles
-  std::array<float, 4> profileARight = ProjectMeshOntoAxis(meshA, lineRightA);
-  std::array<float, 4> profileBRight = ProjectMeshOntoAxis(meshB, lineRightA);
+
+  std::array<float, 4> profileARight = ProjectMeshOntoAxis(meshA, axisToProjectOn);
+  std::array<float, 4> profileBRight = ProjectMeshOntoAxis(meshB, axisToProjectOn);
   
   float aMin = *std::min_element(profileARight.begin(), profileARight.end());
   float aMax = *std::max_element(profileARight.begin(), profileARight.end());
@@ -149,7 +138,7 @@ bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, const gl
   return overlapping;
 }
 
-std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& lineUpA)
+std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& axisToProjectOn)
 {
   std::array<float, 4> points;
 
@@ -158,16 +147,15 @@ std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, co
   glm::vec2 meshAVertBottomLeft = meshA.GetVertPos(Mesh::BOTTOM_LEFT);
   glm::vec2 meshAVertBottomRight = meshA.GetVertPos(Mesh::BOTTOM_RIGHT);
 
-  glm::vec2 projectedTopLeft = project(meshAVertTopLeft, lineUpA);
-  glm::vec2 projectedTopRight = project(meshAVertTopRight, lineUpA);
-  glm::vec2 projectedBottomLeft = project(meshAVertBottomLeft, lineUpA);
-  glm::vec2 projectedBottomRight = project(meshAVertBottomRight, lineUpA);
+  glm::vec2 projectedTopLeft = project(meshAVertTopLeft, axisToProjectOn);
+  glm::vec2 projectedTopRight = project(meshAVertTopRight, axisToProjectOn);
+  glm::vec2 projectedBottomLeft = project(meshAVertBottomLeft, axisToProjectOn);
+  glm::vec2 projectedBottomRight = project(meshAVertBottomRight, axisToProjectOn);
 
-
-  float dfzTopLeft = glm::dot(lineUpA, projectedTopLeft);
-  float dfzTopRight = glm::dot(lineUpA, projectedTopRight);
-  float dfzBottomLeft = glm::dot(lineUpA, projectedBottomLeft);
-  float dfzBottomRight = glm::dot(lineUpA, projectedBottomRight);
+  float dfzTopLeft = glm::dot(axisToProjectOn, projectedTopLeft);
+  float dfzTopRight = glm::dot(axisToProjectOn, projectedTopRight);
+  float dfzBottomLeft = glm::dot(axisToProjectOn, projectedBottomLeft);
+  float dfzBottomRight = glm::dot(axisToProjectOn, projectedBottomRight);
 
   points[0] = dfzTopLeft;
   points[1] = dfzTopRight;

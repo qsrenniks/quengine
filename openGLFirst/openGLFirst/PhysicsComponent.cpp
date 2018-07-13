@@ -4,7 +4,7 @@
 #include "Transform.h"
 
 //PhysicsConstants
-glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -1.0f);
+glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -3.0f);
 
 PhysicsComponent::PhysicsComponent()
   : velocity_(0)

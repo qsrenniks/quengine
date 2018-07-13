@@ -48,6 +48,6 @@ private:
 
   GameObjectList gameObjectRegistry_;
 
-  CollisionList collisionGameObjects_;
-  
+  CollisionList activeCollisionGameObjects_;
+  CollisionList deactiveCollisionObjects_;
 };

@@ -56,11 +56,16 @@ void GameObjectSystem::CreateObjectRandomly()
 
 void GameObjectSystem::UpdateCollision()
 {
-  for (CollisionList::iterator itr = collisionGameObjects_.begin(); itr != collisionGameObjects_.end(); itr++)
+  for (CollisionList::iterator itr = activeCollisionGameObjects_.begin(); itr != activeCollisionGameObjects_.end(); itr++)
   {
-    for (CollisionList::iterator otherItr = itr; otherItr != collisionGameObjects_.end(); otherItr++)
+    if ((*itr)->GetIsDisabled() == true)
     {
-      if (itr == otherItr || (*itr)->GetIsDisabled() == true /*|| (*itr)->GetParent()->GetComponent<PhysicsComponent>()->GetFrozen() == true*/)
+      continue;
+    }
+
+    for (CollisionList::iterator otherItr = itr; otherItr != activeCollisionGameObjects_.end(); otherItr++)
+    {
+      if (itr == otherItr || (*otherItr)->GetIsDisabled() == true)
       {
         continue; 
       }
@@ -105,7 +110,7 @@ void GameObjectSystem::Load()
 }
 
 static float timer = 0.0f;
-static float every = 0.5f;
+static float every = 0.2f;
 void GameObjectSystem::Update(float dt)
 {
   //spawn game objects

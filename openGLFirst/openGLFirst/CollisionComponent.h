@@ -28,9 +28,9 @@ public:
 
   virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) override;
 
-  bool ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& lineRightA, Mesh& meshB);
+  bool ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& axisToProjectOn, Mesh& meshB);
 
-  std::array<float, 4> ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& lineUpA);
+  std::array<float, 4> ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& axisToProjectOn);
 
 private:
 
@@ -42,7 +42,7 @@ class CollisionComponent : public IComponent
 public:
   CollisionComponent(CollisionProfile* collisionProfile);
   ~CollisionComponent();
-
+ 
   virtual void Update(float dt) override;
   virtual void Draw() override;
 
