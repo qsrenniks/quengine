@@ -4,6 +4,7 @@
 #include "IGameObject.h"
 #include "Engine.h"
 
+
 SpriteComponent::SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z, float width, float height) 
   : IComponent(z)
   , spriteMesh_(this, width, height)
@@ -21,7 +22,7 @@ void SpriteComponent::Draw()
 {
   shader_.use();
 
-  shader_.setMat4("view", glm::inverse(Engine::Instance()->GetViewTransform()));
+  //shader_.setMat4("view", glm::inverse(Engine::Instance()->GetViewTransform()));
   shader_.setMat4("transform", GetParent()->GetTransform().BuildTransform());
   shader_.setVec4("aColor", color_);
 

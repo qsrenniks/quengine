@@ -39,15 +39,11 @@ public:
   void DestroyGameObject(IGameObject*& gameObjectToDestroy);
   void RemoveCollisonComponent(CollisionComponent* collisionComponent);
 
-
-  //temp functions
-  void CreateObjectRandomly();
 private:
 
   void UpdateCollision();
 
   GameObjectList gameObjectRegistry_;
 
-  CollisionList activeCollisionGameObjects_;
-  CollisionList deactiveCollisionObjects_;
+  CollisionList collisionGameObjects_;
 };

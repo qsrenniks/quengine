@@ -50,9 +50,9 @@ void TileGameObject::Update(float dt)
 
 void TileGameObject::OnOverlapEnter(CollisionComponent* otherCollider)
 {
-  std::cout << "On overlap Enter! " << std::endl;
+  //std::cout << "On overlap Enter! " << std::endl;
   physics_->Freeze();
-  //collision_->Disable();
+  collision_->Disable();
 }
 
 void TileGameObject::OnOverlapExit(CollisionComponent* otherCollider)

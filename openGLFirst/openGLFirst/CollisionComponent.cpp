@@ -45,7 +45,7 @@ void CollisionComponent::Register()
   parent->GetDrawList().AddFunction(this, &CollisionComponent::Draw);
 }
 
-bool CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider)
+bool CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider) const
 {
   return collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_);
 }
@@ -81,7 +81,7 @@ SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
   
 }
 
-bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile)
+bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
 {
   SpriteComponent* spriteA = component_->GetParent()->GetComponent<SpriteComponent>();
   SpriteComponent* spriteB = otherProfile->GetComponentParent()->GetParent()->GetComponent<SpriteComponent>();
@@ -113,32 +113,25 @@ bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
 }
 
 //returns whether the meshes profiles are overlapping
-bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& axisToProjectOn, Mesh& meshB)
+bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& axisToProjectOn, Mesh& meshB) const
 {
-  bool overlapping = false;
+  float aMin;
+  float aMax;
+  float bMin;
+  float bMax;
 
-  std::array<float, 4> profileARight = ProjectMeshOntoAxis(meshA, axisToProjectOn);
-  std::array<float, 4> profileBRight = ProjectMeshOntoAxis(meshB, axisToProjectOn);
-  
-  float aMin = *std::min_element(profileARight.begin(), profileARight.end());
-  float aMax = *std::max_element(profileARight.begin(), profileARight.end());
-
-  float bMin = *std::min_element(profileBRight.begin(), profileBRight.end());
-  float bMax = *std::max_element(profileBRight.begin(), profileBRight.end());
+  ProjectMeshOntoAxis(meshA, axisToProjectOn, aMin, aMax);
+  ProjectMeshOntoAxis(meshB, axisToProjectOn, bMin, bMax);
 
   if ((aMin < bMin && aMax <= bMin) || (aMin >= bMax && aMax > bMax))
   {
-    overlapping = false;
-  }
-  else
-  {
-    overlapping = true;
+    return false;
   }
   
-  return overlapping;
+  return true;
 }
 
-std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& axisToProjectOn)
+void SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& axisToProjectOn, float& min, float &max) const
 {
   std::array<float, 4> points;
 
@@ -162,10 +155,11 @@ std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, co
   points[2] = dfzBottomLeft;
   points[3] = dfzBottomRight;
 
-  return points;
+  min = *std::min_element(points.begin(), points.end());
+  max = *std::max_element(points.begin(), points.end());
 }
 
-glm::vec2 SquareCollisionProfile::project(const glm::vec2& point, const glm::vec2& line)
+glm::vec2 SquareCollisionProfile::project(const glm::vec2& point, const glm::vec2& line) const
 {
   float numer = glm::dot(point, line);
   float denumer = glm::dot(line, line);

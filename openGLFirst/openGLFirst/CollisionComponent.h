@@ -13,7 +13,7 @@ class CollisionProfile
 public:
 
   CollisionProfile(CollisionComponent*& component);
-  virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) = 0;
+  virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) const = 0;
 
   CollisionComponent* GetComponentParent();
 
@@ -26,15 +26,15 @@ class SquareCollisionProfile : public CollisionProfile
 public:
   SquareCollisionProfile(CollisionComponent*&component);
 
-  virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) override;
+  virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 
-  bool ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& axisToProjectOn, Mesh& meshB);
+  bool ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& axisToProjectOn, Mesh& meshB) const;
 
-  std::array<float, 4> ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& axisToProjectOn);
+  void ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& axisToProjectOn, float& min, float& max) const;
 
 private:
 
-  glm::vec2 project(const glm::vec2& point, const glm::vec2& line);
+  glm::vec2 project(const glm::vec2& point, const glm::vec2& line) const;
 };
 
 class CollisionComponent : public IComponent
@@ -50,7 +50,7 @@ public:
 
   virtual void Register() override;
 
-  bool IsCollidingWith(CollisionComponent* otherCollider);
+  bool IsCollidingWith(CollisionComponent* otherCollider) const;
 
   //informs the collider that it is colliding with another collider
   void Inform(CollisionComponent* collidingOther);
