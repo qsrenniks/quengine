@@ -12,13 +12,11 @@ public:
 
   InputSystem(struct GLFWwindow * window);
   //for polymorphic destruction
-  virtual ~InputSystem() override
-  {
-  };
+  virtual ~InputSystem() = default;
 
-  virtual void LoadSystem() override;
-  virtual void UpdateSystem(float dt) override;
-  virtual void UnloadSystem() override;
+  virtual void Load() override;
+  virtual void Update(float dt) override;
+  virtual void Unload() override;
 
   //virtual void Draw() override;
 
@@ -57,9 +55,7 @@ private:
     std::string ActionName_;
   };
 
-
-
-  struct GLFWwindow * currentWindow_;
+  GLFWwindow* currentWindow_;
 
   std::vector<KeyActionPair> registeredInputs_;
 

@@ -53,9 +53,8 @@ int main()
   initWindow();
 
   //this starts the engine up and gets it ready to deal with input and things
-  Engine* engine = Engine::Instance();
-  engine->SetWindow(window);
-  engine->EngineLoad();
+  Engine* engine = Engine::Instance(window);
+  engine->Load();
 
   float dt = 0.01667f;
   while (!glfwWindowShouldClose(window))
@@ -75,7 +74,7 @@ int main()
     glfwPollEvents();
   }
 
-  engine->EngineShutDown();
+  Engine::Destroy();
 
   glfwTerminate();
   return 0;

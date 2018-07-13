@@ -4,8 +4,8 @@
 #include "IGameObject.h"
 #include "Engine.h"
 
-SpriteComponent::SpriteComponent(std::string& componentName, const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z, float width, float height) 
-  : IComponent(componentName, z)
+SpriteComponent::SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z, float width, float height) 
+  : IComponent(z)
   , spriteMesh_(this, width, height)
   , shader_(vertexShader, fragmentShader)
   , color_(color)

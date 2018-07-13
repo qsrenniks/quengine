@@ -6,51 +6,27 @@
 #include <vector>
 #include <stack>
 #include <set>
+#include <memory>
+
+class InputSystem;
+class GameObjectSystem;
+struct GLFWwindow;
+class ICommand;
 
 class Engine
 {
 public:
 
-  //Engine();
+  static void Destroy();
 
-  static Engine* Instance()
-  {
-    if (instance_ == nullptr)
-    {
-      instance_ = new Engine();
-    }
+                          //current window only necessary for startup
+  static Engine* Instance(GLFWwindow* currentWindow = nullptr);
 
-    return instance_;
-  }
+  void ShutDown();
 
-  void EngineShutDown();
+  void AddCommand(ICommand* command);
 
-  //void AddSystem(IGameplaySystem* system);
-  
-  void AddCommand(class ICommand* command);
-
-  //template <typename T>
-  //T* GetSystem()
-  //{
-  //  T* tempPtr = nullptr;
-
-  //  for (auto system : systemList_)
-  //  {
-  //    if (system == nullptr)
-  //    {
-  //      continue;
-  //    }
-
-  //    if ((tempPtr = dynamic_cast<T*>(system)) != nullptr)
-  //    {
-  //      break;
-  //    }
-  //  }
-
-  //  return tempPtr;
-  //};
-
-  void EngineLoad();
+  void Load();
 
   void Update(float dt);
   
@@ -58,29 +34,31 @@ public:
   glm::mat4& GetCameraTransform();
   glm::mat4& GetViewTransform();
 
-  void SetWindow(struct GLFWwindow * window);
+  void SetWindow(GLFWwindow* window);
 
-  struct GLFWwindow* GetWindow();
+  GLFWwindow* GetWindow();
 
-  class InputSystem* inputSystem_;
-  class GameObjectSystem* gameObjectSystem_;
+
+  InputSystem* GetInputSystem();
+  GameObjectSystem* GetGameObjectSystem();
 
 protected:
-  Engine();
+  Engine(GLFWwindow* currentWindow);
   ~Engine();
 
 private:
 
-  std::vector<class ICommand*> commandStack_;
+  std::vector<ICommand*> commandStack_;
 
   static Engine* instance_;
-  struct GLFWwindow * currentWindow_;
-
-  //std::vector<IGameplaySystem*> systemList_;
 
   glm::mat4 cameraTransform_;
   glm::mat4 viewTransform_;
 
+  GLFWwindow* currentWindow_;
+
+  InputSystem* inputSystem_;
+  GameObjectSystem* gameObjectSystem_;
 };
 
 

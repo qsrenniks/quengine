@@ -8,35 +8,32 @@
 
 Engine* Engine::instance_ = nullptr;
 
-Engine::Engine()
+Engine::Engine(GLFWwindow *currentWindow)
   : cameraTransform_(1.0f)
   , viewTransform_(1.0f)
+  , currentWindow_(currentWindow)
+  , inputSystem_(new InputSystem(currentWindow_))
+  , gameObjectSystem_(new GameObjectSystem())
 {
 }
 
-//void Engine::AddSystem(IGameplaySystem* system)
-//{
-//  systemList_.push_back(system);
-//}
-
-void Engine::AddCommand(class ICommand* command)
+void Engine::AddCommand(ICommand* command)
 {
   commandStack_.push_back(command);
 }
 
 void Engine::Update(float dt)
 {
-  //Engine *engine = instance();
   if (commandStack_.empty() == false)
   {
-    auto commandExecuteLambda = [&](ICommand *i) {i->Execute(); };
+    auto commandExecuteLambda = [&](ICommand* i) {i->Execute(); };
     std::for_each(commandStack_.begin(), commandStack_.end(), commandExecuteLambda);
 
     commandStack_.clear();
   }
 
-  inputSystem_->UpdateSystem(dt);
-  gameObjectSystem_->UpdateSystem(dt);
+  inputSystem_->Update(dt);
+  gameObjectSystem_->Update(dt);
 }
 
 glm::mat4& Engine::GetCameraTransform()
@@ -51,36 +48,54 @@ glm::mat4& Engine::GetViewTransform()
   return Instance()->viewTransform_;
 }
 
-void Engine::SetWindow(GLFWwindow * window)
+void Engine::SetWindow(GLFWwindow* window)
 {
   currentWindow_ = window;
 }
 
-struct GLFWwindow* Engine::GetWindow()
+GLFWwindow* Engine::GetWindow()
 {
   return currentWindow_;
 }
 
-Engine::~Engine()
+InputSystem* Engine::GetInputSystem()
 {
-  inputSystem_->UnloadSystem();
-  gameObjectSystem_->UnloadSystem();
+  return inputSystem_;
 }
 
-void Engine::EngineShutDown()
+GameObjectSystem* Engine::GetGameObjectSystem()
+{
+  return gameObjectSystem_;
+}
+
+Engine::~Engine()
+{
+  ShutDown();
+}
+
+void Engine::Destroy()
 {
   delete instance_;
 }
 
-void Engine::EngineLoad()
+Engine* Engine::Instance(GLFWwindow* currentWindow)
 {
-  //AddSystem(new InputSystem(currentWindow_));
-  //AddSystem(new GameObjectSystem());
+  if (instance_ == nullptr)
+  {
+    instance_ = new Engine(currentWindow);
+  }
 
-  inputSystem_ = new InputSystem(currentWindow_);
-  gameObjectSystem_ = new GameObjectSystem();
+  return instance_;
+}
 
-  inputSystem_->LoadSystem();
-  gameObjectSystem_->LoadSystem();
+void Engine::ShutDown()
+{
+  inputSystem_->Unload();
+  gameObjectSystem_->Unload();
+}
 
+void Engine::Load()
+{
+  inputSystem_->Load();
+  gameObjectSystem_->Load();
 }

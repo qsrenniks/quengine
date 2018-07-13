@@ -82,8 +82,7 @@ public:
   {
     invocationList.push_back(new memberCB<ObjectInstance>(oI, mFunc));
   }
-
-  void broadcast(Args... args)
+  void Broadcast(Args... args)
   {
     for (auto a : invocationList)
     {

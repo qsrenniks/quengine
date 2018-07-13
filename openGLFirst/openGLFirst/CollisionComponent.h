@@ -1,5 +1,6 @@
 #pragma once
 #include "IComponent.h"
+#include "Delegate.h"
 #include "glm/vec2.hpp"
 #include <vector>
 
@@ -11,25 +12,25 @@ class CollisionProfile
 {
 public:
 
-  CollisionProfile(CollisionComponent *&component);
-  virtual bool IsProfileCollidingWith(CollisionProfile *otherProfile) = 0;
+  CollisionProfile(CollisionComponent*& component);
+  virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) = 0;
 
-  CollisionComponent *GetComponentParent();
+  CollisionComponent* GetComponentParent();
 
 protected:
-  CollisionComponent *&component_;
+  CollisionComponent*& component_;
 };
 
 class SquareCollisionProfile : public CollisionProfile
 {
 public:
-  SquareCollisionProfile(CollisionComponent *&component);
+  SquareCollisionProfile(CollisionComponent*&component);
 
-  virtual bool IsProfileCollidingWith(CollisionProfile *otherProfile) override;
+  virtual bool IsProfileCollidingWith(CollisionProfile* otherProfile) override;
 
-  bool ProjectMeshesToAxisAndCompare(Mesh& meshA, glm::vec2 lineRightA, Mesh& meshB);
+  bool ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& lineRightA, Mesh& meshB);
 
-  std::array<float, 4> ProjectMeshOntoAxis(Mesh &meshA, glm::vec2 lineUpA);
+  std::array<float, 4> ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& lineUpA);
 
 private:
 
@@ -39,20 +40,38 @@ private:
 class CollisionComponent : public IComponent
 {
 public:
-  CollisionComponent(std::string& componentName, CollisionProfile * = nullptr);
+  CollisionComponent(CollisionProfile* collisionProfile);
   ~CollisionComponent();
 
   virtual void Update(float dt) override;
   virtual void Draw() override;
 
-  virtual void Parent(IGameObject *parent) override;
+  virtual void Parent(IGameObject* parent) override;
 
   virtual void Register() override;
 
-  bool IsCollidingWith(CollisionComponent * otherCollider);
+  bool IsCollidingWith(CollisionComponent* otherCollider);
+
+  //informs the collider that it is colliding with another collider
+  void Inform(CollisionComponent* collidingOther);
+  //this is called to reset collision information
+  void Reset(CollisionComponent* notCollidingOther);
+
+  delegate<void(CollisionComponent* otherCollider)> onEnterOverlap_;
+  delegate<void(CollisionComponent* otherCollider)> onExitOverlap_;
+
+  bool GetIsDisabled() const { return isDisabled_; };
+  void Disable() { isDisabled_ = true; };
+  void Enable() { isDisabled_ = false; };
 
 private:
 
-  CollisionProfile * collisionProfile_;
+  bool isDisabled_ = false;
+
+  bool isOverlappingWithSomething_ = false;
+
+  CollisionComponent* overlappingCollider_ = nullptr;
+
+  CollisionProfile* collisionProfile_;
 };
 

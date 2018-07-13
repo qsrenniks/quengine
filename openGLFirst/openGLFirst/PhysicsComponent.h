@@ -4,8 +4,12 @@
 
 class PhysicsComponent : public IComponent 
 {
+public: // constants
+
+  static glm::vec2 Gravity;
+
 public:
-  PhysicsComponent(std::string& componentName);
+  PhysicsComponent();
 
   ~PhysicsComponent() = default;
 
@@ -13,13 +17,19 @@ public:
   virtual void Update(float dt) override;
   virtual void Draw() override;
 
+  bool GetFrozen();
+  void Freeze();
+  void UnFreeze();
 
-  void SetAcceleration(const glm::vec3& newAcceleration);
-  void SetVelocity(const glm::vec3& newVelocity);
+  void SetAcceleration(const glm::vec2& newAcceleration);
+  void SetVelocity(const glm::vec2& newVelocity);
 
-  glm::vec3& GetVelocity();
+  glm::vec2& GetVelocity();
+
 
 private:
-  glm::vec3 velocity_;
-  glm::vec3 acceleration_;
+  glm::vec2 velocity_;
+  glm::vec2 acceleration_;
+
+  bool frozen_ = false;
 };

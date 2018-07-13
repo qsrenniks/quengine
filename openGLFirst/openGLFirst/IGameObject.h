@@ -51,7 +51,7 @@ public:
 
   bool IsMarkedForDestroy();
 
-  virtual IGameObject *Clone() = 0;
+  virtual IGameObject* Clone() = 0;
 
   virtual void Update(float dt) = 0;
 

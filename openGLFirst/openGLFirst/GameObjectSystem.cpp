@@ -6,8 +6,17 @@
 //all game objects
 #include "DebugGameObject.h"
 #include "TileGameObject.h"
+#include "PhysicsComponent.h"
 #include "CollisionComponent.h"
 #include <iostream>
+//
+// test
+//
+#include "Engine.h"
+#include "InputSystem.h"
+#include <stdlib.h>
+#include <string>
+#include <random>
 
 void GameObjectSystem::AddGameObject(IGameObject* gameObject)
 {
@@ -19,13 +28,12 @@ void GameObjectSystem::AddCollisionComponent(CollisionComponent* collisionCompon
   collisionGameObjects_.push_back(collisionComponent);
 }
 
-void GameObjectSystem::DestroyGameObject(IGameObject*& gameObject)
+void GameObjectSystem::DestroyGameObject(IGameObject*& gameObjectToDestroy)
 {
-  if (gameObject->IsMarkedForDestroy())
+  if (gameObjectToDestroy->IsMarkedForDestroy())
   {
-    gameObjectRegistry_.remove(gameObject);
-    delete gameObject;
-    gameObject = nullptr;
+    gameObjectRegistry_.remove(gameObjectToDestroy);
+    gameObjectToDestroy = nullptr;
   }
 }
 
@@ -34,20 +42,40 @@ void GameObjectSystem::RemoveCollisonComponent(CollisionComponent* collisionComp
   collisionGameObjects_.remove(collisionComponent);
 }
 
+void GameObjectSystem::CreateObjectRandomly()
+{
+  TileGameObject* gameObject = SpawnGameObject<TileGameObject>();
+
+  static std::default_random_engine generator;
+  std::normal_distribution<float> dist(0.0f, 0.5f);
+
+  float randX = dist(generator);
+
+  gameObject->GetTransform().SetPosition(glm::vec2(randX, 0.5f));
+}
+
 void GameObjectSystem::UpdateCollision()
 {
   for (CollisionList::iterator itr = collisionGameObjects_.begin(); itr != collisionGameObjects_.end(); itr++)
   {
     for (CollisionList::iterator otherItr = itr; otherItr != collisionGameObjects_.end(); otherItr++)
     {
-      if (itr == otherItr)
+      if (itr == otherItr || (*itr)->GetIsDisabled() == true /*|| (*itr)->GetParent()->GetComponent<PhysicsComponent>()->GetFrozen() == true*/)
       {
-        continue;
+        continue; 
       }
 
+      //collision check
       if ((*itr)->IsCollidingWith(*otherItr))
       {
-        std::cout << "Objects are colliding!";
+        //tell both colliders that they are colliding
+        (*itr)->Inform(*otherItr);
+        (*otherItr)->Inform(*itr);
+      }
+      else
+      {
+        (*itr)->Reset(*otherItr);
+        (*otherItr)->Reset(*itr);
       }
     }
   }
@@ -66,16 +94,30 @@ GameObjectSystem::~GameObjectSystem()
   }
 }
 
-void GameObjectSystem::LoadSystem()
+void GameObjectSystem::Load()
 {
-  AddGameObject(new TileGameObject());
-  AddGameObject(new DebugGameObject());
+  //AddGameObject(new TileGameObject());
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.25f, 0.25f));
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
+  //AddGameObject(new DebugGameObject());
+  SpawnGameObject<DebugGameObject>();
 }
 
-void GameObjectSystem::UpdateSystem(float dt)
+static float timer = 0.0f;
+static float every = 0.5f;
+void GameObjectSystem::Update(float dt)
 {
-  auto DestroyGameObjectLambda = [&](IGameObject* i) { DestroyGameObject(i); };
-  auto UpdateGameObjectLambda = [&](IGameObject* i) { i->UpdateGameObject(dt); };
+  //spawn game objects
+  timer += dt;
+  if (timer >= every)
+  {
+    CreateObjectRandomly();
+    timer -= every;
+  }
+
+  auto DestroyGameObjectLambda = [&](auto i) { DestroyGameObject(i); };
+  auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
 
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
 
@@ -83,9 +125,11 @@ void GameObjectSystem::UpdateSystem(float dt)
 
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
+
+
 }
 
-void GameObjectSystem::UnloadSystem()
+void GameObjectSystem::Unload()
 {
 
 }

@@ -9,20 +9,16 @@ IGameObject::IGameObject()
 
 IGameObject::~IGameObject()
 {
-  for (auto component : componentList_)
-  {
-    delete component;
-  }
 }
 
 void IGameObject::UpdateGameObject(float dt)
 {
   //update components first
-  componentUpdateList_.broadcast(dt);
+  componentUpdateList_.Broadcast(dt);
   //then game object since this may be dependent on the state of other components
-  gameObjectUpdateList_.broadcast(dt);
+  gameObjectUpdateList_.Broadcast(dt);
   //then draw the game object to ensure it is in the correct position in the level.
-  componentDrawList_.broadcast();
+  componentDrawList_.Broadcast();
 }
 
 void IGameObject::DestroyGameObject()

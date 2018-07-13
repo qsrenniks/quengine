@@ -3,9 +3,8 @@
 #include "Engine.h"
 #include "IGameObject.h"
 
-IComponent::IComponent(std::string& componentName, int z)
-  : componentName_(componentName)
-  , zDraw_(z)
+IComponent::IComponent(int z)
+  : zDraw_(z)
 {
 }
 
@@ -19,7 +18,7 @@ void IComponent::Parent(IGameObject* parent)
   parent_ = parent;
 }
 
-IGameObject *IComponent::GetParent() const
+IGameObject* IComponent::GetParent() const
 {
   return parent_;
 }

@@ -17,10 +17,21 @@ public:
   GameObjectSystem() = default;
 
   virtual ~GameObjectSystem();
-  
-  virtual void LoadSystem() override;
-  virtual void UpdateSystem(float dt) override;
-  virtual void UnloadSystem() override;
+ 
+
+  virtual void Load() override;
+  virtual void Update(float dt) override;
+  virtual void Unload() override;
+
+  template<typename GameObject, class... _Types>
+  GameObject* SpawnGameObject(_Types&&... _Args)
+  {
+    GameObject* newGameObject = new GameObject(_Args...);
+
+    AddGameObject(newGameObject);
+
+    return newGameObject;
+  }
 
   void AddGameObject(IGameObject* gameObject);
   void AddCollisionComponent(CollisionComponent* collisionComponent);
@@ -28,6 +39,9 @@ public:
   void DestroyGameObject(IGameObject*& gameObjectToDestroy);
   void RemoveCollisonComponent(CollisionComponent* collisionComponent);
 
+
+  //temp functions
+  void CreateObjectRandomly();
 private:
 
   void UpdateCollision();

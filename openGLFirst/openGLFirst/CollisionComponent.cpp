@@ -7,16 +7,15 @@
 #include <iostream>
 #include <algorithm>
 
-CollisionComponent::CollisionComponent(std::string& componentName, CollisionProfile *profile/*= nullptr*/)
-  : IComponent(componentName)
-  , collisionProfile_(profile)
+CollisionComponent::CollisionComponent(CollisionProfile* profile/*= nullptr*/)
+  : collisionProfile_(profile)
 {
 
 }
 
 CollisionComponent::~CollisionComponent()
 {
-  GameObjectSystem* sys = Engine::Instance()->gameObjectSystem_;
+  GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
   sys->RemoveCollisonComponent(this);
 }
 
@@ -34,21 +33,46 @@ void CollisionComponent::Parent(IGameObject* parent)
 {
   IComponent::Parent(parent);
 
-  GameObjectSystem* sys = Engine::Instance()->gameObjectSystem_;
+  GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
   sys->AddCollisionComponent(this);
 }
 
 void CollisionComponent::Register()
 {
-  IGameObject *parent = GetParent();
+  IGameObject* parent = GetParent();
 
   //i am not registering update function since collision component is updated differently.
   parent->GetDrawList().AddFunction(this, &CollisionComponent::Draw);
 }
 
-bool CollisionComponent::IsCollidingWith(CollisionComponent *otherCollider)
+bool CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider)
 {
   return collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_);
+}
+
+void CollisionComponent::Inform(CollisionComponent* collidingOther)
+{
+  //if you were not previously overlapping with something
+  if (isOverlappingWithSomething_ == false && overlappingCollider_ == nullptr)
+  {
+    //entered overlap
+    isOverlappingWithSomething_ = true;
+    overlappingCollider_ = collidingOther;
+    onEnterOverlap_.Broadcast(collidingOther);
+  }
+}
+
+void CollisionComponent::Reset(CollisionComponent* notCollidingOther)
+{
+  //it was previously colliding with something 
+  if (isOverlappingWithSomething_ == true && overlappingCollider_ == notCollidingOther)
+  {
+    isOverlappingWithSomething_ = false;
+    onExitOverlap_.Broadcast(overlappingCollider_);
+    overlappingCollider_ = nullptr;
+  }
+
+  //overlappingCollider_ = nullptr;
 }
 
 SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
@@ -68,11 +92,14 @@ bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
   Mesh& meshA = spriteA->GetMesh();
   Mesh& meshB = spriteB->GetMesh();
 
+  Transform& transformA = spriteA->GetParent()->GetTransform();
+  Transform& transformB = spriteB->GetParent()->GetTransform();
+
   //get lines
-  glm::vec2 lineUpA = spriteA->GetParent()->GetTransform().GetUpVector();
-  glm::vec2 lineRightA = spriteA->GetParent()->GetTransform().GetRightVector();
-  glm::vec2 lineUpB = spriteB->GetParent()->GetTransform().GetUpVector();
-  glm::vec2 lineRightB = spriteB->GetParent()->GetTransform().GetRightVector();
+  const glm::vec2& lineUpA = transformA.GetUpVector();
+  const glm::vec2& lineRightA = transformA.GetRightVector();
+  const glm::vec2& lineUpB = transformB.GetUpVector();
+  const glm::vec2& lineRightB = transformB.GetRightVector();
 
   //im not rotating the fucking mesh in real time. just in rendering time wtf.
   bool a = ProjectMeshesToAxisAndCompare(meshA, lineUpA, meshB);
@@ -96,7 +123,7 @@ bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
 }
 
 //returns whether the meshes profiles are overlapping
-bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, glm::vec2 lineRightA, Mesh& meshB)
+bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, const glm::vec2& lineRightA, Mesh& meshB)
 {
   bool overlapping = false;
   //TODO: im only doing 2 checks here
@@ -122,7 +149,7 @@ bool SquareCollisionProfile::ProjectMeshesToAxisAndCompare(Mesh& meshA, glm::vec
   return overlapping;
 }
 
-std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, glm::vec2 lineUpA)
+std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, const glm::vec2& lineUpA)
 {
   std::array<float, 4> points;
 
@@ -136,10 +163,6 @@ std::array<float, 4> SquareCollisionProfile::ProjectMeshOntoAxis(Mesh &meshA, gl
   glm::vec2 projectedBottomLeft = project(meshAVertBottomLeft, lineUpA);
   glm::vec2 projectedBottomRight = project(meshAVertBottomRight, lineUpA);
 
-  //float dfzTopLeft = glm::distance(glm::vec2(0.0f, 0.0f), projectedTopLeft);
-  //float dfzTopRight = glm::distance(glm::vec2(0.0f, 0.0f), projectedTopRight);
-  //float dfzBottomLeft = glm::distance(glm::vec2(0.0f, 0.0f), projectedBottomLeft);
-  //float dfzBottomRight = glm::distance(glm::vec2(0.0f, 0.0f), projectedBottomRight);
 
   float dfzTopLeft = glm::dot(lineUpA, projectedTopLeft);
   float dfzTopRight = glm::dot(lineUpA, projectedTopRight);

@@ -8,6 +8,7 @@
 InputSystem::InputSystem(GLFWwindow * window) 
   : currentWindow_(window)
 {
+
   std::ifstream fileStream(R"(ConfigFiles\inputs.json)");
   rapidjson::IStreamWrapper isw(fileStream);
 
@@ -27,14 +28,14 @@ InputSystem::InputSystem(GLFWwindow * window)
   }
 }
 
-void InputSystem::LoadSystem()
+void InputSystem::Load()
 {
 
 }
 
 void InputSystem::ExecuteDelegate(int i)
 {
-  delegateFunctionMap_[registeredInputs_[i].ActionName_].broadcast();
+  delegateFunctionMap_[registeredInputs_[i].ActionName_].Broadcast();
 
   //auto& delegateVector = delegateFunctionMap_[registeredInputs_[i].ActionName_];
 
@@ -47,7 +48,7 @@ void InputSystem::ExecuteDelegate(int i)
   
 }
 
-void InputSystem::UpdateSystem(float dt)
+void InputSystem::Update(float dt)
 {
   for (unsigned int i = 0; i < registeredInputs_.size(); i++)
   {
@@ -73,15 +74,10 @@ void InputSystem::UpdateSystem(float dt)
   }
 }
 
-void InputSystem::UnloadSystem()
+void InputSystem::Unload()
 {
 
 }
-
-//void InputSystem::Draw()
-//{
-//
-//}
 
 static float dt = 0.0166667f;
 

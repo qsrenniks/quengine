@@ -6,7 +6,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/rotate_vector.hpp"
 
-Mesh::Mesh(SpriteComponent *spriteComponent, float width, float height)
+
+Mesh::Mesh(SpriteComponent* spriteComponent, float width, float height)
   : spriteComponent_(spriteComponent)
   , width_(width)
   , halfWidth_(width / 2.0f)
@@ -66,32 +67,40 @@ glm::vec2 Mesh::GetWidthHeight()
 
 glm::vec2 Mesh::GetVertPos(MeshCorner corner)
 {
-  glm::vec3 spritePosition = spriteComponent_->GetParent()->GetTransform().GetPosition();
+  glm::vec2 spritePosition = spriteComponent_->GetParent()->GetTransform().GetPosition();
 
-  glm::vec2 rotatedHalfWidth = glm::rotate(glm::vec2(halfWidth_, halfHeight_), glm::radians(spriteComponent_->GetParent()->GetTransform().GetRotation()));
-  
+  glm::vec2 scale = spriteComponent_->GetParent()->GetTransform().GetScale();
+  float rotation = glm::radians(spriteComponent_->GetParent()->GetTransform().GetRotation());
+
+  float halfWidth = halfWidth_ * scale.x;
+  float halfHeight = halfHeight_ * scale.y;
+
   glm::vec2 vertPos;
 
   switch (corner)
   {
   case MeshCorner::TOP_LEFT:
-    vertPos = glm::vec2(spritePosition.x - halfWidth_, spritePosition.y + halfHeight_);
+    vertPos = glm::vec2( -halfWidth, halfHeight);
     break;
   case MeshCorner::TOP_RIGHT:
-    vertPos = glm::vec2(spritePosition.x + halfWidth_, spritePosition.y + halfHeight_);
+    vertPos = glm::vec2(halfWidth, halfHeight);
     break;
   case MeshCorner::BOTTOM_LEFT:
-    vertPos = glm::vec2(spritePosition.x - halfWidth_, spritePosition.y - halfHeight_);
+    vertPos = glm::vec2(-halfWidth, -halfHeight);
     break;
   case MeshCorner::BOTTOM_RIGHT:
-    vertPos = glm::vec2(spritePosition.x + halfWidth_, spritePosition.y - halfHeight_);
+    vertPos = glm::vec2(+halfWidth, -halfHeight);
     break;
   }
 
+  vertPos = glm::rotate(vertPos, rotation);
+
+  //change vec3 to vec2
+  vertPos += glm::vec2(spritePosition);
   return vertPos;
 }
 
-SpriteComponent * Mesh::GetSpriteComponent()
+SpriteComponent* Mesh::GetSpriteComponent()
 {
   return spriteComponent_;
 }

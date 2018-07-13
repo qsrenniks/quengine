@@ -3,9 +3,11 @@
 #include "IGameObject.h"
 #include "Transform.h"
 
-PhysicsComponent::PhysicsComponent(std::string& componentName)
-  : IComponent(componentName)
-  , velocity_(0)
+//PhysicsConstants
+glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -1.0f);
+
+PhysicsComponent::PhysicsComponent()
+  : velocity_(0)
   , acceleration_({0})
 {
 }
@@ -17,17 +19,17 @@ PhysicsComponent::PhysicsComponent(std::string& componentName)
 
 void PhysicsComponent::Update(float dt)
 {
+  if (frozen_) return;
+
   Transform& transformComp = GetParent()->GetTransform();
 
-  glm::vec3 translation{0};
+  glm::vec2 translation{0};
 
   velocity_ = velocity_ + (acceleration_ * dt);
 
   translation = (velocity_ * dt) + transformComp.GetPosition();
 
-  transformComp.SetPosition(glm::vec3(translation));
-
-  //resets the objects variables 
+  transformComp.SetPosition(glm::vec2(translation));
 }
 
 void PhysicsComponent::Draw()
@@ -35,17 +37,32 @@ void PhysicsComponent::Draw()
   //do nothing. nothing needs to be drawn here.
 }
 
-void PhysicsComponent::SetAcceleration(const glm::vec3& newAccleration)
+bool PhysicsComponent::GetFrozen()
 {
-  acceleration_ = newAccleration;
+  return frozen_;
 }
 
-void PhysicsComponent::SetVelocity(const glm::vec3& newVelocity)
+void PhysicsComponent::Freeze()
+{
+  frozen_ = true;
+}
+
+void PhysicsComponent::UnFreeze()
+{
+  frozen_ = false;
+}
+
+void PhysicsComponent::SetAcceleration(const glm::vec2& newAcceleration)
+{
+  acceleration_ = newAcceleration;
+}
+
+void PhysicsComponent::SetVelocity(const glm::vec2& newVelocity)
 {
   velocity_ = newVelocity;
 }
 
-glm::vec3& PhysicsComponent::GetVelocity()
+glm::vec2& PhysicsComponent::GetVelocity()
 {
   return velocity_;
 }

@@ -14,7 +14,7 @@ public:
     BOTTOM_RIGHT
   };
 
-  Mesh(SpriteComponent *spriteComponent, float width, float height);
+  Mesh(SpriteComponent* spriteComponent, float width, float height);
   ~Mesh();
 
   void Draw();
@@ -23,10 +23,10 @@ public:
 
   glm::vec2 GetVertPos(MeshCorner corner);
 
-  SpriteComponent *GetSpriteComponent();
+  SpriteComponent* GetSpriteComponent();
 
 private:
-  SpriteComponent *spriteComponent_;
+  SpriteComponent* spriteComponent_;
 
   float width_;
   float halfWidth_;
