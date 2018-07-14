@@ -1,6 +1,6 @@
 #pragma once
 #include "IGameObject.h"
-
+#include "CollisionComponent.h"
 
 class SpriteComponent;
 class PhysicsComponent;
@@ -16,15 +16,21 @@ public:
   virtual void Update(float dt) override;
 
   void WKeyPress();
+
   void SKeyPress();
   void DKeyPress();
   void AKeyPress();
+
+
 
 private:
   SpriteComponent* sprite_;
   PhysicsComponent* physics_;
   CollisionComponent* collision_;
 
+  void OnCollisionUpdate(CollisionComponent::CollidingWithList& );
+  void OnCollision(CollisionComponent* otherCollider);
+  void OnExitCollision(CollisionComponent* otherCollider);
 protected:
 
 };

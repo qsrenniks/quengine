@@ -12,6 +12,7 @@ Transform::Transform()
   , scale_(1.0f, 1.0f)
   , fullTransform_(1.0f)
 {
+  RecalculateUpAndRightVectors();
 }
 
 
@@ -72,7 +73,7 @@ glm::mat4& Transform::BuildTransform()
     auto rotation = glm::rotate(glm::mat4(1.0f), rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
     auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale_, 0.0f));
 
-    fullTransform_ = translation * scale * rotation;
+    fullTransform_ = translation * rotation * scale ;
 
     isDirty = false;
   }

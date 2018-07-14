@@ -84,6 +84,11 @@ public:
   }
   void Broadcast(Args... args)
   {
+    if (invocationList.size() == 0)
+    {
+      return;
+    }
+
     for (auto a : invocationList)
     {
       (*a)(std::forward<Args>(args)...);

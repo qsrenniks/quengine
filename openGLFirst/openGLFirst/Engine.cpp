@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Engine.h"
-#include "GameObjectSystem.h"
+//#include "GameObjectSystem.h"
 #include "InputSystem.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "ICommand.h"
@@ -12,8 +12,8 @@ Engine::Engine(GLFWwindow *currentWindow)
   : cameraTransform_(1.0f)
   , viewTransform_(1.0f)
   , currentWindow_(currentWindow)
-  , inputSystem_(new InputSystem(currentWindow_))
-  , gameObjectSystem_(new GameObjectSystem())
+  , inputSystem_(currentWindow_)
+  , gameObjectSystem_()
 {
 }
 
@@ -32,8 +32,8 @@ void Engine::Update(float dt)
     commandStack_.clear();
   }
 
-  inputSystem_->Update(dt);
-  gameObjectSystem_->Update(dt);
+  inputSystem_.Update(dt);
+  gameObjectSystem_.Update(dt);
 }
 
 glm::mat4& Engine::GetCameraTransform()
@@ -60,12 +60,12 @@ GLFWwindow* Engine::GetWindow()
 
 InputSystem* Engine::GetInputSystem()
 {
-  return inputSystem_;
+  return &inputSystem_;
 }
 
 GameObjectSystem* Engine::GetGameObjectSystem()
 {
-  return gameObjectSystem_;
+  return &gameObjectSystem_;
 }
 
 Engine::~Engine()
@@ -90,12 +90,12 @@ Engine* Engine::Instance(GLFWwindow* currentWindow)
 
 void Engine::ShutDown()
 {
-  inputSystem_->Unload();
-  gameObjectSystem_->Unload();
+  inputSystem_.Unload();
+  gameObjectSystem_.Unload();
 }
 
 void Engine::Load()
 {
-  inputSystem_->Load();
-  gameObjectSystem_->Load();
+  inputSystem_.Load();
+  gameObjectSystem_.Load();
 }

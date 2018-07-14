@@ -6,7 +6,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/rotate_vector.hpp"
 
-
 Mesh::Mesh(SpriteComponent* spriteComponent, float width, float height)
   : spriteComponent_(spriteComponent)
   , width_(width)
@@ -14,16 +13,22 @@ Mesh::Mesh(SpriteComponent* spriteComponent, float width, float height)
   , height_(height)
   , halfHeight_(height / 2.0f)
 {
+  // 0
   vertices_[0][0] = halfWidth_;
   vertices_[0][1] = halfHeight_;
+  // 1
   vertices_[0][2] = 0.0f;
   vertices_[1][0] = halfWidth_;
+  // 2
   vertices_[1][1] = -halfHeight_;
   vertices_[1][2] = 0.0f;
+  // 3
   vertices_[2][0] = -halfWidth_;
   vertices_[2][1] = -halfHeight_;
+  // 4
   vertices_[2][2] = 0.0f;
   vertices_[3][0] = -halfWidth_;
+  //5
   vertices_[3][1] = halfHeight_;
   vertices_[3][2] = 0.0f;
 
@@ -65,42 +70,154 @@ glm::vec2 Mesh::GetWidthHeight()
   return glm::vec2(width_, height_);
 }
 
-glm::vec2 Mesh::GetVertPos(MeshCorner corner)
+glm::vec2 Mesh::GetVertPos(MeshCorner corner, const glm::mat4& matrix)
 {
-  glm::vec2 spritePosition = spriteComponent_->GetParent()->GetTransform().GetPosition();
+  //glm::vec2 spritePosition = spriteComponent_->GetParent()->GetTransform().GetPosition();
 
-  glm::vec2 scale = spriteComponent_->GetParent()->GetTransform().GetScale();
-  float rotation = glm::radians(spriteComponent_->GetParent()->GetTransform().GetRotation());
+  //glm::vec2 scale = spriteComponent_->GetParent()->GetTransform().GetScale();
+  //float rotation = glm::radians(spriteComponent_->GetParent()->GetTransform().GetRotation());
 
-  float halfWidth = halfWidth_ * scale.x;
-  float halfHeight = halfHeight_ * scale.y;
+  //float halfWidth = halfWidth_ * scale.x;
+  //float halfHeight = halfHeight_ * scale.y;
 
-  glm::vec2 vertPos;
+  //glm::vec2 vertPos;
 
+  //switch (corner)
+  //{
+  //case MeshCorner::TOP_LEFT:
+  //  vertPos = glm::vec2(-halfWidth, halfHeight);
+  //  break;
+  //case MeshCorner::TOP_RIGHT:
+  //  vertPos = glm::vec2(halfWidth, halfHeight);
+  //  break;
+  //case MeshCorner::BOTTOM_LEFT:
+  //  vertPos = glm::vec2(-halfWidth, -halfHeight);
+  //  break;
+  //case MeshCorner::BOTTOM_RIGHT:
+  //  vertPos = glm::vec2(+halfWidth, -halfHeight);
+  //  break;
+  //}
   switch (corner)
   {
   case MeshCorner::TOP_LEFT:
-    vertPos = glm::vec2(-halfWidth, halfHeight);
-    break;
+    return matrix * glm::vec4(glm::vec2(-halfWidth_, halfHeight_),0.0f,1.0f);
   case MeshCorner::TOP_RIGHT:
-    vertPos = glm::vec2(halfWidth, halfHeight);
-    break;
+    return matrix * glm::vec4(glm::vec2(halfWidth_, halfHeight_), 0.0f, 1.0f);
   case MeshCorner::BOTTOM_LEFT:
-    vertPos = glm::vec2(-halfWidth, -halfHeight);
-    break;
+    return matrix * glm::vec4(glm::vec2(-halfWidth_, -halfHeight_), 0.0f, 1.0f);
   case MeshCorner::BOTTOM_RIGHT:
-    vertPos = glm::vec2(+halfWidth, -halfHeight);
-    break;
+    return matrix * glm::vec4(glm::vec2(+halfWidth_, -halfHeight_), 0.0f, 1.0f);
   }
 
-  vertPos = glm::rotate(vertPos, rotation);
+  //vertPos = glm::rotate(vertPos, rotation);
 
-  //change vec3 to vec2
-  vertPos += glm::vec2(spritePosition);
-  return vertPos;
+  ////change vec3 to vec2
+  //vertPos += glm::vec2(spritePosition);
+  //return vertPos;
+
+  return glm::vec2();
 }
 
 SpriteComponent* Mesh::GetSpriteComponent()
 {
   return spriteComponent_;
+}
+
+Mesh::Projection Mesh::project(const glm::vec2& lineToProjectOn)
+{
+  Transform& objTransform = spriteComponent_->GetParent()->GetTransform();
+  auto matrix = objTransform.BuildTransform();
+
+  //glm::vec2 topLeftVert = glm::vec4(-halfWidth_, halfHeight_, 0.0f, 1.0f) * matrix;
+  //glm::vec2 topRightVert = glm::vec4(halfWidth_, halfHeight_, 0.0f, 1.0f) * matrix;
+  //glm::vec2 bottomLeftVert = glm::vec4(-halfWidth_, -halfHeight_, 0.0f, 1.0f) * matrix;
+  //glm::vec2 bottomRightVert = glm::vec4(halfWidth_, -halfHeight_, 0.0f, 1.0f) * matrix;
+
+  float min = project(GetVertPos(TOP_LEFT, matrix), lineToProjectOn);
+  float max = min;
+
+  for (int i = 0; i < 4; i++)
+  {
+    float projectionPoint = project(GetVertPos((MeshCorner)i, matrix), lineToProjectOn);
+    if (projectionPoint < min)
+    {
+      min = projectionPoint;
+    }
+    else if (projectionPoint > max)
+    {
+      max = projectionPoint;
+    }
+  }
+
+  Projection projection;
+
+  projection.min_ = min;
+  projection.max_ = max;
+
+  projection.projection_ = glm::vec2(lineToProjectOn.x * min, lineToProjectOn.y * max);
+
+  //glm::vec2 nonoptimalway = GetVertPos(TOP_LEFT);
+   return projection;
+}
+
+float Mesh::project(const glm::vec2& point, const glm::vec2& line) const
+{
+  return glm::dot(point, line);
+}
+
+void Mesh::GetAxis(std::vector<glm::vec2>& axis, const glm::mat4& matrix)
+{
+  glm::vec2 topLeft = GetVertPos(TOP_LEFT, matrix);
+  glm::vec2 topRight = GetVertPos(TOP_RIGHT, matrix);
+  glm::vec2 bottomRight = GetVertPos(BOTTOM_RIGHT, matrix);
+  glm::vec2 bottomLeft = GetVertPos(BOTTOM_LEFT, matrix);
+
+  glm::vec2 topEdge = topRight - topLeft;
+  glm::vec2 rightEdge = bottomRight - topRight;
+  glm::vec2 bottomEdge = bottomLeft - bottomRight;
+  glm::vec2 leftEdge = topLeft - bottomLeft;
+
+  //rotate them 
+  std::swap(topEdge.x, topEdge.y);
+  topEdge.x *= -1;
+
+  std::swap(rightEdge.x, rightEdge.y);
+  rightEdge.x *= -1;
+
+  std::swap(bottomEdge.x, bottomEdge.y);
+  bottomEdge.x *= -1;
+
+  std::swap(leftEdge.x, leftEdge.y);
+  leftEdge.x *= -1;
+
+  axis.push_back(topEdge);
+  axis.push_back(rightEdge);
+  axis.push_back(bottomEdge);
+  axis.push_back(leftEdge);
+
+}
+
+bool Mesh::Projection::IsOverlapping(const Projection& otherProjections)
+{
+  bool lessThan = max_ <= otherProjections.min_;
+  bool greaterThan = min_ >= otherProjections.max_;
+
+  if ( lessThan || greaterThan )
+  {
+    return false;
+  }
+  return true;
+}
+
+float Mesh::Projection::GetOverlap(const Projection& otherProjection)
+{
+  if (max_ > otherProjection.min_) 
+  {
+    return max_ - otherProjection.min_;
+  }
+  else if (min_ > otherProjection.max_) 
+  {
+    return min_ - otherProjection.max_;
+  }
+  return 0;
 }

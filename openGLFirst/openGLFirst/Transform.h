@@ -16,6 +16,7 @@ public:
   const glm::vec2& GetRightVector() const;
 
   glm::vec2& GetPosition();
+
   float GetRotation();
   glm::vec2& GetScale();
 
@@ -31,6 +32,7 @@ private:
   bool isDirty = true;
 
   glm::vec2 position_;
+
   float rotation_;
   glm::vec2 scale_;
 

@@ -60,13 +60,13 @@ void GameObjectSystem::UpdateCollision()
   {
     for (CollisionList::const_iterator otherItr = itr; otherItr != collisionGameObjects_.cend(); otherItr++)
     {
-      if (itr == otherItr || (*otherItr)->GetIsDisabled() == true)
+      CollisionComponent* collComp = *itr;
+      CollisionComponent* otherComp = *otherItr;
+
+      if (itr == otherItr /*|| otherComp->GetIsDisabled() == true*/)
       {
         continue; 
       }
-
-      CollisionComponent* collComp = *itr;
-      CollisionComponent* otherComp = *otherItr;
 
       //collision check
       if (collComp->IsCollidingWith(otherComp))
@@ -86,38 +86,29 @@ void GameObjectSystem::UpdateCollision()
 
 GameObjectSystem::~GameObjectSystem()
 {
-  for (auto gameObjects : gameObjectRegistry_)
+  for (auto& gameObjects : gameObjectRegistry_)
   {
     delete gameObjects;
-  }
-
-  for (auto collisionGameObjects : collisionGameObjects_)
-  {
-    delete collisionGameObjects;
+    gameObjects = nullptr;
   }
 }
 
 void GameObjectSystem::Load()
 {
-  //AddGameObject(new TileGameObject());
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.25f, -0.25f));
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
-  //AddGameObject(new DebugGameObject());
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
 }
 
 void GameObjectSystem::Update(float dt)
 {
-
   auto DestroyGameObjectLambda = [&](auto i) { DestroyGameObject(i); };
   auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
 
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
   UpdateCollision();
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
-
-
 }
 
 void GameObjectSystem::Unload()

@@ -57,14 +57,14 @@ public:
 
   Transform& GetTransform();
 
-  delegate<void(float)>& GetUpdateList();
+  //delegate<void(float)>& GetUpdateList();
 
   delegate<void(float)>& GetComponentUpdateList();
 
   delegate<void(void)>& GetDrawList();
 
 private:
-  delegate<void(float)> gameObjectUpdateList_;
+  //delegate<void(float)> gameObjectUpdateList_;
 
   delegate<void(float)> componentUpdateList_;
 

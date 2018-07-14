@@ -130,7 +130,7 @@
       <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components\Transform Component\Transform Type</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +186,7 @@
       <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Components\Transform Component\Transform Type</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

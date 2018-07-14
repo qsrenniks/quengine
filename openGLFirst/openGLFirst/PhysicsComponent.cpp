@@ -4,11 +4,12 @@
 #include "Transform.h"
 
 //PhysicsConstants
-glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -3.0f);
+glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -1.0f);
 
 PhysicsComponent::PhysicsComponent()
-  : velocity_(0)
-  , acceleration_({0})
+  : velocity_(0.0f, 0.0f)
+  , acceleration_(0.0f, 0.0f)
+  , rotationalVelocity_(0.0f)
 {
 }
 
@@ -30,6 +31,12 @@ void PhysicsComponent::Update(float dt)
   translation = (velocity_ * dt) + transformComp.GetPosition();
 
   transformComp.SetPosition(glm::vec2(translation));
+
+  float rotation = transformComp.GetRotation();
+
+  rotation += GetRotationalVelocity() * dt;
+
+  transformComp.SetRotation(rotation);
 }
 
 void PhysicsComponent::Draw()
@@ -57,6 +64,11 @@ void PhysicsComponent::SetAcceleration(const glm::vec2& newAcceleration)
   acceleration_ = newAcceleration;
 }
 
+const glm::vec2& PhysicsComponent::GetAcceleration() const
+{
+  return acceleration_;
+}
+
 void PhysicsComponent::SetVelocity(const glm::vec2& newVelocity)
 {
   velocity_ = newVelocity;
@@ -65,4 +77,24 @@ void PhysicsComponent::SetVelocity(const glm::vec2& newVelocity)
 glm::vec2& PhysicsComponent::GetVelocity()
 {
   return velocity_;
+}
+
+void PhysicsComponent::SetRotationalVelocity(float val)
+{
+  rotationalVelocity_ = val;
+}
+
+void PhysicsComponent::SetIsStatic(bool isStatic) 
+{
+  isStatic_ = isStatic;
+}
+
+bool PhysicsComponent::GetIsStatic() const
+{
+  return isStatic_;
+}
+
+float PhysicsComponent::GetRotationalVelocity() const
+{
+  return rotationalVelocity_;
 }

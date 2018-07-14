@@ -4,11 +4,15 @@
 
 IGameObject::IGameObject() 
 {
-  gameObjectUpdateList_.AddFunction(this, &IGameObject::Update);
+  //gameObjectUpdateList_.AddFunction(this, &IGameObject::Update);
 }
 
 IGameObject::~IGameObject()
 {
+  for (auto comp : componentList_)
+  {
+    delete comp;
+  }
 }
 
 void IGameObject::UpdateGameObject(float dt)
@@ -16,7 +20,8 @@ void IGameObject::UpdateGameObject(float dt)
   //update components first
   componentUpdateList_.Broadcast(dt);
   //then game object since this may be dependent on the state of other components
-  gameObjectUpdateList_.Broadcast(dt);
+  //gameObjectUpdateList_.Broadcast(dt);
+  Update(dt);
   //then draw the game object to ensure it is in the correct position in the level.
   componentDrawList_.Broadcast();
 }
@@ -35,11 +40,11 @@ Transform& IGameObject::GetTransform()
 {
   return transform_;
 }
-
-delegate<void(float)>& IGameObject::GetUpdateList()
-{
-  return gameObjectUpdateList_;
-}
+//
+//delegate<void(float)>& IGameObject::GetUpdateList()
+//{
+//  return gameObjectUpdateList_;
+//}
 
 delegate<void(float)>& IGameObject::GetComponentUpdateList()
 {

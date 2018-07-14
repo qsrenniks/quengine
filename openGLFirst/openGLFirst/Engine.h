@@ -8,10 +8,13 @@
 #include <set>
 #include <memory>
 
-class InputSystem;
-class GameObjectSystem;
+#include "InputSystem.h"
+#include "GameObjectSystem.h"
+//class InputSystem;
+//class GameObjectSystem;
 struct GLFWwindow;
 class ICommand;
+class Factory;
 
 class Engine
 {
@@ -37,8 +40,7 @@ public:
   void SetWindow(GLFWwindow* window);
 
   GLFWwindow* GetWindow();
-
-
+  
   InputSystem* GetInputSystem();
   GameObjectSystem* GetGameObjectSystem();
 
@@ -57,8 +59,8 @@ private:
 
   GLFWwindow* currentWindow_;
 
-  InputSystem* inputSystem_;
-  GameObjectSystem* gameObjectSystem_;
+  InputSystem inputSystem_;
+  GameObjectSystem gameObjectSystem_;
 };
 
 
