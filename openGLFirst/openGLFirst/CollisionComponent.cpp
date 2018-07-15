@@ -24,10 +24,10 @@ CollisionComponent::~CollisionComponent()
 
 void CollisionComponent::Update(float dt)
 {
-  if (isOverlappingWithSomething_)
-  {
-    onUpdateOverlap_.Broadcast(overlappingColliders_);
-  }
+  //if (isOverlappingWithSomething_)
+  //{
+  //  onUpdateOverlap_.Broadcast(overlappingColliders_);
+  //}
 }
 
 void CollisionComponent::Draw()
@@ -110,7 +110,7 @@ void CollisionComponent::Reset(CollisionComponent* notCollidingOther)
     overlappingColliders_.remove(notCollidingOther);
   }
 
-  if (overlappingColliders_.size() == 0)
+  if (overlappingColliders_.empty() == true)
   {
     isOverlappingWithSomething_ = false;
   }
@@ -124,6 +124,16 @@ void CollisionComponent::SetMTV(const glm::vec2& mtv)
 const glm::vec2& CollisionComponent::GetMTV() const
 {
   return mtv_;
+}
+
+bool CollisionComponent::IsOverlapping()
+{
+  return isOverlappingWithSomething_;
+}
+
+CollisionComponent::CollidingWithList& CollisionComponent::GetOverlappingColliders()
+{
+  return overlappingColliders_;
 }
 
 SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
@@ -161,7 +171,7 @@ bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
     Mesh::Projection meshBProjected = meshB.project(line);
       
     //returns true if overlapping and false if not
-    if (!meshAProjected.IsOverlapping(meshBProjected))
+    if (meshAProjected.IsOverlapping(meshBProjected) == false)
     {
       return false;
     }
@@ -185,7 +195,7 @@ bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
     Mesh::Projection meshBProjected = meshB.project(line);
 
     //returns true if overlapping and false if not
-    if (!meshAProjected.IsOverlapping(meshBProjected))
+    if (meshAProjected.IsOverlapping(meshBProjected) == false)
     {
       return false;
     }
@@ -203,8 +213,13 @@ bool SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
 
 
   glm::vec2 mtv = smallestAxis * overlap;
+
+  //send resolve here
+
   collisionComponent_->SetMTV(mtv);
   otherProfile->GetCollisionComponent()->SetMTV(mtv);
+
+
   return true;
 }
 

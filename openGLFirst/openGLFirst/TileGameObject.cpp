@@ -11,7 +11,7 @@ TileGameObject::TileGameObject()
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 0.0f, 1.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(collision_));
-  AddComponent<PhysicsComponent>(physics_);
+  //AddComponent<PhysicsComponent>(physics_);
 
   //physics_->SetAcceleration(PhysicsComponent::Gravity);
   //GetTransform().SetPosition(glm::vec2(0.5f,0.5f));
@@ -20,7 +20,7 @@ TileGameObject::TileGameObject()
   //static std::normal_distribution<float> dist(0.0f, 360.0f);
 
   //GetTransform().SetRotation(dist(generator));
-  physics_->SetRotationalVelocity(45.0f);
+  //physics_->SetRotationalVelocity(45.0f);
 
   collision_->onEnterOverlap_.AddFunction(this, &TileGameObject::OnOverlapEnter);
   collision_->onExitOverlap_.AddFunction(this, &TileGameObject::OnOverlapExit);

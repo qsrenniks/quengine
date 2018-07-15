@@ -22,6 +22,8 @@ void PhysicsComponent::Update(float dt)
 {
   if (frozen_) return;
 
+  if (GetParent()->PreventPhysics()) return; 
+
   Transform& transformComp = GetParent()->GetTransform();
 
   glm::vec2 translation{0};

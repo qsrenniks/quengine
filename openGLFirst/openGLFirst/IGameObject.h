@@ -46,28 +46,22 @@ public:
   }
 
   void UpdateGameObject(float dt);
-
   void DestroyGameObject();
-
   bool IsMarkedForDestroy();
-
   virtual IGameObject* Clone() = 0;
-
   virtual void Update(float dt) = 0;
-
   Transform& GetTransform();
 
-  //delegate<void(float)>& GetUpdateList();
-
   delegate<void(float)>& GetComponentUpdateList();
-
   delegate<void(void)>& GetDrawList();
 
+  virtual bool PreventPhysics();
+
 private:
-  //delegate<void(float)> gameObjectUpdateList_;
+  
+  
 
   delegate<void(float)> componentUpdateList_;
-
   delegate<void(void)> componentDrawList_;
 
   using ComponentList = std::vector<IComponent*>;

@@ -23,7 +23,7 @@ void IGameObject::UpdateGameObject(float dt)
   //gameObjectUpdateList_.Broadcast(dt);
   Update(dt);
   //then draw the game object to ensure it is in the correct position in the level.
-  componentDrawList_.Broadcast();
+  //componentDrawList_.Broadcast();
 }
 
 void IGameObject::DestroyGameObject()
@@ -40,6 +40,12 @@ Transform& IGameObject::GetTransform()
 {
   return transform_;
 }
+
+bool IGameObject::PreventPhysics()
+{
+  return false;
+}
+
 //
 //delegate<void(float)>& IGameObject::GetUpdateList()
 //{

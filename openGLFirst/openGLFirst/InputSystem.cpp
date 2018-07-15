@@ -8,7 +8,7 @@
 InputSystem::InputSystem(GLFWwindow * window) 
   : currentWindow_(window)
 {
-
+  //error handling
   std::ifstream fileStream(R"(ConfigFiles\inputs.json)");
   rapidjson::IStreamWrapper isw(fileStream);
 

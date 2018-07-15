@@ -21,7 +21,7 @@ public:
   void DKeyPress();
   void AKeyPress();
 
-
+  virtual bool PreventPhysics() override;
 
 private:
   SpriteComponent* sprite_;

@@ -85,13 +85,18 @@ public:
 
   void SetMTV(const glm::vec2& mtv);
   const glm::vec2& GetMTV() const;
+
+  bool IsOverlapping();
+
+  CollidingWithList& GetOverlappingColliders();
+
 private:
 
   bool isDisabled_ = false;
 
   bool isOverlappingWithSomething_ = false;
 
-  glm::vec2 mtv_;
+  glm::vec2 mtv_{0};
 
   CollidingWithList overlappingColliders_;
 

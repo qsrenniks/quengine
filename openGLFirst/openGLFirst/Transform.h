@@ -22,6 +22,8 @@ public:
 
   glm::mat4& BuildTransform();
 
+  //const glm::vec2& SetOldPosition();
+  //const glm::vec2& GetOldPosition();
 
 private:
   void RecalculateUpAndRightVectors();
@@ -32,6 +34,7 @@ private:
   bool isDirty = true;
 
   glm::vec2 position_;
+  glm::vec2 oldPosition_;
 
   float rotation_;
   glm::vec2 scale_;

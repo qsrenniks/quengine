@@ -29,4 +29,4 @@ void IComponent::Register()
 
   parent->GetComponentUpdateList().AddFunction(this, &IComponent::Update);
   parent->GetDrawList().AddFunction(this, &IComponent::Draw);
-}
+} 

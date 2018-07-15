@@ -20,6 +20,6 @@ public:
 private:
   SpriteComponent* sprite_;
   CollisionComponent* collision_;
-  PhysicsComponent* physics_;
+  //PhysicsComponent* physics_;
 };
 

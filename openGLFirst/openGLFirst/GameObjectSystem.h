@@ -41,7 +41,7 @@ public:
 
 private:
 
-  void UpdateCollision();
+  void CalculateCollisions();
 
   GameObjectList gameObjectRegistry_;
 

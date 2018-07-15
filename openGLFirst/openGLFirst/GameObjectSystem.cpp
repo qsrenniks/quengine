@@ -54,7 +54,7 @@ void GameObjectSystem::RemoveCollisonComponent(CollisionComponent* collisionComp
 //  gameObject->GetTransform().SetPosition(glm::vec2(randX, 1.0f));
 //}
 
-void GameObjectSystem::UpdateCollision()
+void GameObjectSystem::CalculateCollisions()
 {
   for (CollisionList::const_iterator itr = collisionGameObjects_.cbegin(); itr != collisionGameObjects_.cend(); itr++)
   {
@@ -72,8 +72,13 @@ void GameObjectSystem::UpdateCollision()
       if (collComp->IsCollidingWith(otherComp))
       {
         //tell both colliders that they are colliding
+        
+
         collComp->Inform(otherComp);
+        collComp->onUpdateOverlap_.Broadcast(collComp->GetOverlappingColliders());
+
         otherComp->Inform(collComp);
+        otherComp->onUpdateOverlap_.Broadcast(otherComp->GetOverlappingColliders());
       }
       else
       {
@@ -95,20 +100,29 @@ GameObjectSystem::~GameObjectSystem()
 
 void GameObjectSystem::Load()
 {
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, -0.25f));
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f));
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
 }
 
 void GameObjectSystem::Update(float dt)
 {
-  auto DestroyGameObjectLambda = [&](auto i) { DestroyGameObject(i); };
-  auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
 
-  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
-  UpdateCollision();
-  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
+  auto DestroyGameObjectLambda = [&](auto i) { DestroyGameObject(i); };
+  std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DestroyGameObjectLambda);
+  
+  auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
+  std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), UpdateGameObjectLambda);
+
+  CalculateCollisions();
+
+  auto DrawGameObjectLambda = [&](IGameObject* i) { i->GetDrawList().Broadcast(); };
+  std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DrawGameObjectLambda);
+
+
 }
 
 void GameObjectSystem::Unload()

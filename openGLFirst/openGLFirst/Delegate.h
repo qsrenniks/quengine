@@ -6,11 +6,13 @@
 template <typename Signature>
 class delegate;
 
+//parameter expansion
 template<typename ...Args>
 class delegate<void(Args...)>
 {
 private:
 
+  //mainly for the non member function callbacks
   using CallableFunctionWrapper = std::function<void(Args...)>;
 
   struct callback
@@ -18,6 +20,7 @@ private:
     virtual void operator()(Args... args) = 0;
   };
 
+  //this is entirely for static calls
   struct nonMemberCB : public callback
   {
     nonMemberCB(CallableFunctionWrapper nmFunc)
@@ -32,14 +35,15 @@ private:
     };
   };
 
+  //this is for member calls to object instnaces
   template<class ObjectInstance>
   struct memberCB : public callback
   {
+    //setup the object instance and the member function
     memberCB(ObjectInstance* moI, void (ObjectInstance::*mFunc)(Args...))
       : oI(moI)
       , d(mFunc)
     {
-      //oI = std::make_unique<ObjectInstance>(*moI);
     };
 
     ObjectInstance* oI;
