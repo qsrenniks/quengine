@@ -69,22 +69,34 @@ void GameObjectSystem::CalculateCollisions()
       }
 
       //collision check
-      if (collComp->IsCollidingWith(otherComp))
+      CollisionOccurence::CollisionStatus collisionStatus = collComp->IsCollidingWith(otherComp);
+
+      //this informs both objects of the collision that is happenign to them, whether they are touching or colliding
+      if (collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING || collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
       {
-        //tell both colliders that they are colliding
-        
-
         collComp->Inform(otherComp);
-        collComp->onUpdateOverlap_.Broadcast(collComp->GetOverlappingColliders());
-
         otherComp->Inform(collComp);
-        otherComp->onUpdateOverlap_.Broadcast(otherComp->GetOverlappingColliders());
       }
-      else
+      //if no collision is detected they are also informed of a no collision
+      else if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING)
       {
         collComp->Reset(otherComp);
         otherComp->Reset(collComp);
       }
+
+      //if they are straight colliding both objects are updated every tick of the collision to handle anyway they see fit
+      if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
+      {
+        //tell both colliders that they are colliding
+        collComp->onUpdateOverlap_.Broadcast(collComp->GetOverlappingCollider());
+        otherComp->onUpdateOverlap_.Broadcast(otherComp->GetOverlappingCollider());
+      }
+
+      //then both game objects are told there collision status.
+      //this is not taking into account that multiple collisions might occur at once.
+      //collComp->GetParent()->SetCollisionStatus(collisionOccurance);
+      //otherComp->GetParent()->SetCollisionStatus(collisionOccurance);
+
     }
   }
 }
@@ -101,9 +113,11 @@ GameObjectSystem::~GameObjectSystem()
 void GameObjectSystem::Load()
 {
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, -0.25f));
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f));
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, -0.25f));
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f)); //right
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.75f)); //up
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f)); //left
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));//down
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
 }
@@ -114,9 +128,10 @@ void GameObjectSystem::Update(float dt)
   auto DestroyGameObjectLambda = [&](auto i) { DestroyGameObject(i); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DestroyGameObjectLambda);
   
+
   auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), UpdateGameObjectLambda);
-
+  
   CalculateCollisions();
 
   auto DrawGameObjectLambda = [&](IGameObject* i) { i->GetDrawList().Broadcast(); };

@@ -24,7 +24,7 @@ DebugGameObject::DebugGameObject()
   physics_->SetAcceleration(PhysicsComponent::Gravity);
   GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
 
-  physics_->GetVelocity().x = 1.0f;
+  //physics_->GetVelocity().y = -1.0f;
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
@@ -48,15 +48,24 @@ IGameObject* DebugGameObject::Clone()
 
 void DebugGameObject::Update(float dt)
 {
-  //physics_->SetVelocity(glm::vec2( 0.0f, 0.0f ));
   //physics_->GetVelocity().y = 0.0f;
   physics_->GetVelocity().x = 0.0f;
+
+  //std::cout << "Velocity: " << physics_->GetVelocity().x << ": " << physics_->GetVelocity().y << std::endl;
+  //physics_->SetVelocity(glm::vec2( 0.0f, 0.0f ));
+
+  //std::cout << " position : " << GetTransform().GetPosition().x << ": " << GetTransform().GetPosition().y << std::endl;
 }
 
 void DebugGameObject::WKeyPress()
 {
   glm::vec2 velo = physics_->GetVelocity();
   physics_->SetVelocity({ velo.x, 1.0f });
+
+  //GetTransform().SetPosition(GetTransform().GetPosition() + glm::vec2{ 0.0f, 0.01f });
+
+  //GetTransform().GetPosition().y += 0.01f;
+
 }
 
 void DebugGameObject::SKeyPress()
@@ -73,38 +82,36 @@ void DebugGameObject::AKeyPress()
 
 bool DebugGameObject::PreventPhysics()
 {
-  return collision_->IsOverlapping();
+  CollisionOccurence occurence = GetCollisionOccurence();
 
-  //auto vec = collision_->GetMTV();
+  if (occurence.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING || occurence.collisionStatus_ == CollisionOccurence::CollisionStatus::TOUCHING)
+  {
+    return true;
+  }
 
-  //if (vec.x == 0 && vec.y == 0)
-  //{
-  //  return true;
-  //}
+  return false;
+}
 
-  //return false;
+CollisionOccurence DebugGameObject::GetCollisionOccurence()
+{
+  return collision_->GetCollisionOccurence();
 }
 
 void DebugGameObject::DKeyPress()
 {
-  glm::vec2 velo = physics_->GetVelocity();
+   glm::vec2 velo = physics_->GetVelocity();
   physics_->SetVelocity({  1.0f, velo.y });
 }
 
 //physics sets the new position and then using the old mtv for the previous collision information it moves the object an insufficient amount given the velocity for the objects
-void DebugGameObject::OnCollisionUpdate(CollisionComponent::CollidingWithList&)
+void DebugGameObject::OnCollisionUpdate(CollisionComponent* otherCollider)
 {
-   GetTransform().SetPosition(GetTransform().GetPosition() + collision_->GetMTV());
-
-   //physics_->GetVelocity().x = 0.0f;
-
-  //physics_->GetVelocity().y = 0.0f;
-
+   GetTransform().SetPosition(GetTransform().GetPosition() + GetCollisionOccurence().mtv_);
 }
 
 void DebugGameObject::OnCollision(CollisionComponent* otherCollider)
 {
-  std::cout << "Intersecting : " << collision_->GetMTV().x << " : " << collision_->GetMTV().y << std::endl;
+  std::cout << "Intersecting : " << GetCollisionOccurence().mtv_.x << " : " << GetCollisionOccurence().mtv_.y << std::endl;
 }
 
 void DebugGameObject::OnExitCollision(CollisionComponent* otherCollider)

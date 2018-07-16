@@ -38,6 +38,8 @@ private:
   glm::vec2 acceleration_;
   float rotationalVelocity_;
 
+  float inverseMass_; 
+
   bool isStatic_ = false;
 
   bool frozen_ = false;

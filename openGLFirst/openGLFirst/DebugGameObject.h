@@ -23,12 +23,14 @@ public:
 
   virtual bool PreventPhysics() override;
 
+  virtual CollisionOccurence GetCollisionOccurence() override;
+
 private:
   SpriteComponent* sprite_;
   PhysicsComponent* physics_;
   CollisionComponent* collision_;
 
-  void OnCollisionUpdate(CollisionComponent::CollidingWithList& );
+  void OnCollisionUpdate(CollisionComponent* otherCollider);
   void OnCollision(CollisionComponent* otherCollider);
   void OnExitCollision(CollisionComponent* otherCollider);
 protected:

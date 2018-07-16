@@ -46,6 +46,11 @@ bool IGameObject::PreventPhysics()
   return false;
 }
 
+CollisionOccurence IGameObject::GetCollisionOccurence()
+{
+  return CollisionOccurence();
+}
+
 //
 //delegate<void(float)>& IGameObject::GetUpdateList()
 //{
@@ -60,4 +65,15 @@ delegate<void(float)>& IGameObject::GetComponentUpdateList()
 delegate<void(void)>& IGameObject::GetDrawList()
 {
   return componentDrawList_;
+}
+
+bool CollisionOccurence::IsValid()
+{
+  return isValid_;
+}
+
+
+void CollisionOccurence::SetValid(bool validity)
+{
+  isValid_ = validity;
 }

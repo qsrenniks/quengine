@@ -5,9 +5,12 @@
 #include "Delegate.h"
 #include "Transform.h"
 
+struct CollisionOccurence;
+
 class IGameObject
 {
 public:
+
   IGameObject();
   virtual ~IGameObject();
 
@@ -57,10 +60,10 @@ public:
 
   virtual bool PreventPhysics();
 
+  virtual CollisionOccurence GetCollisionOccurence();
+
 private:
   
-  
-
   delegate<void(float)> componentUpdateList_;
   delegate<void(void)> componentDrawList_;
 
@@ -73,3 +76,24 @@ private:
   bool markForDestroy_ = false;
 };
 
+struct CollisionOccurence
+{
+  enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, TOUCHING };
+
+  CollisionOccurence(bool isValid = false)
+    : collisionStatus_(CollisionStatus::COLLIDING)
+    , mtv_(0)
+    , isValid_(isValid)
+  {
+  }
+
+  CollisionStatus collisionStatus_;
+
+  glm::vec2 mtv_;
+
+  bool IsValid();
+  void SetValid(bool validity);
+private:
+
+  bool isValid_ = false;
+};

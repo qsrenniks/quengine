@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Mesh.h"
 #include "SpriteComponent.h"
-#include "IGameObject.h"
+//#include "IGameObject.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/rotate_vector.hpp"
@@ -197,16 +197,26 @@ void Mesh::GetAxis(std::vector<glm::vec2>& axis, const glm::mat4& matrix)
 
 }
 
-bool Mesh::Projection::IsOverlapping(const Projection& otherProjections)
+CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projection& otherProjections)
 {
   bool lessThan = max_ <= otherProjections.min_;
   bool greaterThan = min_ >= otherProjections.max_;
 
-  if ( lessThan || greaterThan )
+  if (lessThan || greaterThan)
   {
-    return false;
+    if (max_ == otherProjections.min_ || min_ == otherProjections.max_)
+    {
+      return CollisionOccurence::CollisionStatus::TOUCHING;
+    }
+
+    return CollisionOccurence::CollisionStatus::NOT_COLLIDING;
   }
-  return true;
+  //else if(max_ < otherProjections.min_ || min_ > otherProjections.max_)
+  //{
+  //  return IGameObject::CollisionStatus::TOUCHING;
+  //}
+
+  return CollisionOccurence::CollisionStatus::COLLIDING;
 }
 
 float Mesh::Projection::GetOverlap(const Projection& otherProjection)

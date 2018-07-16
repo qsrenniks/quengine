@@ -1,4 +1,6 @@
 #pragma once
+
+#include "IGameObject.h"
 #include "glm/vec2.hpp"
 #include "glm/mat4x4.hpp"
 #include <vector>
@@ -8,6 +10,7 @@ class SpriteComponent;
 class Mesh
 {
 public:
+
   enum MeshCorner
   {
     TOP_LEFT = 0, 
@@ -29,7 +32,7 @@ public:
 
   struct Projection
   {
-    bool IsOverlapping(const Projection& otherProjections);
+    CollisionOccurence::CollisionStatus IsOverlapping(const Projection& otherProjections);
     float GetOverlap(const Projection& otherProjection);
     float min_;
     float max_;
