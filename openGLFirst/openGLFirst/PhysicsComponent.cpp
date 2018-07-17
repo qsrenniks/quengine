@@ -31,29 +31,6 @@ void PhysicsComponent::Update(float dt)
 
   velocity_ = velocity_ + (acceleration_ * dt);
 
-  //CollisionOccurence occ = GetParent()->GetCollisionOccurence();
-
-  //if (occ.IsValid() == true)
-  //{
-  //  if (/*occ.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING ||*/ occ.collisionStatus_ == CollisionOccurence::CollisionStatus::TOUCHING)
-  //  {
-  //    //while (glm::dot(velocity_, occ.mtv_) < 0)
-  //    //{
-  //    //  velocity_ += occ.mtv_;
-  //    //}
-
-  //      //clamp the vector given the mtv
-  //    float vectorMagnitude = glm::length(velocity_);
-
-  //    glm::vec2 mtvNorm = glm::normalize(occ.mtv_);
-
-  //    glm::vec2 vInDirOfMTV = occ.mtv_ * vectorMagnitude;
-
-  //    velocity_ += vInDirOfMTV;
-
-  //  }
-  //}
-
   translation = (velocity_ * dt) + transformComp.GetPosition();
 
   transformComp.SetPosition(glm::vec2(translation));

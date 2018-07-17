@@ -21,7 +21,7 @@ DebugGameObject::DebugGameObject()
   AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(collision_));
 
 
-  physics_->SetAcceleration(PhysicsComponent::Gravity);
+  //physics_->SetAcceleration(PhysicsComponent::Gravity);
   GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
 
   //physics_->GetVelocity().y = -1.0f;
@@ -49,10 +49,10 @@ IGameObject* DebugGameObject::Clone()
 void DebugGameObject::Update(float dt)
 {
   //physics_->GetVelocity().y = 0.0f;
-  physics_->GetVelocity().x = 0.0f;
+  //physics_->GetVelocity().x = 0.0f;
 
   //std::cout << "Velocity: " << physics_->GetVelocity().x << ": " << physics_->GetVelocity().y << std::endl;
-  //physics_->SetVelocity(glm::vec2( 0.0f, 0.0f ));
+  physics_->SetVelocity(glm::vec2( 0.0f, 0.0f ));
 
   //std::cout << " position : " << GetTransform().GetPosition().x << ": " << GetTransform().GetPosition().y << std::endl;
 }

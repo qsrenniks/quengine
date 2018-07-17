@@ -92,17 +92,26 @@ void GameObjectSystem::ResolveCollisions()
     return;
   }
 
+  ///
+  // DEFAULT COLLISION RESOLUTION LAMBDA
+  ///
+
   auto collisionResolutionLambda = [&](CollisionOccurence& occurence)
   {
     //resolve collision
-    Transform& aTransform = occurence.objectB_->GetParent()->GetTransform();
-
+    Transform& bTransform = occurence.objectB_->GetParent()->GetTransform();
+    Transform& aTransform = occurence.objectA_->GetParent()->GetTransform();
+    
+    glm::vec2 bPosition = bTransform.GetPosition();
     glm::vec2 aPosition = aTransform.GetPosition();
 
-    aPosition += occurence.mtv_;
+    glm::vec2 mtvHalf = occurence.mtv_ / 2.0f;
 
+    bPosition += mtvHalf;
+    aPosition -= mtvHalf;
+
+    bTransform.SetPosition(bPosition);
     aTransform.SetPosition(aPosition);
-
 
     occurence.isResolved_ = true;
     //collisionOccurences_.remove(occurence);
@@ -131,7 +140,7 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.75f)); //up
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f));  //left
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));//down
-  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
+  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
 
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
