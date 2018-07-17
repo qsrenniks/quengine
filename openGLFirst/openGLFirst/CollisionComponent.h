@@ -51,9 +51,6 @@ private:
 //
 class CollisionComponent : public IComponent
 {
-public: //types
-  //using CollidingWithList = std::list<CollisionComponent*>;
-
 public:
   CollisionComponent(CollisionProfile* collisionProfile , CollisionResponse* collisionResponse );
   ~CollisionComponent();
@@ -67,43 +64,10 @@ public:
 
   void IsCollidingWith(CollisionComponent* otherCollider) const;
 
-  //struct CollisionInformation
-  //{
-  //  glm::vec2 velocity;
-  //  glm::vec2 position;
-
-  //  float rotationalVelocity;
-
-  //  bool isOtherStatic = false;
-
-  //  bool isValid = false;
-  //};
-
-  //CollisionInformation RetrieveCollisionInformation(CollisionComponent* collisionComp);
-
-  //informs the collider that it is colliding with another collider
-  //void Inform(CollisionComponent* collidingOther);
-  //this is called to reset collision information
-  //void Reset(CollisionComponent* notCollidingOther);
-
   delegate<void(CollisionOccurence otherCollider)> onEnterOverlap_;
   delegate<void(CollisionOccurence otherCollider)> onUpdateOverlap_;
   delegate<void(CollisionOccurence otherCollider)> onExitOverlap_;
 
-  //bool GetIsDisabled() const { return isDisabled_; };
-  //void Disable() { isDisabled_ = true; };
-  //void Enable() { isDisabled_ = false; };
-
-  //void SetMTV(const glm::vec2& mtv);
-  //const glm::vec2& GetMTV() const;
-
-  //void IsOverlapping();
-
-  //CollisionComponent* GetOverlappingCollider();
-
-  //void SetCollisionStatus(CollisionStatus collisionStatus);
-  //void SetCollisionOccurence(CollisionOccurence newCollisionOccurence);
-  //CollisionOccurence& GetCollisionOccurence();
   void InformOfCollision(CollisionOccurence collisionStatus);
 
   CollisionResponse* GetCollisionResponse();
@@ -111,15 +75,6 @@ public:
 private:
 
   CollisionOccurence currentCollisionStatus_;
-  //CollisionOccurence collisionOccurence_;
-
-  //bool isDisabled_ = false;
-
-  //bool isOverlappingWithSomething_ = false;
-
-  //glm::vec2 mtv_{0};
-
-  //CollisionComponent* overlappingCollider_ = nullptr;
 
   CollisionResponse* collisionResponse_ = nullptr;
 

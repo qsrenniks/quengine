@@ -4,7 +4,6 @@
 
 IGameObject::IGameObject() 
 {
-  //gameObjectUpdateList_.AddFunction(this, &IGameObject::Update);
 }
 
 IGameObject::~IGameObject()
@@ -41,17 +40,6 @@ Transform& IGameObject::GetTransform()
   return transform_;
 }
 
-//CollisionOccurence IGameObject::GetCollisionOccurence()
-//{
-//  return CollisionOccurence();
-//}
-
-//
-//delegate<void(float)>& IGameObject::GetUpdateList()
-//{
-//  return gameObjectUpdateList_;
-//}
-
 delegate<void(float)>& IGameObject::GetComponentUpdateList()
 {
   return componentUpdateList_;
@@ -66,7 +54,6 @@ bool CollisionOccurence::IsValid()
 {
   return isValid_;
 }
-
 
 void CollisionOccurence::SetValid(bool validity)
 {

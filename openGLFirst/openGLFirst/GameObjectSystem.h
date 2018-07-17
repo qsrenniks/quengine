@@ -7,8 +7,13 @@
 class IGameObject;
 class CollisionComponent;
 
+//
+// This class is created in the event of a collision in the update loop. 
+// if a collision is detected this class is created then pushed onto the gameobjectsystem to later be resolved
+//
 struct CollisionOccurence
 {
+public:
   enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, TOUCHING, INVALID };
 
   CollisionOccurence(bool isValid = false)
@@ -19,21 +24,14 @@ struct CollisionOccurence
   }
 
   void ConstructNonCollisionOccurence(CollisionComponent* objectA, CollisionComponent* objectB, CollisionStatus collisionStatus);
-
-  //mtv is always to push b from a 
+  
+  //minimal translation vector to properlly resolve a collision
   glm::vec2 mtv_;
   CollisionStatus collisionStatus_;
 
   CollisionComponent* objectA_ = nullptr;
 
   CollisionComponent* objectB_ = nullptr;
-
-  //glm::vec2 objectAsVelocity_ = { 0.0f, 0.0f };
-  //float objectAsMass_ = 1;
-
-  //glm::vec2 objectBsVelocity_ = { 0.0f, 0.0f };
-  //float objectBsMass_ = 1;
-
 
   bool IsValid();
   void SetValid(bool validity);
@@ -49,8 +47,12 @@ private:
   bool isValid_ = false;
 };
 
+//
+// Collison Response class, derive off of this in order to create custom response behaviors to collisions of any kind
+//
 struct CollisionResponse
 {
+public:
   CollisionResponse() = default;
   ~CollisionResponse() = default;
 
@@ -64,10 +66,11 @@ private:
 
 };
 
+//
+// game object system definition
+//
 class GameObjectSystem : public IGameplaySystem
 {
-
-
 public:
   using GameObjectList = std::list<IGameObject*>;
   using CollisionList = std::list<CollisionComponent*>;
