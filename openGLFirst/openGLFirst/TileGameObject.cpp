@@ -10,8 +10,9 @@
 TileGameObject::TileGameObject()
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 0.0f, 1.0f, 1.0f }, 0, 1.0f, 1.0f);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new CollisionResponse());
   AddComponent<PhysicsComponent>(physics_);
+  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, true));
+  //AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new CollisionResponse());
 
   collision_->onEnterOverlap_.AddFunction(this, &TileGameObject::OnOverlapEnter);
   collision_->onExitOverlap_.AddFunction(this, &TileGameObject::OnOverlapExit);

@@ -17,8 +17,9 @@ DebugGameObject::DebugGameObject()
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new CollisionResponse());
-
+  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, false, 1.0f, 0.0f, 1.0f));
+   
+  //physics_->SetAcceleration(PhysicsComponent::Gravity);
   GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
@@ -44,6 +45,7 @@ IGameObject* DebugGameObject::Clone()
 void DebugGameObject::Update(float dt)
 {
   physics_->SetVelocity(glm::vec2( 0.0f, 0.0f ));
+  //physics_->GetVelocity().x = 0.0f;
 }
 
 void DebugGameObject::WKeyPress()
@@ -77,11 +79,11 @@ void DebugGameObject::OnCollisionUpdate(CollisionOccurence otherCollider)
 
 void DebugGameObject::OnCollision(CollisionOccurence otherCollider)
 {
-  std::cout << "On Collision Enter" << std::endl;
+  //std::cout << "On Collision Enter" << std::endl;
 }
 
 void DebugGameObject::OnExitCollision(CollisionOccurence otherCollider)
 {
-  std::cout << "On Collision Exit" << std::endl;  
+  //std::cout << "On Collision Exit" << std::endl;  
 }
 

@@ -22,6 +22,7 @@ CollisionComponent::~CollisionComponent()
   sys->RemoveCollisonComponent(this);
 
   delete collisionProfile_;
+  delete collisionResponse_;
 }
 
 void CollisionComponent::Update(float dt)
@@ -182,11 +183,8 @@ void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
     glm::vec2 mtv = smallestAxis * overlap;
 
     //before the collision occurence is documented broadcast the events to both collision game objects.
-    //collisionComponent_->onEnterOverlap_();
-
-    //std::cout << "Collision Occured" << std::endl;
-
     collisionOccurence.mtv_ = mtv;
+    collisionOccurence.halfMtv_ = mtv / 2.0f;
 
     collisionOccurence.collisionStatus_ = collisionStatus;
     collisionOccurence.objectA_ = collisionComponent_;
@@ -195,16 +193,6 @@ void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
     //TODO: the engine collision resolution system is only notified of a valid COLLISION occurence event. Maybe it should be notified about all? colliding or non-colliding
     Engine::Instance()->GetGameObjectSystem()->AddCollisionOccurence(collisionOccurence);
   }
-
-
-  //collisionOccurence.objectACollisionStatus_ = aAxisStatus;
-  //collisionOccurence.objectBCollisionStatus_ = bAxisStatus;
-
-  //collisionOccurence.objectAsVelocity_ = transformA.GetInstantVelocity();
-  //collisionOccurence.objectBsVelocity_ = transformB.GetInstantVelocity();
-
-  //std::cout << "mtv: " << mtv.x << ": " << mtv.y << std::endl;
-
 
   collisionComponent_->InformOfCollision(collisionOccurence);
   otherProfile->GetCollisionComponent()->InformOfCollision(collisionOccurence);

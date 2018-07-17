@@ -142,11 +142,13 @@ void GameObjectSystem::Load()
 {
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, -0.25f));
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f)); //right
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.75f)); //up
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f));  //left
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f)); //right
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.75f)); //up
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f));  //left
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));//down
-  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
+  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.2f, 0.5f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(-0.2f, 0.5f));
 
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
@@ -199,7 +201,8 @@ CollisionOccurence CollisionOccurence::operator-()
 {
   CollisionOccurence copy = *this;
 
-  copy.mtv_ *= -1;
+  copy.mtv_ *= -1.0f;
+  copy.halfMtv_ *= -1.0f;
 
   return copy;
 }
@@ -213,10 +216,8 @@ void CollisionResponse::Respond(const CollisionOccurence& occurence)
   glm::vec2 thisPosition = thisTransform.GetPosition();
 
   //we use half since the other half is gonna be used by the other collision
-  glm::vec2 mtvHalf = occurence.mtv_ / 2.0f;
-
   //since this will be negated for the other occurence you just add like normal
-  thisPosition += mtvHalf;
+  thisPosition += occurence.mtv_;
 
   thisTransform.SetPosition(thisPosition);
 }
@@ -229,4 +230,64 @@ void CollisionResponse::SetCollisionComponent(CollisionComponent* collisionCompo
 CollisionComponent* CollisionResponse::GetCollisionComponent() const
 {
   return collisionComponent_;
+}
+
+PhysicalResponse::PhysicalResponse(PhysicsComponent* physicsComponent, bool isStatic, float mass, float friction, float bounce)
+  : physicsComponent_(physicsComponent)
+  , mass_(mass)
+  , friction_(friction)
+  , bounce_(bounce)
+  , isStatic_(isStatic)
+{
+}
+
+PhysicalResponse::~PhysicalResponse()
+{
+
+}
+
+void PhysicalResponse::Respond(const CollisionOccurence& occurence)
+{
+  if (isStatic_ == true)
+  {
+    return;
+  }
+
+  //given mtv
+  //given physics component
+  //given mass and bounce determine what the velocity should be after a collision
+
+  //perform the usual response and then do a physical calculation to change the objects velocity
+  CollisionResponse::Respond(occurence);
+
+  float mass = mass_;
+  float friction = friction_;
+  float bounce = bounce_;
+
+  glm::vec2 oldVelocity = physicsComponent_->GetVelocity();
+
+  glm::vec2 normMtv = glm::normalize(occurence.mtv_);
+  
+  glm::vec2 normVelo ;
+  
+  if (oldVelocity.x == 0.0f && oldVelocity.y == 0.0f)
+  {
+    normVelo = glm::vec2(0.0f);
+  }
+  else
+  {
+    normVelo = glm::normalize(oldVelocity);
+  }
+
+  glm::vec2 s = normMtv * glm::length(oldVelocity);
+  float dotp = glm::dot(normMtv, normVelo);
+  
+  dotp = glm::abs(dotp);
+
+  s *= dotp;
+
+
+  glm::vec2 newVelocity = ((oldVelocity + s) * friction) + (s * bounce);
+
+  physicsComponent_->SetVelocity(newVelocity);
 }

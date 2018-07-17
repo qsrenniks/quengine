@@ -42,6 +42,9 @@ Mesh::Mesh(SpriteComponent* spriteComponent, float width, float height)
 
 Mesh::~Mesh()
 {
+  glDeleteVertexArrays(1, &VAO_);
+  glDeleteBuffers(1, &VBO_);
+  glDeleteBuffers(1, &EBO_);
 }
 
 void Mesh::Draw()
@@ -72,31 +75,6 @@ glm::vec2 Mesh::GetWidthHeight()
 
 glm::vec2 Mesh::GetVertPos(MeshCorner corner, const glm::mat4& matrix)
 {
-  //glm::vec2 spritePosition = spriteComponent_->GetParent()->GetTransform().GetPosition();
-
-  //glm::vec2 scale = spriteComponent_->GetParent()->GetTransform().GetScale();
-  //float rotation = glm::radians(spriteComponent_->GetParent()->GetTransform().GetRotation());
-
-  //float halfWidth = halfWidth_ * scale.x;
-  //float halfHeight = halfHeight_ * scale.y;
-
-  //glm::vec2 vertPos;
-
-  //switch (corner)
-  //{
-  //case MeshCorner::TOP_LEFT:
-  //  vertPos = glm::vec2(-halfWidth, halfHeight);
-  //  break;
-  //case MeshCorner::TOP_RIGHT:
-  //  vertPos = glm::vec2(halfWidth, halfHeight);
-  //  break;
-  //case MeshCorner::BOTTOM_LEFT:
-  //  vertPos = glm::vec2(-halfWidth, -halfHeight);
-  //  break;
-  //case MeshCorner::BOTTOM_RIGHT:
-  //  vertPos = glm::vec2(+halfWidth, -halfHeight);
-  //  break;
-  //}
   switch (corner)
   {
   case MeshCorner::TOP_LEFT:
@@ -108,12 +86,6 @@ glm::vec2 Mesh::GetVertPos(MeshCorner corner, const glm::mat4& matrix)
   case MeshCorner::BOTTOM_RIGHT:
     return matrix * glm::vec4(glm::vec2(+halfWidth_, -halfHeight_), 0.0f, 1.0f);
   }
-
-  //vertPos = glm::rotate(vertPos, rotation);
-
-  ////change vec3 to vec2
-  //vertPos += glm::vec2(spritePosition);
-  //return vertPos;
 
   return glm::vec2();
 }
@@ -127,11 +99,6 @@ Mesh::Projection Mesh::project(const glm::vec2& lineToProjectOn)
 {
   Transform& objTransform = spriteComponent_->GetParent()->GetTransform();
   auto matrix = objTransform.BuildTransform();
-
-  //glm::vec2 topLeftVert = glm::vec4(-halfWidth_, halfHeight_, 0.0f, 1.0f) * matrix;
-  //glm::vec2 topRightVert = glm::vec4(halfWidth_, halfHeight_, 0.0f, 1.0f) * matrix;
-  //glm::vec2 bottomLeftVert = glm::vec4(-halfWidth_, -halfHeight_, 0.0f, 1.0f) * matrix;
-  //glm::vec2 bottomRightVert = glm::vec4(halfWidth_, -halfHeight_, 0.0f, 1.0f) * matrix;
 
   float min = project(GetVertPos(TOP_LEFT, matrix), lineToProjectOn);
   float max = min;
@@ -156,8 +123,7 @@ Mesh::Projection Mesh::project(const glm::vec2& lineToProjectOn)
 
   projection.projection_ = glm::vec2(lineToProjectOn.x * min, lineToProjectOn.y * max);
 
-  //glm::vec2 nonoptimalway = GetVertPos(TOP_LEFT);
-   return projection;
+  return projection;
 }
 
 float Mesh::project(const glm::vec2& point, const glm::vec2& line) const
@@ -211,10 +177,6 @@ CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projec
 
     return CollisionOccurence::CollisionStatus::NOT_COLLIDING;
   }
-  //else if(max_ < otherProjections.min_ || min_ > otherProjections.max_)
-  //{
-  //  return IGameObject::CollisionStatus::TOUCHING;
-  //}
 
   return CollisionOccurence::CollisionStatus::COLLIDING;
 }
