@@ -98,20 +98,21 @@ void GameObjectSystem::ResolveCollisions()
 
   auto collisionResolutionLambda = [&](CollisionOccurence& occurence)
   {
+
     //resolve collision
-    Transform& bTransform = occurence.objectB_->GetParent()->GetTransform();
-    Transform& aTransform = occurence.objectA_->GetParent()->GetTransform();
-    
-    glm::vec2 bPosition = bTransform.GetPosition();
-    glm::vec2 aPosition = aTransform.GetPosition();
+    //Transform& bTransform = occurence.objectB_->GetParent()->GetTransform();
+    //Transform& aTransform = occurence.objectA_->GetParent()->GetTransform();
 
-    glm::vec2 mtvHalf = occurence.mtv_ / 2.0f;
+    //glm::vec2 bPosition = bTransform.GetPosition();
+    //glm::vec2 aPosition = aTransform.GetPosition();
 
-    bPosition += mtvHalf;
-    aPosition -= mtvHalf;
+    //glm::vec2 mtvHalf = occurence.mtv_ / 2.0f;
 
-    bTransform.SetPosition(bPosition);
-    aTransform.SetPosition(aPosition);
+    //bPosition += mtvHalf;
+    //aPosition -= mtvHalf;
+
+    //bTransform.SetPosition(bPosition);
+    //aTransform.SetPosition(aPosition);
 
     occurence.isResolved_ = true;
     //collisionOccurences_.remove(occurence);
@@ -138,9 +139,9 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, -0.25f));
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.75f)); //up
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f));  //left
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f));  //left
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));//down
-  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
 
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
@@ -177,4 +178,14 @@ bool CollisionOccurence::operator==(CollisionOccurence otherCollision) const
     return true;
   }
   else return false;
+}
+
+void CollisionOccurence::ConstructNonCollisionOccurence(CollisionComponent* objectA, CollisionComponent* objectB, CollisionStatus collisionStatus)
+{
+  objectA_ = objectA;
+  objectB_ = objectB;
+
+  mtv_ = glm::vec2(0.0f, 0.0f);
+
+  collisionStatus_ = collisionStatus;
 }

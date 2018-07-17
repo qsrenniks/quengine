@@ -33,7 +33,7 @@ void PhysicsBodyGameObject::Update(float dt)
 
 }
 
-void PhysicsBodyGameObject::OnCollisionUpdate(CollisionComponent* otherCollider)
+void PhysicsBodyGameObject::OnCollisionUpdate(CollisionOccurence otherCollider)
 {
   //GetTransform().SetPosition(GetTransform().GetPosition() + GetCollisionOccurence().mtv_);
 }

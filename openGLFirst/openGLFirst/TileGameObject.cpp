@@ -49,7 +49,7 @@ void TileGameObject::Update(float dt)
   //}
 }
 
-void TileGameObject::OnOverlapEnter(CollisionComponent* otherCollider)
+void TileGameObject::OnOverlapEnter(CollisionOccurence otherCollider)
 {
   //std::cout << "On overlap Enter! " << std::endl;
   //std::cout << "Intersecting : " << collision_->GetMTV().x << " : " << collision_->GetMTV().y << std::endl;
@@ -58,6 +58,6 @@ void TileGameObject::OnOverlapEnter(CollisionComponent* otherCollider)
   //collision_->Disable();
 }
 
-void TileGameObject::OnOverlapExit(CollisionComponent* otherCollider)
+void TileGameObject::OnOverlapExit(CollisionOccurence otherCollider)
 {
 }

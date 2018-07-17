@@ -15,8 +15,8 @@ public:
   virtual IGameObject* Clone() override;
   virtual void Update(float dt) override;
 
-  void OnOverlapEnter(CollisionComponent* otherCollider);
-  void OnOverlapExit(CollisionComponent* otherCollider);
+  void OnOverlapEnter(CollisionOccurence otherCollider);
+  void OnOverlapExit(CollisionOccurence otherCollider);
 private:
   SpriteComponent* sprite_;
   CollisionComponent* collision_;

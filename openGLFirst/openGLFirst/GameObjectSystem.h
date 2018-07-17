@@ -12,14 +12,13 @@ struct CollisionOccurence
   enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, TOUCHING, INVALID };
 
   CollisionOccurence(bool isValid = false)
-    : collisionStatus_
-    (CollisionStatus::INVALID)
+    : collisionStatus_(CollisionStatus::NOT_COLLIDING)
     , mtv_(0)
     , isValid_(isValid)
   {
   }
 
-  
+  void ConstructNonCollisionOccurence(CollisionComponent* objectA, CollisionComponent* objectB, CollisionStatus collisionStatus);
 
   //mtv is always to push b from a 
   glm::vec2 mtv_;
@@ -29,11 +28,11 @@ struct CollisionOccurence
 
   CollisionComponent* objectB_ = nullptr;
 
-  glm::vec2 objectAsVelocity_ = { 0.0f, 0.0f };
-  float objectAsMass_ = 1;
+  //glm::vec2 objectAsVelocity_ = { 0.0f, 0.0f };
+  //float objectAsMass_ = 1;
 
-  glm::vec2 objectBsVelocity_ = { 0.0f, 0.0f };
-  float objectBsMass_ = 1;
+  //glm::vec2 objectBsVelocity_ = { 0.0f, 0.0f };
+  //float objectBsMass_ = 1;
 
 
   bool IsValid();

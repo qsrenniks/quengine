@@ -1,10 +1,13 @@
 #pragma once
 
 #include "IGameObject.h"
+#include "GameObjectSystem.h"
 
 class SpriteComponent;
 class PhysicsComponent;
 class CollisionComponent;
+
+//struct CollisionOccurence;
 
 class PhysicsBodyGameObject : public IGameObject
 {
@@ -18,7 +21,7 @@ public:
 
   //virtual CollisionOccurence GetCollisionOccurence() override;
 
-  void OnCollisionUpdate(CollisionComponent* otherCollider);
+  void OnCollisionUpdate(CollisionOccurence otherCollider);
 
 private:
   SpriteComponent* sprite_;

@@ -73,9 +73,9 @@ public:
   //this is called to reset collision information
   //void Reset(CollisionComponent* notCollidingOther);
 
-  delegate<void(CollisionComponent* otherCollider)> onEnterOverlap_;
-  delegate<void(CollisionComponent* otherCollider)> onUpdateOverlap_;
-  delegate<void(CollisionComponent* otherCollider)> onExitOverlap_;
+  delegate<void(CollisionOccurence otherCollider)> onEnterOverlap_;
+  delegate<void(CollisionOccurence otherCollider)> onUpdateOverlap_;
+  delegate<void(CollisionOccurence otherCollider)> onExitOverlap_;
 
   //bool GetIsDisabled() const { return isDisabled_; };
   //void Disable() { isDisabled_ = true; };
@@ -86,24 +86,25 @@ public:
 
   //void IsOverlapping();
 
-  CollisionComponent* GetOverlappingCollider();
+  //CollisionComponent* GetOverlappingCollider();
 
   //void SetCollisionStatus(CollisionStatus collisionStatus);
   //void SetCollisionOccurence(CollisionOccurence newCollisionOccurence);
   //CollisionOccurence& GetCollisionOccurence();
+  void InformOfCollision(CollisionOccurence collisionStatus);
 
 private:
 
-  //CollisionStatus currentCollisionStatus_;
+  CollisionOccurence currentCollisionStatus_;
   //CollisionOccurence collisionOccurence_;
 
   //bool isDisabled_ = false;
 
   //bool isOverlappingWithSomething_ = false;
 
-  glm::vec2 mtv_{0};
+  //glm::vec2 mtv_{0};
 
-  CollisionComponent* overlappingCollider_ = nullptr;
+  //CollisionComponent* overlappingCollider_ = nullptr;
 
   CollisionProfile* collisionProfile_ = nullptr;
 };

@@ -28,9 +28,9 @@ private:
   PhysicsComponent* physics_;
   CollisionComponent* collision_;
 
-  void OnCollisionUpdate(CollisionComponent* otherCollider);
-  void OnCollision(CollisionComponent* otherCollider);
-  void OnExitCollision(CollisionComponent* otherCollider);
+  void OnCollisionUpdate(CollisionOccurence otherCollider);
+  void OnCollision(CollisionOccurence otherCollider);
+  void OnExitCollision(CollisionOccurence otherCollider);
 protected:
 
 };

@@ -92,18 +92,20 @@ void DebugGameObject::DKeyPress()
 }
 
 //physics sets the new position and then using the old mtv for the previous collision information it moves the object an insufficient amount given the velocity for the objects
-void DebugGameObject::OnCollisionUpdate(CollisionComponent* otherCollider)
+void DebugGameObject::OnCollisionUpdate(CollisionOccurence otherCollider)
 {
    //GetTransform().SetPosition(GetTransform().GetPosition() + GetCollisionOccurence().mtv_);
+  //std::cout << "On Collision Update" << std::endl;
 }
 
-void DebugGameObject::OnCollision(CollisionComponent* otherCollider)
+void DebugGameObject::OnCollision(CollisionOccurence otherCollider)
 {
   //std::cout << "Intersecting : " << GetCollisionOccurence().mtv_.x << " : " << GetCollisionOccurence().mtv_.y << std::endl;
+  std::cout << "On Collision Enter" << std::endl;
 }
 
-void DebugGameObject::OnExitCollision(CollisionComponent* otherCollider)
+void DebugGameObject::OnExitCollision(CollisionOccurence otherCollider)
 {
-  
+  std::cout << "On Collision Exit" << std::endl;  
 }
 
