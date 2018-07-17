@@ -17,6 +17,12 @@
 #include <stdlib.h>
 #include <string>
 #include <random>
+#include "PhysicsBodyGameObject.h"
+
+void GameObjectSystem::AddCollisionOccurence(CollisionOccurence occurence)
+{
+  collisionOccurences_.push_back(occurence);
+}
 
 void GameObjectSystem::AddGameObject(IGameObject* gameObject)
 {
@@ -69,36 +75,43 @@ void GameObjectSystem::CalculateCollisions()
       }
 
       //collision check
-      CollisionOccurence::CollisionStatus collisionStatus = collComp->IsCollidingWith(otherComp);
-
-      //this informs both objects of the collision that is happenign to them, whether they are touching or colliding
-      if (collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING || collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
-      {
-        collComp->Inform(otherComp);
-        otherComp->Inform(collComp);
-      }
-      //if no collision is detected they are also informed of a no collision
-      else if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING)
-      {
-        collComp->Reset(otherComp);
-        otherComp->Reset(collComp);
-      }
-
-      //if they are straight colliding both objects are updated every tick of the collision to handle anyway they see fit
-      if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
-      {
-        //tell both colliders that they are colliding
-        collComp->onUpdateOverlap_.Broadcast(collComp->GetOverlappingCollider());
-        otherComp->onUpdateOverlap_.Broadcast(otherComp->GetOverlappingCollider());
-      }
-
-      //then both game objects are told there collision status.
-      //this is not taking into account that multiple collisions might occur at once.
-      //collComp->GetParent()->SetCollisionStatus(collisionOccurance);
-      //otherComp->GetParent()->SetCollisionStatus(collisionOccurance);
+      collComp->IsCollidingWith(otherComp);
 
     }
   }
+
+  //RESOLVE COLLISIONS 
+}
+
+void GameObjectSystem::ResolveCollisions()
+{
+
+  
+  if (collisionOccurences_.empty() == true)
+  {
+    return;
+  }
+
+  auto collisionResolutionLambda = [&](CollisionOccurence& occurence)
+  {
+    //resolve collision
+    Transform& aTransform = occurence.objectB_->GetParent()->GetTransform();
+
+    glm::vec2 aPosition = aTransform.GetPosition();
+
+    aPosition += occurence.mtv_;
+
+    aTransform.SetPosition(aPosition);
+
+
+    occurence.isResolved_ = true;
+    //collisionOccurences_.remove(occurence);
+
+  };
+  std::for_each(collisionOccurences_.begin(), collisionOccurences_.end(), collisionResolutionLambda);
+
+  auto isResolved = [&](CollisionOccurence collOcc) -> bool { return collOcc.isResolved_; };
+  collisionOccurences_.remove_if(isResolved);
 }
 
 GameObjectSystem::~GameObjectSystem()
@@ -114,10 +127,12 @@ void GameObjectSystem::Load()
 {
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, -0.25f));
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f)); //right
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.75f)); //up
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f)); //left
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f));  //left
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));//down
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
+
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
 }
@@ -127,12 +142,13 @@ void GameObjectSystem::Update(float dt)
 
   auto DestroyGameObjectLambda = [&](auto i) { DestroyGameObject(i); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DestroyGameObjectLambda);
-  
 
   auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), UpdateGameObjectLambda);
   
   CalculateCollisions();
+
+  ResolveCollisions();
 
   auto DrawGameObjectLambda = [&](IGameObject* i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DrawGameObjectLambda);
@@ -143,4 +159,13 @@ void GameObjectSystem::Update(float dt)
 void GameObjectSystem::Unload()
 {
 
+}
+
+bool CollisionOccurence::operator==(CollisionOccurence otherCollision) const
+{
+  if (objectA_ == otherCollision.objectA_ && objectB_ == otherCollision.objectB_)
+  {
+    return true;
+  }
+  else return false;
 }

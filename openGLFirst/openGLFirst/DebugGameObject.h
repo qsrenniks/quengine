@@ -21,9 +21,7 @@ public:
   void DKeyPress();
   void AKeyPress();
 
-  virtual bool PreventPhysics() override;
-
-  virtual CollisionOccurence GetCollisionOccurence() override;
+  //virtual CollisionOccurence GetCollisionOccurence() override;
 
 private:
   SpriteComponent* sprite_;

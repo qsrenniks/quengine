@@ -41,15 +41,10 @@ Transform& IGameObject::GetTransform()
   return transform_;
 }
 
-bool IGameObject::PreventPhysics()
-{
-  return false;
-}
-
-CollisionOccurence IGameObject::GetCollisionOccurence()
-{
-  return CollisionOccurence();
-}
+//CollisionOccurence IGameObject::GetCollisionOccurence()
+//{
+//  return CollisionOccurence();
+//}
 
 //
 //delegate<void(float)>& IGameObject::GetUpdateList()

@@ -132,6 +132,9 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Components\Transform Component\Transform Type</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsBodyGameObject.cpp">
+      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Source Files\Components\Transform Component\Transform Type</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsBodyGameObject.h">
+      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

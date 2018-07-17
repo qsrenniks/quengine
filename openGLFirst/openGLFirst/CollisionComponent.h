@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include "IGameObject.h"
+#include "GameObjectSystem.h"
 #include "Delegate.h"
 #include "glm/vec2.hpp"
 #include <vector>
@@ -14,7 +15,7 @@ class CollisionProfile
 public:
 
   CollisionProfile(CollisionComponent*& component);
-  virtual CollisionOccurence::CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const = 0;
+  virtual void IsProfileCollidingWith(CollisionProfile* otherProfile) const = 0;
 
   CollisionComponent* GetCollisionComponent();
 
@@ -27,7 +28,7 @@ class SquareCollisionProfile : public CollisionProfile
 public:
   SquareCollisionProfile(CollisionComponent*&component);
 
-  virtual CollisionOccurence::CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
+  virtual void IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 
   CollisionOccurence::CollisionStatus PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const;
 
@@ -51,7 +52,7 @@ public:
 
   virtual void Register() override;
 
-  CollisionOccurence::CollisionStatus IsCollidingWith(CollisionComponent* otherCollider) const;
+  void IsCollidingWith(CollisionComponent* otherCollider) const;
 
   //struct CollisionInformation
   //{
@@ -68,37 +69,37 @@ public:
   //CollisionInformation RetrieveCollisionInformation(CollisionComponent* collisionComp);
 
   //informs the collider that it is colliding with another collider
-  void Inform(CollisionComponent* collidingOther);
+  //void Inform(CollisionComponent* collidingOther);
   //this is called to reset collision information
-  void Reset(CollisionComponent* notCollidingOther);
+  //void Reset(CollisionComponent* notCollidingOther);
 
   delegate<void(CollisionComponent* otherCollider)> onEnterOverlap_;
   delegate<void(CollisionComponent* otherCollider)> onUpdateOverlap_;
   delegate<void(CollisionComponent* otherCollider)> onExitOverlap_;
 
-  bool GetIsDisabled() const { return isDisabled_; };
-  void Disable() { isDisabled_ = true; };
-  void Enable() { isDisabled_ = false; };
+  //bool GetIsDisabled() const { return isDisabled_; };
+  //void Disable() { isDisabled_ = true; };
+  //void Enable() { isDisabled_ = false; };
 
   //void SetMTV(const glm::vec2& mtv);
   //const glm::vec2& GetMTV() const;
 
-  bool IsOverlapping();
+  //void IsOverlapping();
 
   CollisionComponent* GetOverlappingCollider();
 
   //void SetCollisionStatus(CollisionStatus collisionStatus);
-  void SetCollisionOccurence(CollisionOccurence newCollisionOccurence);
-  CollisionOccurence& GetCollisionOccurence();
+  //void SetCollisionOccurence(CollisionOccurence newCollisionOccurence);
+  //CollisionOccurence& GetCollisionOccurence();
 
 private:
 
   //CollisionStatus currentCollisionStatus_;
-  CollisionOccurence collisionOccurence_;
+  //CollisionOccurence collisionOccurence_;
 
-  bool isDisabled_ = false;
+  //bool isDisabled_ = false;
 
-  bool isOverlappingWithSomething_ = false;
+  //bool isOverlappingWithSomething_ = false;
 
   glm::vec2 mtv_{0};
 

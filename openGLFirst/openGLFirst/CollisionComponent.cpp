@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CollisionComponent.h"
-#include "GameObjectSystem.h"
+//#include "GameObjectSystem.h"
 #include "Engine.h"
 //#include "IGameObject.h"
 #include "SpriteComponent.h"
@@ -52,118 +52,52 @@ void CollisionComponent::Register()
   parent->GetComponentUpdateList().AddFunction(this, &CollisionComponent::Update);
 }
 
-CollisionOccurence::CollisionStatus CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider) const
+void CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider) const
 {
-  return collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_);
+  collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_);
 }
-
-//CollisionComponent::CollisionInformation CollisionComponent::RetrieveCollisionInformation(CollisionComponent* collComp)
-//{
-//  if (!isOverlappingWithSomething_)
-//  {
-//    return CollisionInformation();
-//  }
-//  
-//  if (std::find(overlappingColliders_.cbegin(), overlappingColliders_.cend(), collComp) == overlappingColliders_.cend())
-//  {
-//    //something weird has happened
-//    assert(false);
-//  }
-//
-//  CollisionInformation collInfo;
-//
-//  PhysicsComponent* otherPhys = collComp->GetParent()->GetComponent<PhysicsComponent>();
-//
-//  if (otherPhys != nullptr)
-//  {
-//    collInfo.rotationalVelocity = otherPhys->GetRotationalVelocity();
-//    collInfo.velocity = otherPhys->GetVelocity();
-//    collInfo.isOtherStatic = otherPhys->GetIsStatic();
-//  }
-//  else
-//  {
-//    collInfo.isOtherStatic = true;
-//  }
-//  
-//  collInfo.isValid = true;
-//  return collInfo;
-//}
 
 //only called when a collision has occurred
-void CollisionComponent::Inform(CollisionComponent* collidingOther)
-{
-  //if it does not find this collider already in the lsit then add it 
-  //if (std::find(overlappingColliders_.cbegin(), overlappingColliders_.cend(), collidingOther) == overlappingColliders_.cend())
-  //{
-  //  isOverlappingWithSomething_ = true;
-  //  overlappingColliders_.push_back(collidingOther);
-  //  onEnterOverlap_.Broadcast(collidingOther);
-  //}
-
-  if (overlappingCollider_ == nullptr && isOverlappingWithSomething_ == false)
-  {
-    isOverlappingWithSomething_ = true;
-    overlappingCollider_ = collidingOther;
-    onEnterOverlap_.Broadcast(collidingOther);
-  }
-
-
-}
-
-void CollisionComponent::Reset(CollisionComponent* notCollidingOther)
-{
-  //it was previously colliding with something 
-  //if (isOverlappingWithSomething_ == true && std::find(overlappingColliders_.cbegin(), overlappingColliders_.cend(), notCollidingOther) != overlappingColliders_.cend())
-  //{
-  //  onExitOverlap_.Broadcast(notCollidingOther);
-  //  overlappingColliders_.remove(notCollidingOther);
-  //}
-
-  //if (overlappingColliders_.empty() == true)
-  //{
-  //  isOverlappingWithSomething_ = false;
-  //  collisionOccurence_.SetValid(false);
-  //}
-
-  if (notCollidingOther == overlappingCollider_ && isOverlappingWithSomething_ == true)
-  {
-    isOverlappingWithSomething_ = false;
-    onExitOverlap_.Broadcast(notCollidingOther);
-    overlappingCollider_ = nullptr;
-    collisionOccurence_.SetValid(false);
-  }
-
-}
-
-//void CollisionComponent::SetMTV(const glm::vec2& mtv)
+//void CollisionComponent::Inform(CollisionComponent* collidingOther)
 //{
-//  mtv_ = mtv;
+//  if (overlappingCollider_ == nullptr && isOverlappingWithSomething_ == false)
+//  {
+//    isOverlappingWithSomething_ = true;
+//    overlappingCollider_ = collidingOther;
+//    onEnterOverlap_.Broadcast(collidingOther);
+//  }
 //}
 
-//const glm::vec2& CollisionComponent::GetMTV() const
+//void CollisionComponent::Reset(CollisionComponent* notCollidingOther)
 //{
-//  return mtv_;
+//  if (notCollidingOther == overlappingCollider_ && isOverlappingWithSomething_ == true)
+//  {
+//    isOverlappingWithSomething_ = false;
+//    onExitOverlap_.Broadcast(notCollidingOther);
+//    overlappingCollider_ = nullptr;
+//    collisionOccurence_.SetValid(false);
+//  }
 //}
 
-bool CollisionComponent::IsOverlapping()
-{
-  return isOverlappingWithSomething_;
-}
+//bool CollisionComponent::IsOverlapping()
+//{
+  //return isOverlappingWithSomething_;
+//}
 
 CollisionComponent* CollisionComponent::GetOverlappingCollider()
 {
   return overlappingCollider_;
 }
 
-void CollisionComponent::SetCollisionOccurence(CollisionOccurence newCollisionOccurence)
-{
-  collisionOccurence_ = newCollisionOccurence;
-}
+//void CollisionComponent::SetCollisionOccurence(CollisionOccurence newCollisionOccurence)
+//{
+//  collisionOccurence_ = newCollisionOccurence;
+//}
 
-CollisionOccurence& CollisionComponent::GetCollisionOccurence()
-{
-  return collisionOccurence_;
-}
+//CollisionOccurence& CollisionComponent::GetCollisionOccurence()
+//{
+//  return collisionOccurence_;
+//}
 
 SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
   : CollisionProfile(component)
@@ -171,7 +105,7 @@ SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
   
 }
 
-CollisionOccurence::CollisionStatus SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
+void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
 {
   SpriteComponent* spriteA = collisionComponent_->GetParent()->GetComponent<SpriteComponent>();
   SpriteComponent* spriteB = otherProfile->GetCollisionComponent()->GetParent()->GetComponent<SpriteComponent>();
@@ -193,35 +127,46 @@ CollisionOccurence::CollisionStatus SquareCollisionProfile::IsProfileCollidingWi
   glm::vec2 smallestAxis;
 
   //cehcks the first objects axis to inspect collisoin status.
-  CollisionOccurence::CollisionStatus aAxisStatus = PerformAxisProjection(axisA, meshA, meshB, overlap, smallestAxis);
-  if (aAxisStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || aAxisStatus == CollisionOccurence::CollisionStatus::TOUCHING)
+  CollisionOccurence::CollisionStatus collisionStatus = PerformAxisProjection(axisA, meshA, meshB, overlap, smallestAxis);
+
+  if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING)
   {
-    return aAxisStatus;
+    return;
   }
 
   //checks all object b axis if a collision still has not been detected
-  CollisionOccurence::CollisionStatus bAxisStatus = PerformAxisProjection(axisB, meshA, meshB, overlap, smallestAxis);
-  if (bAxisStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || aAxisStatus == CollisionOccurence::CollisionStatus::TOUCHING)
+  collisionStatus = PerformAxisProjection(axisB, meshA, meshB, overlap, smallestAxis);
+
+  if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING)
   {
-    return bAxisStatus;
+    return;
   }
 
-  CollisionOccurence collisionOccurenceA(true);
-  CollisionOccurence collisionOccurenceB(true);
+  //
+  // this next step essentially fills an instance of collision occurence with information about the collision and then passes that on to the gameobjecst
+  // involved with the collision.
+  //
 
+  //creating the collision occurence objects to then be passed to the objecst that were involved with a collision to then be resolved.
   glm::vec2 mtv = smallestAxis * overlap;
-  //send resolve here
-  //collisionComponent_->SetMTV(mtv);
-  collisionOccurenceA.collisionStatus_ = aAxisStatus;
-  collisionOccurenceA.mtv_ = mtv;
-  collisionComponent_->SetCollisionOccurence(collisionOccurenceA);
 
-  //otherProfile->GetCollisionComponent()->SetMTV(mtv);
-  collisionOccurenceB.collisionStatus_ = bAxisStatus;
-  collisionOccurenceB.mtv_ = mtv;
-  otherProfile->GetCollisionComponent()->SetCollisionOccurence(collisionOccurenceB);
+  CollisionOccurence collisionOccurence(true);
+  collisionOccurence.mtv_ = mtv;
 
-  return CollisionOccurence::CollisionStatus::COLLIDING;
+  collisionOccurence.collisionStatus_ = collisionStatus;
+
+  collisionOccurence.objectA_ = collisionComponent_;
+  //collisionOccurence.objectACollisionStatus_ = aAxisStatus;
+  collisionOccurence.objectB_ = otherProfile->GetCollisionComponent();
+  //collisionOccurence.objectBCollisionStatus_ = bAxisStatus;
+
+  collisionOccurence.objectAsVelocity_ = transformA.GetInstantVelocity();
+  collisionOccurence.objectBsVelocity_ = transformB.GetInstantVelocity();
+
+  //std::cout << "mtv: " << mtv.x << ": " << mtv.y << std::endl;
+
+
+  Engine::Instance()->GetGameObjectSystem()->AddCollisionOccurence(collisionOccurence);
 }
 
 CollisionOccurence::CollisionStatus SquareCollisionProfile::PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const

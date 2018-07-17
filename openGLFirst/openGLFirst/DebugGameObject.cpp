@@ -80,22 +80,10 @@ void DebugGameObject::AKeyPress()
   physics_->SetVelocity({  -1.0f, velo.y});
 }
 
-bool DebugGameObject::PreventPhysics()
-{
-  CollisionOccurence occurence = GetCollisionOccurence();
-
-  if (occurence.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING || occurence.collisionStatus_ == CollisionOccurence::CollisionStatus::TOUCHING)
-  {
-    return true;
-  }
-
-  return false;
-}
-
-CollisionOccurence DebugGameObject::GetCollisionOccurence()
-{
-  return collision_->GetCollisionOccurence();
-}
+//CollisionOccurence DebugGameObject::GetCollisionOccurence()
+//{
+//  return collision_->GetCollisionOccurence();
+//}
 
 void DebugGameObject::DKeyPress()
 {
@@ -106,12 +94,12 @@ void DebugGameObject::DKeyPress()
 //physics sets the new position and then using the old mtv for the previous collision information it moves the object an insufficient amount given the velocity for the objects
 void DebugGameObject::OnCollisionUpdate(CollisionComponent* otherCollider)
 {
-   GetTransform().SetPosition(GetTransform().GetPosition() + GetCollisionOccurence().mtv_);
+   //GetTransform().SetPosition(GetTransform().GetPosition() + GetCollisionOccurence().mtv_);
 }
 
 void DebugGameObject::OnCollision(CollisionComponent* otherCollider)
 {
-  std::cout << "Intersecting : " << GetCollisionOccurence().mtv_.x << " : " << GetCollisionOccurence().mtv_.y << std::endl;
+  //std::cout << "Intersecting : " << GetCollisionOccurence().mtv_.x << " : " << GetCollisionOccurence().mtv_.y << std::endl;
 }
 
 void DebugGameObject::OnExitCollision(CollisionComponent* otherCollider)

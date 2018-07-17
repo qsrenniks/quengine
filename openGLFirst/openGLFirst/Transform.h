@@ -22,8 +22,8 @@ public:
 
   glm::mat4& BuildTransform();
 
-  //const glm::vec2& SetOldPosition();
-  //const glm::vec2& GetOldPosition();
+  glm::vec2 GetInstantVelocity();
+
 
 private:
   void RecalculateUpAndRightVectors();

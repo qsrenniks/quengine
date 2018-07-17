@@ -22,7 +22,7 @@ Transform::~Transform()
 
 void Transform::SetPosition(glm::vec2 newPosition)
 {
-  //oldPosition_ = position_; 
+  oldPosition_ = position_; 
   position_ = newPosition;
   isDirty = true;
 }
@@ -80,6 +80,11 @@ glm::mat4& Transform::BuildTransform()
   }
 
   return fullTransform_;
+}
+
+glm::vec2 Transform::GetInstantVelocity()
+{
+  return position_ - oldPosition_;
 }
 
 //const glm::vec2& Transform::GetOldPosition()
