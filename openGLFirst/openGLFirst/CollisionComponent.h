@@ -8,25 +8,35 @@
 #include <list>
 
 class CollisionComponent;
+struct CollisionResponse;
 class Mesh;
 
+//
+// Base class for collision profile. Derive from this to create a new profile with custom collision detection methods
+//
 class CollisionProfile
 {
 public:
 
-  CollisionProfile(CollisionComponent*& component);
+  CollisionProfile();
   virtual void IsProfileCollidingWith(CollisionProfile* otherProfile) const = 0;
 
   CollisionComponent* GetCollisionComponent();
+  void SetCollisionComponent(CollisionComponent* thisCollider);
 
 protected:
-  CollisionComponent*& collisionComponent_;
+  CollisionComponent* collisionComponent_ = nullptr;
 };
 
+//
+// most rudementary square collision profile that uses the mesh on the sprite component of the object its created with.
+// this currenlty should be renamed to polygonal collision profile since it will adapt to the shape of the mesh on the sprite component.
+// however it currenlty assumes the mesh is a square and only checks 4 verts. This should later be changed to account for meshes of all verts and shapes.
+//
 class SquareCollisionProfile : public CollisionProfile
 {
 public:
-  SquareCollisionProfile(CollisionComponent*&component);
+  SquareCollisionProfile();
 
   virtual void IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 
@@ -36,13 +46,16 @@ private:
 
 };
 
+//
+// This is the definition of the collision component.
+//
 class CollisionComponent : public IComponent
 {
 public: //types
   //using CollidingWithList = std::list<CollisionComponent*>;
 
 public:
-  CollisionComponent(CollisionProfile* collisionProfile);
+  CollisionComponent(CollisionProfile* collisionProfile , CollisionResponse* collisionResponse );
   ~CollisionComponent();
  
   virtual void Update(float dt) override;
@@ -93,6 +106,8 @@ public:
   //CollisionOccurence& GetCollisionOccurence();
   void InformOfCollision(CollisionOccurence collisionStatus);
 
+  CollisionResponse* GetCollisionResponse();
+
 private:
 
   CollisionOccurence currentCollisionStatus_;
@@ -105,6 +120,8 @@ private:
   //glm::vec2 mtv_{0};
 
   //CollisionComponent* overlappingCollider_ = nullptr;
+
+  CollisionResponse* collisionResponse_ = nullptr;
 
   CollisionProfile* collisionProfile_ = nullptr;
 };

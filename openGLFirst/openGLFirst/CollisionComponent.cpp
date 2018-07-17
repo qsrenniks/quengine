@@ -8,10 +8,12 @@
 #include <algorithm>
 #include "PhysicsComponent.h"
 
-CollisionComponent::CollisionComponent(CollisionProfile* profile/*= nullptr*/)
+CollisionComponent::CollisionComponent(CollisionProfile* profile, CollisionResponse* collisionResponse)
   : collisionProfile_(profile)
+  , collisionResponse_(collisionResponse)
 {
-
+  collisionProfile_->SetCollisionComponent(this);
+  collisionResponse_->SetCollisionComponent(this);
 }
 
 CollisionComponent::~CollisionComponent()
@@ -82,6 +84,11 @@ void CollisionComponent::InformOfCollision(CollisionOccurence collisionOccurence
   currentCollisionStatus_ = collisionOccurence;
 }
 
+CollisionResponse* CollisionComponent::GetCollisionResponse()
+{
+  return collisionResponse_;
+}
+
 //only called when a collision has occurred
 //void CollisionComponent::Inform(CollisionComponent* collidingOther)
 //{
@@ -124,10 +131,8 @@ void CollisionComponent::InformOfCollision(CollisionOccurence collisionOccurence
 //  return collisionOccurence_;
 //}
 
-SquareCollisionProfile::SquareCollisionProfile(CollisionComponent*& component)
-  : CollisionProfile(component)
+SquareCollisionProfile::SquareCollisionProfile()
 {
-  
 }
 
 void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
@@ -236,13 +241,17 @@ CollisionOccurence::CollisionStatus SquareCollisionProfile::PerformAxisProjectio
   return CollisionOccurence::CollisionStatus::COLLIDING;
 }
 
-CollisionProfile::CollisionProfile(CollisionComponent*& component)
-  : collisionComponent_(component)
+CollisionProfile::CollisionProfile()
 {
 }
 
 CollisionComponent* CollisionProfile::GetCollisionComponent()
 {
   return collisionComponent_;
+}
+
+void CollisionProfile::SetCollisionComponent(CollisionComponent* thisCollider)
+{
+  collisionComponent_ = thisCollider;
 }
 

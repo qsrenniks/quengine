@@ -99,6 +99,11 @@ void GameObjectSystem::ResolveCollisions()
   auto collisionResolutionLambda = [&](CollisionOccurence& occurence)
   {
 
+    //doing this lets both objects resolve the collision in their own ways.
+    //you use - occurence so that the mtv can get negated in order to push the objects away from each other.
+    //if they were both responding using the same mtv they would both move in the same direction causing some interesting collision problems
+    occurence.objectA_->GetCollisionResponse()->Respond(-occurence);
+    occurence.objectB_->GetCollisionResponse()->Respond(occurence);
     //resolve collision
     //Transform& bTransform = occurence.objectB_->GetParent()->GetTransform();
     //Transform& aTransform = occurence.objectA_->GetParent()->GetTransform();
@@ -188,4 +193,40 @@ void CollisionOccurence::ConstructNonCollisionOccurence(CollisionComponent* obje
   mtv_ = glm::vec2(0.0f, 0.0f);
 
   collisionStatus_ = collisionStatus;
+}
+
+CollisionOccurence CollisionOccurence::operator-()
+{
+  CollisionOccurence copy = *this;
+
+  copy.mtv_ *= -1;
+
+  return copy;
+}
+
+void CollisionResponse::Respond(const CollisionOccurence& occurence)
+{
+  CollisionComponent *thisCollider = GetCollisionComponent();
+
+  Transform& thisTransform = thisCollider->GetParent()->GetTransform();
+
+  glm::vec2 thisPosition = thisTransform.GetPosition();
+
+  //we use half since the other half is gonna be used by the other collision
+  glm::vec2 mtvHalf = occurence.mtv_ / 2.0f;
+
+  //since this will be negated for the other occurence you just add like normal
+  thisPosition += mtvHalf;
+
+  thisTransform.SetPosition(thisPosition);
+}
+
+void CollisionResponse::SetCollisionComponent(CollisionComponent* collisionComponent)
+{
+  collisionComponent_ = collisionComponent;
+}
+
+CollisionComponent* CollisionResponse::GetCollisionComponent() const
+{
+  return collisionComponent_;
 }

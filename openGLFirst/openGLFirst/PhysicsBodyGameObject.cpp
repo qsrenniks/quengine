@@ -9,7 +9,7 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(collision_));
+  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new CollisionResponse());
 
   collision_->onUpdateOverlap_.AddFunction(this, &PhysicsBodyGameObject::OnCollisionUpdate);
 

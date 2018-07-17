@@ -40,11 +40,28 @@ struct CollisionOccurence
 
   bool operator==(CollisionOccurence otherCollision) const;
 
+  CollisionOccurence operator-();
+
   bool isResolved_ = false;
 
 private:
 
   bool isValid_ = false;
+};
+
+struct CollisionResponse
+{
+  CollisionResponse() = default;
+  ~CollisionResponse() = default;
+
+  virtual void Respond(const CollisionOccurence& occurence);
+
+  void SetCollisionComponent(CollisionComponent* collisionComponent);
+  CollisionComponent* GetCollisionComponent() const;
+private:
+
+  CollisionComponent * collisionComponent_;
+
 };
 
 class GameObjectSystem : public IGameplaySystem
