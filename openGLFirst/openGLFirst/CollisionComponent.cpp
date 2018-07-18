@@ -6,14 +6,15 @@
 #include "SpriteComponent.h"
 #include <iostream>
 #include <algorithm>
+#include "CollisionOccurence.h"
 #include "PhysicsComponent.h"
 
-CollisionComponent::CollisionComponent(CollisionProfile* profile, CollisionResponse* collisionResponse)
+CollisionComponent::CollisionComponent(CollisionProfile* profile/*, CollisionResponse* collisionResponse*/)
   : collisionProfile_(profile)
-  , collisionResponse_(collisionResponse)
+  //, collisionResponse_(collisionResponse)
 {
   collisionProfile_->SetCollisionComponent(this);
-  collisionResponse_->SetCollisionComponent(this);
+  //collisionResponse_->SetCollisionComponent(this);
 }
 
 CollisionComponent::~CollisionComponent()
@@ -22,7 +23,7 @@ CollisionComponent::~CollisionComponent()
   sys->RemoveCollisonComponent(this);
 
   delete collisionProfile_;
-  delete collisionResponse_;
+  //delete collisionResponse_;
 }
 
 void CollisionComponent::Update(float dt)
@@ -85,10 +86,10 @@ void CollisionComponent::InformOfCollision(CollisionOccurence collisionOccurence
   currentCollisionStatus_ = collisionOccurence;
 }
 
-CollisionResponse* CollisionComponent::GetCollisionResponse()
-{
-  return collisionResponse_;
-}
+//CollisionResponse* CollisionComponent::GetCollisionResponse()
+//{
+//  return collisionResponse_;
+//}
 
 SquareCollisionProfile::SquareCollisionProfile()
 {

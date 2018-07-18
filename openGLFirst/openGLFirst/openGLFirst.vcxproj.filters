@@ -135,6 +135,12 @@
     <ClCompile Include="PhysicsBodyGameObject.cpp">
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionOccurence.cpp">
+      <Filter>Source Files\Components\Collision Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionResolution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -193,6 +199,15 @@
     </ClInclude>
     <ClInclude Include="PhysicsBodyGameObject.h">
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionOccurence.h">
+      <Filter>Source Files\Components\Collision Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResolution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextLibrary.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

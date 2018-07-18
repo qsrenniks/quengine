@@ -13,7 +13,7 @@ class PhysicsBodyGameObject : public IGameObject
 {
 public: //vars
 
-  static std::string PhysicsBodyGameObjectName;
+  //static std::string PhysicsBodyGameObjectName;
 
 public:
   PhysicsBodyGameObject();

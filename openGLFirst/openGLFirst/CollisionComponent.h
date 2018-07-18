@@ -6,9 +6,10 @@
 #include "glm/vec2.hpp"
 #include <vector>
 #include <list>
+#include "CollisionOccurence.h"
 
 class CollisionComponent;
-struct CollisionResponse;
+//struct CollisionResponse;
 class Mesh;
 
 //
@@ -52,7 +53,7 @@ private:
 class CollisionComponent : public IComponent
 {
 public:
-  CollisionComponent(CollisionProfile* collisionProfile , CollisionResponse* collisionResponse );
+  CollisionComponent(CollisionProfile* collisionProfile /*, CollisionResponse* collisionResponse*/ );
   ~CollisionComponent();
  
   virtual void Update(float dt) override;
@@ -70,13 +71,13 @@ public:
 
   void InformOfCollision(CollisionOccurence collisionStatus);
 
-  CollisionResponse* GetCollisionResponse();
+  //CollisionResponse* GetCollisionResponse();
 
 private:
 
   CollisionOccurence currentCollisionStatus_;
 
-  CollisionResponse* collisionResponse_ = nullptr;
+  //CollisionResponse* collisionResponse_ = nullptr;
 
   CollisionProfile* collisionProfile_ = nullptr;
 };

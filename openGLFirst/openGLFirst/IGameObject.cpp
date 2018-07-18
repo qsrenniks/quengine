@@ -56,12 +56,12 @@ delegate<void(void)>& IGameObject::GetDrawList()
   return componentDrawList_;
 }
 
-bool CollisionOccurence::IsValid()
-{
-  return isValid_;
-}
+//bool CollisionOccurence::IsValid()
+//{
+//  return isValid_;
+//}
 
-void CollisionOccurence::SetValid(bool validity)
-{
-  isValid_ = validity;
-}
+//void CollisionOccurence::SetValid(bool validity)
+//{
+//  isValid_ = validity;
+//}

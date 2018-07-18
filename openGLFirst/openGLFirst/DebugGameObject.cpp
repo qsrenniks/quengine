@@ -7,20 +7,21 @@
 #include "InputSystem.h"
 #include <string>
 #include "PhysicsComponent.h"
+#include "TextLibrary.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 //engine commands
 #include "EngineCmder.h"
 
-std::string DebugGameObject::DebugGameObjectName = "DebugGameObject";
+//std::string DebugGameObject::DebugGameObjectName = "DebugGameObject";
 
 DebugGameObject::DebugGameObject()
-  : IGameObject(DebugGameObjectName)
+  : IGameObject(TextLibrary::GameObjectNames::DebugGameObject)
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, false, 1.0f, 0.0f, 1.0f));
+  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile()/*, new PhysicalResponse(physics_, false, 1.0f, 0.0f, 1.0f)*/);
   //AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new DebugResponse());
    
   //physics_->SetAcceleration(PhysicsComponent::Gravity);

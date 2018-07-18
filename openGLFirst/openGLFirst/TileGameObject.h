@@ -9,7 +9,7 @@ class TileGameObject : public IGameObject
 {
 public: //vars
 
-  static std::string TileGameObjectName;
+  //static std::string TileGameObjectName;
 
 public:
   TileGameObject();

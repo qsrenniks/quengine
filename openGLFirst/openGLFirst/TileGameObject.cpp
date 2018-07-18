@@ -4,17 +4,18 @@
 #include "CollisionComponent.h"
 #include <iostream>
 #include "PhysicsComponent.h"
+#include "TextLibrary.h"
 
 #include <random>
 
-std::string TileGameObject::TileGameObjectName = "TileGameObject";
+//std::string TileGameObject::TileGameObjectName = "TileGameObject";
 
 TileGameObject::TileGameObject()
-  : IGameObject(TileGameObjectName)
+  : IGameObject(TextLibrary::GameObjectNames::TileGameObject)
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 0.0f, 1.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, true));
+  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile()/*, new PhysicalResponse(physics_, true)*/);
   //AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new DebugResponse());
 
   collision_->onEnterOverlap_.AddFunction(this, &TileGameObject::OnOverlapEnter);

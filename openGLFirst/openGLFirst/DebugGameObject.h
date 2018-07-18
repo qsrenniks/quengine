@@ -10,7 +10,7 @@ class DebugGameObject : public IGameObject
 {
 public: //public vars
 
-  static std::string DebugGameObjectName;
+  //static std::string DebugGameObjectName;
 
 public:
   DebugGameObject();
