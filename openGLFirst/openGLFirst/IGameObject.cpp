@@ -2,7 +2,8 @@
 #include "IGameObject.h"
 #include "Engine.h"
 
-IGameObject::IGameObject() 
+IGameObject::IGameObject(const std::string& objectName)
+  : objectName_(objectName)
 {
 }
 
@@ -38,6 +39,11 @@ bool IGameObject::IsMarkedForDestroy()
 Transform& IGameObject::GetTransform()
 {
   return transform_;
+}
+
+const std::string& IGameObject::GetObjectName()
+{
+  return objectName_;
 }
 
 delegate<void(float)>& IGameObject::GetComponentUpdateList()

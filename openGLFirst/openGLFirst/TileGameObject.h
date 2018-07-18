@@ -7,6 +7,10 @@ class PhysicsComponent;
 
 class TileGameObject : public IGameObject
 {
+public: //vars
+
+  static std::string TileGameObjectName;
+
 public:
   TileGameObject();
   ~TileGameObject();

@@ -4,14 +4,14 @@
 #include "IComponent.h"
 #include "Delegate.h"
 #include "Transform.h"
-
+#include <string>
 struct CollisionOccurence;
 
 class IGameObject
 {
 public:
 
-  IGameObject();
+  IGameObject(const std::string& objectName);
   virtual ~IGameObject();
 
   //void AddComponent(IComponent *component);
@@ -59,9 +59,13 @@ public:
   delegate<void(void)>& GetDrawList();
 
   //virtual CollisionOccurence GetCollisionOccurence();
+  const std::string& GetObjectName();
+
 
 private:
   
+  std::string objectName_;
+
   delegate<void(float)> componentUpdateList_;
   delegate<void(void)> componentDrawList_;
 

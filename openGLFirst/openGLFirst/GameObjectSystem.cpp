@@ -19,7 +19,7 @@
 #include <random>
 #include "PhysicsBodyGameObject.h"
 
-void GameObjectSystem::AddCollisionOccurence(CollisionOccurence occurence)
+void GameObjectSystem::AddCollisionOccurence(const CollisionOccurence& occurence)
 {
   collisionOccurences_.push_back(occurence);
 }
@@ -48,18 +48,6 @@ void GameObjectSystem::RemoveCollisonComponent(CollisionComponent* collisionComp
   collisionGameObjects_.remove(collisionComponent);
 }
 
-//void GameObjectSystem::CreateObjectRandomly()
-//{
-//  TileGameObject* gameObject = SpawnGameObject<TileGameObject>();
-//
-//  static std::default_random_engine generator;
-//  std::uniform_real_distribution<float> dist(-0.5f, 0.5f);
-//
-//  float randX = dist(generator);
-//
-//  gameObject->GetTransform().SetPosition(glm::vec2(randX, 1.0f));
-//}
-
 void GameObjectSystem::CalculateCollisions()
 {
   for (CollisionList::const_iterator itr = collisionGameObjects_.cbegin(); itr != collisionGameObjects_.cend(); itr++)
@@ -69,7 +57,7 @@ void GameObjectSystem::CalculateCollisions()
       CollisionComponent* collComp = *itr;
       CollisionComponent* otherComp = *otherItr;
 
-      if (itr == otherItr /*|| otherComp->GetIsDisabled() == true*/)
+      if (itr == otherItr)
       {
         continue; 
       }
@@ -79,8 +67,6 @@ void GameObjectSystem::CalculateCollisions()
 
     }
   }
-
-  //RESOLVE COLLISIONS 
 }
 
 void GameObjectSystem::ResolveCollisions()
@@ -104,25 +90,10 @@ void GameObjectSystem::ResolveCollisions()
     //if they were both responding using the same mtv they would both move in the same direction causing some interesting collision problems
     occurence.objectA_->GetCollisionResponse()->Respond(-occurence);
     occurence.objectB_->GetCollisionResponse()->Respond(occurence);
-    //resolve collision
-    //Transform& bTransform = occurence.objectB_->GetParent()->GetTransform();
-    //Transform& aTransform = occurence.objectA_->GetParent()->GetTransform();
-
-    //glm::vec2 bPosition = bTransform.GetPosition();
-    //glm::vec2 aPosition = aTransform.GetPosition();
-
-    //glm::vec2 mtvHalf = occurence.mtv_ / 2.0f;
-
-    //bPosition += mtvHalf;
-    //aPosition -= mtvHalf;
-
-    //bTransform.SetPosition(bPosition);
-    //aTransform.SetPosition(aPosition);
 
     occurence.isResolved_ = true;
-    //collisionOccurences_.remove(occurence);
-
   };
+
   std::for_each(collisionOccurences_.begin(), collisionOccurences_.end(), collisionResolutionLambda);
 
   auto isResolved = [&](CollisionOccurence collOcc) -> bool { return collOcc.isResolved_; };
@@ -149,7 +120,7 @@ void GameObjectSystem::Load()
   SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
   //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.2f, 0.5f));
   //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(-0.2f, 0.5f));
-
+   
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
   SpawnGameObject<DebugGameObject>();
 }
@@ -266,8 +237,16 @@ void PhysicalResponse::Respond(const CollisionOccurence& occurence)
 
   glm::vec2 oldVelocity = physicsComponent_->GetVelocity();
 
-  glm::vec2 normMtv = glm::normalize(occurence.mtv_);
-  
+  glm::vec2 normMtv;
+  if (occurence.mtv_.x == 0.0f && occurence.mtv_.y == 0.0f)
+  {
+    normMtv = glm::vec2(0);
+  }
+  else
+  {
+    normMtv = glm::normalize(occurence.mtv_);
+  }
+
   glm::vec2 normVelo ;
   
   if (oldVelocity.x == 0.0f && oldVelocity.y == 0.0f)
@@ -286,8 +265,12 @@ void PhysicalResponse::Respond(const CollisionOccurence& occurence)
 
   s *= dotp;
 
-
   glm::vec2 newVelocity = ((oldVelocity + s) * friction) + (s * bounce);
 
   physicsComponent_->SetVelocity(newVelocity);
+}
+
+void DebugResponse::Respond(const CollisionOccurence& occurence)
+{
+  //Debug response does nothing.
 }

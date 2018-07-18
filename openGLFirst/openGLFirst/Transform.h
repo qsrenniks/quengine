@@ -12,8 +12,8 @@ public:
   void SetRotation(float newRotation);
   void SetScale(glm::vec2 newScale);
 
-  const glm::vec2& GetUpVector() const;
-  const glm::vec2& GetRightVector() const;
+  //const glm::vec2& GetUpVector() const;
+  //const glm::vec2& GetRightVector() const;
 
   glm::vec2& GetPosition();
 
@@ -26,10 +26,10 @@ public:
 
 
 private:
-  void RecalculateUpAndRightVectors();
+  //void RecalculateUpAndRightVectors();
   
-  glm::vec2 relativeUpVector_;
-  glm::vec2 relativeRightVector_;
+  //glm::vec2 relativeUpVector_;
+  //glm::vec2 relativeRightVector_;
 
   bool isDirty = true;
 

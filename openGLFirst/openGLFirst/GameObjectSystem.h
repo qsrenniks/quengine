@@ -86,6 +86,15 @@ private:
 
   bool isStatic_ = false;
 };
+
+struct DebugResponse : public CollisionResponse
+{
+public:
+  DebugResponse() = default;
+  virtual ~DebugResponse() = default;
+
+  virtual void Respond(const CollisionOccurence& occurence) override;
+};
 //
 // game object system definition
 //
@@ -109,12 +118,18 @@ public:
   {
     GameObject* newGameObject = new GameObject(_Args...);
 
+    //CollisionComponent *collisionComponent = newGameObject->GetComponent<CollisionComponent>();
+    //if (collisionComponent != nullptr)
+    //{
+    //  AddCollisionComponent(collisionComponent);
+    //}
+
     AddGameObject(newGameObject);
 
     return newGameObject;
   }
 
-  void AddCollisionOccurence(CollisionOccurence occurence);
+  void AddCollisionOccurence(const CollisionOccurence& occurence);
   //void RemoveCollisionOccurence();
   void AddGameObject(IGameObject* gameObject);
   void AddCollisionComponent(CollisionComponent* collisionComponent);

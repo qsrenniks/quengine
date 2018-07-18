@@ -44,7 +44,7 @@ void CollisionComponent::Parent(IGameObject* parent)
 
   GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
   sys->AddCollisionComponent(this);
-}
+} 
 
 void CollisionComponent::Register()
 {
@@ -90,48 +90,6 @@ CollisionResponse* CollisionComponent::GetCollisionResponse()
   return collisionResponse_;
 }
 
-//only called when a collision has occurred
-//void CollisionComponent::Inform(CollisionComponent* collidingOther)
-//{
-//  if (overlappingCollider_ == nullptr && isOverlappingWithSomething_ == false)
-//  {
-//    isOverlappingWithSomething_ = true;
-//    overlappingCollider_ = collidingOther;
-//    onEnterOverlap_.Broadcast(collidingOther);
-//  }
-//}
-
-//void CollisionComponent::Reset(CollisionComponent* notCollidingOther)
-//{
-//  if (notCollidingOther == overlappingCollider_ && isOverlappingWithSomething_ == true)
-//  {
-//    isOverlappingWithSomething_ = false;
-//    onExitOverlap_.Broadcast(notCollidingOther);
-//    overlappingCollider_ = nullptr;
-//    collisionOccurence_.SetValid(false);
-//  }
-//}
-
-//bool CollisionComponent::IsOverlapping()
-//{
-  //return isOverlappingWithSomething_;
-//}
-
-//CollisionComponent* CollisionComponent::GetOverlappingCollider()
-//{
-//  return overlappingCollider_;
-//}
-
-//void CollisionComponent::SetCollisionOccurence(CollisionOccurence newCollisionOccurence)
-//{
-//  collisionOccurence_ = newCollisionOccurence;
-//}
-
-//CollisionOccurence& CollisionComponent::GetCollisionOccurence()
-//{
-//  return collisionOccurence_;
-//}
-
 SquareCollisionProfile::SquareCollisionProfile()
 {
 }
@@ -157,14 +115,19 @@ void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
   float overlap = std::numeric_limits<float>::max();
   glm::vec2 smallestAxis;
 
+  //sat can return right when an axis is found that it doesnt collide on.
+
   //in preperation for a collision
   CollisionOccurence collisionOccurence(true);
 
   //cehcks the first objects axis to inspect collisoin status.
   CollisionOccurence::CollisionStatus collisionStatus = PerformAxisProjection(axisA, meshA, meshB, overlap, smallestAxis);
 
-  //checks all object b axis if a collision still has not been detected
-  collisionStatus = PerformAxisProjection(axisB, meshA, meshB, overlap, smallestAxis);
+  if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
+  {
+    //checks all object b axis if a collision still has not been detected
+    collisionStatus = PerformAxisProjection(axisB, meshA, meshB, overlap, smallestAxis);
+  }
 
   //if no collision occurred then it constructs the collision occurence in a different way and then passes it on to both game objects.
   if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING)

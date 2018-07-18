@@ -103,7 +103,7 @@ Mesh::Projection Mesh::project(const glm::vec2& lineToProjectOn)
   float min = project(GetVertPos(TOP_LEFT, matrix), lineToProjectOn);
   float max = min;
 
-  for (int i = 0; i < 4; i++)
+  for (int i = 1; i < 4; i++)
   {
     float projectionPoint = project(GetVertPos((MeshCorner)i, matrix), lineToProjectOn);
     if (projectionPoint < min)

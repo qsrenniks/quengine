@@ -7,17 +7,22 @@
 
 #include <random>
 
+std::string TileGameObject::TileGameObjectName = "TileGameObject";
+
 TileGameObject::TileGameObject()
+  : IGameObject(TileGameObjectName)
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 0.0f, 1.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
   AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, true));
-  //AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new CollisionResponse());
+  //AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new DebugResponse());
 
   collision_->onEnterOverlap_.AddFunction(this, &TileGameObject::OnOverlapEnter);
   collision_->onExitOverlap_.AddFunction(this, &TileGameObject::OnOverlapExit);
 
+  //physics_->SetRotationalVelocity(45.0f);
   GetTransform().SetScale({ 0.5f, 0.5f });
+  //GetTransform().SetRotation(45.0f);
 }
 
 TileGameObject::~TileGameObject()

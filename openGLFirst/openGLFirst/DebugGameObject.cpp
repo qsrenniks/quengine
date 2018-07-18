@@ -13,14 +13,19 @@
 //engine commands
 #include "EngineCmder.h"
 
+std::string DebugGameObject::DebugGameObjectName = "DebugGameObject";
+
 DebugGameObject::DebugGameObject()
+  : IGameObject(DebugGameObjectName)
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
   AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, false, 1.0f, 0.0f, 1.0f));
+  //AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new DebugResponse());
    
   //physics_->SetAcceleration(PhysicsComponent::Gravity);
   GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
+  //GetTransform().SetPosition(glm::vec2(-0.30f, 0.15f));
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
@@ -38,7 +43,7 @@ DebugGameObject::~DebugGameObject()
 }
 
 IGameObject* DebugGameObject::Clone()
-{
+{ 
   return new DebugGameObject();
 }
 

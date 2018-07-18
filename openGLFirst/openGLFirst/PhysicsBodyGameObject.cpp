@@ -5,11 +5,14 @@
 #include "SpriteComponent.h"
 
 
+std::string PhysicsBodyGameObject::PhysicsBodyGameObjectName = "PhysicsBodyGameObject";
+
 PhysicsBodyGameObject::PhysicsBodyGameObject()
+  : IGameObject(PhysicsBodyGameObjectName)
 {
   AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
   AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, false, 1.0f, 1.0f, 0.2f));
+  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new PhysicalResponse(physics_, false, 1.0f, 1.0f, 0.1f));
 
   collision_->onUpdateOverlap_.AddFunction(this, &PhysicsBodyGameObject::OnCollisionUpdate);
 

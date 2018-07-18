@@ -12,7 +12,7 @@ Transform::Transform()
   , scale_(1.0f, 1.0f)
   , fullTransform_(1.0f)
 {
-  RecalculateUpAndRightVectors();
+  //RecalculateUpAndRightVectors();
 }
 
 
@@ -30,7 +30,7 @@ void Transform::SetPosition(glm::vec2 newPosition)
 void Transform::SetRotation(float newRotation)
 {
   rotation_ = glm::radians(newRotation);
-  RecalculateUpAndRightVectors();
+  //RecalculateUpAndRightVectors();
   isDirty = true;
 }
 
@@ -40,15 +40,15 @@ void Transform::SetScale(glm::vec2 newScale)
   isDirty = true;
 }
 
-const glm::vec2& Transform::GetUpVector() const
-{
-  return relativeUpVector_;
-}
-
-const glm::vec2& Transform::GetRightVector() const
-{
-  return relativeRightVector_;
-}
+//const glm::vec2& Transform::GetUpVector() const
+//{
+//  return relativeUpVector_;
+//}
+//
+//const glm::vec2& Transform::GetRightVector() const
+//{
+//  return relativeRightVector_;
+//}
 
 glm::vec2& Transform::GetPosition()
 {
@@ -75,6 +75,8 @@ glm::mat4& Transform::BuildTransform()
     auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale_, 0.0f));
 
     fullTransform_ = translation * rotation * scale ;
+    //fullTransform_ = scale * translation * rotation;
+    //fullTransform_ = rotation * scale * translation;
 
     isDirty = false;
   }
@@ -92,11 +94,11 @@ glm::vec2 Transform::GetInstantVelocity()
 //  return oldPosition_;
 //}
 
-void Transform::RecalculateUpAndRightVectors()
-{
-  glm::vec3 up(0.0f, 1.0f, 0.0f);
-  relativeUpVector_ = glm::rotate(up, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
-  
-  glm::vec3 right(1.0f, 0.0f, 0.0f);
-  relativeRightVector_ = glm::rotate(right, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
-}
+//void Transform::RecalculateUpAndRightVectors()
+//{
+//  glm::vec3 up(0.0f, 1.0f, 0.0f);
+//  relativeUpVector_ = glm::rotate(up, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
+//  
+//  glm::vec3 right(1.0f, 0.0f, 0.0f);
+//  relativeRightVector_ = glm::rotate(right, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
+//}

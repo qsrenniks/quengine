@@ -36,11 +36,13 @@ public:
 private:
   glm::vec2 velocity_;
   glm::vec2 acceleration_;
-  float rotationalVelocity_;
 
-  float inverseMass_; 
+  float rotationalVelocity_;
+  
+  //float mass_ = 1.0f;
+  //float friction_ = 1.0f;
+  //float bounce_ = 1.0f;
 
   bool isStatic_ = false;
-
   bool frozen_ = false;
 };

@@ -2,5 +2,8 @@
   "Move Up": ["W"],
   "Move Left": ["A"],
   "Move Down": ["S"],
-  "Move Right": ["D"]
+  "Move Right": ["D"],
+  "Screen 1": ["1"],
+  "Screen 2": ["2"],
+  "Screen 3": ["3"]
 }

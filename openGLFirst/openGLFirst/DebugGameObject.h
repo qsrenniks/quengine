@@ -8,6 +8,10 @@ class CollisionComponent;
 
 class DebugGameObject : public IGameObject
 {
+public: //public vars
+
+  static std::string DebugGameObjectName;
+
 public:
   DebugGameObject();
   virtual ~DebugGameObject();
