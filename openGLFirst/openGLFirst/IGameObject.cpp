@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "IGameObject.h"
 #include "Engine.h"
+#include "SpriteComponent.h"
 
-IGameObject::IGameObject(const std::string& objectName)
-  : objectName_(objectName)
+IGameObject::IGameObject()
 {
+  sprite_ = new SpriteComponent("vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f }, 0, 1.0f, 1.0f);
+  sprite_->Parent(this);
+  sprite_->Register();
 }
 
 IGameObject::~IGameObject()
@@ -41,9 +44,9 @@ Transform& IGameObject::GetTransform()
   return transform_;
 }
 
-const std::string& IGameObject::GetObjectName()
+SpriteComponent* IGameObject::GetSpriteComponent()
 {
-  return objectName_;
+  return sprite_;
 }
 
 delegate<void(float)>& IGameObject::GetComponentUpdateList()
@@ -55,13 +58,3 @@ delegate<void(void)>& IGameObject::GetDrawList()
 {
   return componentDrawList_;
 }
-
-//bool CollisionOccurence::IsValid()
-//{
-//  return isValid_;
-//}
-
-//void CollisionOccurence::SetValid(bool validity)
-//{
-//  isValid_ = validity;
-//}

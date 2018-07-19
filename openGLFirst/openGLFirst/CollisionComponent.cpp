@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "CollisionOccurence.h"
 #include "PhysicsComponent.h"
+#include "RigidBodyGameObject.h"
 
 CollisionComponent::CollisionComponent(CollisionProfile* profile/*, CollisionResponse* collisionResponse*/)
   : collisionProfile_(profile)
@@ -19,8 +20,8 @@ CollisionComponent::CollisionComponent(CollisionProfile* profile/*, CollisionRes
 
 CollisionComponent::~CollisionComponent()
 {
-  GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
-  sys->RemoveCollisonComponent(this);
+  //GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
+  //sys->RemoveCollisonComponent(this);
 
   delete collisionProfile_;
   //delete collisionResponse_;
@@ -39,13 +40,13 @@ void CollisionComponent::Draw()
 
 }
 
-void CollisionComponent::Parent(IGameObject* parent)
-{
-  IComponent::Parent(parent);
-
-  GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
-  sys->AddCollisionComponent(this);
-} 
+//void CollisionComponent::Parent(IGameObject* parent)
+//{
+//  IComponent::Parent(parent);
+//
+//  GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
+//  sys->AddCollisionComponent(this);
+//} 
 
 void CollisionComponent::Register()
 {
@@ -61,7 +62,7 @@ void CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider) cons
   collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_);
 }
 
-void CollisionComponent::InformOfCollision(CollisionOccurence collisionOccurence)
+void CollisionComponent::InformOfCollision(const CollisionOccurence& collisionOccurence)
 {
   // this function keeps track of collision state on the object.
   // this function is also responsible for calling the overlap event methods on the collision component
@@ -91,14 +92,22 @@ void CollisionComponent::InformOfCollision(CollisionOccurence collisionOccurence
 //  return collisionResponse_;
 //}
 
-SquareCollisionProfile::SquareCollisionProfile()
+PolygonalCollisionProfile::PolygonalCollisionProfile()
 {
 }
 
-void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
+void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
 {
-  SpriteComponent* spriteA = collisionComponent_->GetParent()->GetComponent<SpriteComponent>();
-  SpriteComponent* spriteB = otherProfile->GetCollisionComponent()->GetParent()->GetComponent<SpriteComponent>();
+
+  //collision components are always parented to rigid body game objects. 
+  //if these are ever null a major error has occurred
+  RigidBodyGameObject* objectA = dynamic_cast<RigidBodyGameObject*>(collisionComponent_->GetParent());
+  RigidBodyGameObject* objectB = dynamic_cast<RigidBodyGameObject*>(otherProfile->GetCollisionComponent()->GetParent());
+
+  assert(objectA != nullptr && objectB != nullptr);
+
+  SpriteComponent* spriteA = objectA->GetComponent<SpriteComponent>();
+  SpriteComponent* spriteB = objectB->GetComponent<SpriteComponent>();
 
   //get meshes
   Mesh& meshA = spriteA->GetMesh();
@@ -133,7 +142,7 @@ void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
   //if no collision occurred then it constructs the collision occurence in a different way and then passes it on to both game objects.
   if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING)
   {
-    collisionOccurence.ConstructNonCollisionOccurence(collisionComponent_, otherProfile->GetCollisionComponent(), collisionStatus);
+    collisionOccurence.ConstructNonCollisionOccurence(objectA, objectB, collisionStatus);
   } 
   else if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
   {
@@ -148,11 +157,14 @@ void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
 
     //before the collision occurence is documented broadcast the events to both collision game objects.
     collisionOccurence.mtv_ = mtv;
-    collisionOccurence.halfMtv_ = mtv / 2.0f;
+    glm::vec2 halfMtv_ = mtv / 2.0f;
+
+    collisionOccurence.mtv_AFROMB = -halfMtv_;
+    collisionOccurence.mtv_BFROMA = halfMtv_;
 
     collisionOccurence.collisionStatus_ = collisionStatus;
-    collisionOccurence.objectA_ = collisionComponent_;
-    collisionOccurence.objectB_ = otherProfile->GetCollisionComponent();
+    collisionOccurence.objectA_ = objectA;
+    collisionOccurence.objectB_ = objectB;
 
     //TODO: the engine collision resolution system is only notified of a valid COLLISION occurence event. Maybe it should be notified about all? colliding or non-colliding
     Engine::Instance()->GetGameObjectSystem()->AddCollisionOccurence(collisionOccurence);
@@ -162,7 +174,7 @@ void SquareCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfi
   otherProfile->GetCollisionComponent()->InformOfCollision(collisionOccurence);
 }
 
-CollisionOccurence::CollisionStatus SquareCollisionProfile::PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
+CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
 {
   for (glm::vec2& line : axisA)
   {

@@ -16,6 +16,8 @@ public:
   virtual void Draw() override;
 
   Mesh& GetMesh();
+  
+  void SetColor(const glm::vec4& color);
 
 private:
   Mesh spriteMesh_;

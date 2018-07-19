@@ -4,7 +4,7 @@
 
 class CollisionComponent;
 class PhysicsComponent;
-
+class RigidBodyGameObject;
 //
 // This class is created in the event of a collision in the update loop. 
 // if a collision is detected this class is created then pushed onto the gameobjectsystem to later be resolved
@@ -17,28 +17,31 @@ public:
   CollisionOccurence(bool isValid = false)
     : collisionStatus_(CollisionStatus::NOT_COLLIDING)
     , mtv_(0.0f)
-    , halfMtv_(0.0f)
+    //, halfMtv_(0.0f)
     , isValid_(isValid)
   {
   }
 
-  void ConstructNonCollisionOccurence(CollisionComponent* objectA, CollisionComponent* objectB, CollisionStatus collisionStatus);
+  void ConstructNonCollisionOccurence(RigidBodyGameObject* objectA, RigidBodyGameObject* objectB, CollisionStatus collisionStatus);
 
   //minimal translation vector to properlly resolve a collision
   glm::vec2 mtv_;
-  glm::vec2 halfMtv_;
+  glm::vec2 mtv_AFROMB;
+  glm::vec2 mtv_BFROMA;
+
+  //glm::vec2 halfMtv_;
   CollisionStatus collisionStatus_;
 
-  CollisionComponent* objectA_ = nullptr;
+  RigidBodyGameObject* objectA_ = nullptr;
 
-  CollisionComponent* objectB_ = nullptr;
+  RigidBodyGameObject* objectB_ = nullptr;
 
   bool IsValid();
   void SetValid(bool validity);
 
-  bool operator==(CollisionOccurence otherCollision) const;
+  bool operator==(const CollisionOccurence& otherCollision) const;
 
-  CollisionOccurence operator-();
+  //CollisionOccurence operator-();
 
   bool isResolved_ = false;
 

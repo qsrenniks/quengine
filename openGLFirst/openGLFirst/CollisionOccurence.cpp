@@ -4,7 +4,7 @@
 #include "Transform.h"
 #include "CollisionComponent.h"
 
-bool CollisionOccurence::operator==(CollisionOccurence otherCollision) const
+bool CollisionOccurence::operator==(const CollisionOccurence& otherCollision) const
 {
   if (objectA_ == otherCollision.objectA_ && objectB_ == otherCollision.objectB_)
   {
@@ -13,7 +13,7 @@ bool CollisionOccurence::operator==(CollisionOccurence otherCollision) const
   else return false;
 }
 
-void CollisionOccurence::ConstructNonCollisionOccurence(CollisionComponent* objectA, CollisionComponent* objectB, CollisionStatus collisionStatus)
+void CollisionOccurence::ConstructNonCollisionOccurence(RigidBodyGameObject* objectA, RigidBodyGameObject* objectB, CollisionStatus collisionStatus)
 {
   objectA_ = objectA;
   objectB_ = objectB;
@@ -23,12 +23,22 @@ void CollisionOccurence::ConstructNonCollisionOccurence(CollisionComponent* obje
   collisionStatus_ = collisionStatus;
 }
 
-CollisionOccurence CollisionOccurence::operator-()
+bool CollisionOccurence::IsValid()
 {
-  CollisionOccurence copy = *this;
-
-  copy.mtv_ *= -1.0f;
-  copy.halfMtv_ *= -1.0f;
-
-  return copy;
+  return isValid_;
 }
+
+void CollisionOccurence::SetValid(bool validity)
+{
+  isValid_ = validity;
+}
+
+//CollisionOccurence CollisionOccurence::operator-()
+//{
+//  CollisionOccurence copy = *this;
+//
+//  copy.mtv_ *= -1.0f;
+//  copy.halfMtv_ *= -1.0f;
+//
+//  return copy;
+//}

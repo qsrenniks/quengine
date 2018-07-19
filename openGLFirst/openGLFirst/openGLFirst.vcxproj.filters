@@ -76,6 +76,9 @@
     <Filter Include="Source Files\Game Objects\Transform">
       <UniqueIdentifier>{5a179636-8a3b-45e5-964f-49ea404a0499}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game Objects\Rigid Body Game Object">
+      <UniqueIdentifier>{5f7cc268-4c5b-41e7-8ab7-2b807f99992c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="CollisionResolution.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyGameObject.cpp">
+      <Filter>Source Files\Game Objects\Rigid Body Game Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="TextLibrary.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyGameObject.h">
+      <Filter>Source Files\Game Objects\Rigid Body Game Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

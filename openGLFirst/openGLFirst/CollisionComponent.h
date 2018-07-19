@@ -34,10 +34,10 @@ protected:
 // this currenlty should be renamed to polygonal collision profile since it will adapt to the shape of the mesh on the sprite component.
 // however it currenlty assumes the mesh is a square and only checks 4 verts. This should later be changed to account for meshes of all verts and shapes.
 //
-class SquareCollisionProfile : public CollisionProfile
+class PolygonalCollisionProfile : public CollisionProfile
 {
 public:
-  SquareCollisionProfile();
+  PolygonalCollisionProfile();
 
   virtual void IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 
@@ -59,17 +59,17 @@ public:
   virtual void Update(float dt) override;
   virtual void Draw() override;
 
-  virtual void Parent(IGameObject* parent) override;
+  //virtual void Parent(IGameObject* parent) override;
 
   virtual void Register() override;
 
   void IsCollidingWith(CollisionComponent* otherCollider) const;
 
-  delegate<void(CollisionOccurence otherCollider)> onEnterOverlap_;
-  delegate<void(CollisionOccurence otherCollider)> onUpdateOverlap_;
-  delegate<void(CollisionOccurence otherCollider)> onExitOverlap_;
+  delegate<void(const CollisionOccurence& otherCollider)> onEnterOverlap_;
+  delegate<void(const CollisionOccurence& otherCollider)> onUpdateOverlap_;
+  delegate<void(const CollisionOccurence& otherCollider)> onExitOverlap_;
 
-  void InformOfCollision(CollisionOccurence collisionStatus);
+  void InformOfCollision(const CollisionOccurence& collisionStatus);
 
   //CollisionResponse* GetCollisionResponse();
 

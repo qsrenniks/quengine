@@ -1,12 +1,12 @@
 #pragma once
-#include "IGameObject.h"
 #include "CollisionComponent.h"
+#include "RigidBodyGameObject.h"
 
 class SpriteComponent;
 class PhysicsComponent;
 class CollisionComponent;
 
-class DebugGameObject : public IGameObject
+class DebugGameObject : public RigidBodyGameObject
 {
 public: //public vars
 
@@ -16,7 +16,7 @@ public:
   DebugGameObject();
   virtual ~DebugGameObject();
 
-  virtual IGameObject* Clone() override;
+  //virtual IGameObject* Clone() override;
   virtual void Update(float dt) override;
 
   void WKeyPress();
@@ -28,13 +28,10 @@ public:
   //virtual CollisionOccurence GetCollisionOccurence() override;
 
 private:
-  SpriteComponent* sprite_;
-  PhysicsComponent* physics_;
-  CollisionComponent* collision_;
 
-  void OnCollisionUpdate(CollisionOccurence otherCollider);
-  void OnCollision(CollisionOccurence otherCollider);
-  void OnExitCollision(CollisionOccurence otherCollider);
+  void OnCollisionUpdate(const CollisionOccurence& otherCollider);
+  void OnCollision(const CollisionOccurence& otherCollider);
+  void OnExitCollision(const CollisionOccurence& otherCollider);
 protected:
 
 };

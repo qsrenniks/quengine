@@ -6,7 +6,8 @@
 class IGameObject;
 class CollisionComponent;
 class PhysicsComponent;
-//struct CollisionOccurence;
+struct CollisionOccurence;
+class RigidBodyGameObject;
 
 //
 // game object system definition
@@ -15,7 +16,7 @@ class GameObjectSystem : public IGameplaySystem
 {
 public:
   using GameObjectList = std::list<IGameObject*>;
-  using CollisionList = std::list<CollisionComponent*>;
+  using CollisionList = std::list<RigidBodyGameObject*>;
 
   GameObjectSystem();
 
@@ -45,10 +46,10 @@ public:
   void AddCollisionOccurence(const CollisionOccurence& occurence);
   //void RemoveCollisionOccurence();
   void AddGameObject(IGameObject* gameObject);
-  void AddCollisionComponent(CollisionComponent* collisionComponent);
+  void AddRigidBodyGameObject(RigidBodyGameObject* object);
 
   void DestroyGameObject(IGameObject*& gameObjectToDestroy);
-  void RemoveCollisonComponent(CollisionComponent* collisionComponent);
+  void RemoveCollisonComponent(RigidBodyGameObject* collisionComponent);
 
 private:
 
@@ -60,6 +61,6 @@ private:
 
   CollisionList collisionGameObjects_;
 
-  CollisionResolution collisionResolutionSystem_;
+  //CollisionResolution collisionResolutionSystem_;
   
 };

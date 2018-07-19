@@ -5,16 +5,16 @@
 #include "Delegate.h"
 #include "Transform.h"
 #include <string>
+
 struct CollisionOccurence;
+class SpriteComponent;
 
 class IGameObject
 {
 public:
 
-  IGameObject(const std::string& objectName);
+  IGameObject();
   virtual ~IGameObject();
-
-  //void AddComponent(IComponent *component);
 
   //Add Component
   //
@@ -48,12 +48,20 @@ public:
     return tempPtr;
   }
 
+  template<>
+  SpriteComponent* GetComponent<SpriteComponent>()
+  {
+    return sprite_;
+  }
+
   void UpdateGameObject(float dt);
   void DestroyGameObject();
   bool IsMarkedForDestroy();
-  virtual IGameObject* Clone() = 0;
+  //virtual IGameObject* Clone() = 0;
   virtual void Update(float dt) = 0;
   Transform& GetTransform();
+  SpriteComponent* GetSpriteComponent();
+
 
   delegate<void(float)>& GetComponentUpdateList();
   delegate<void(void)>& GetDrawList();
@@ -61,10 +69,13 @@ public:
   //virtual CollisionOccurence GetCollisionOccurence();
   const std::string& GetObjectName();
 
+protected:
+
+  Transform transform_;
+  SpriteComponent * sprite_;
+  //std::string objectName_;
 
 private:
-  
-  std::string objectName_;
 
   delegate<void(float)> componentUpdateList_;
   delegate<void(void)> componentDrawList_;
@@ -72,9 +83,6 @@ private:
   using ComponentList = std::vector<IComponent*>;
 
   ComponentList componentList_;
-
-  Transform transform_;
-  
   bool markForDestroy_ = false;
 };
 

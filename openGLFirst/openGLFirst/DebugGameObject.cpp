@@ -14,19 +14,15 @@
 //engine commands
 #include "EngineCmder.h"
 
-//std::string DebugGameObject::DebugGameObjectName = "DebugGameObject";
-
 DebugGameObject::DebugGameObject()
-  : IGameObject(TextLibrary::GameObjectNames::DebugGameObject)
 {
-  AddComponent<SpriteComponent>(sprite_, "vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 0.0f, 1.0f }, 0, 1.0f, 1.0f);
-  AddComponent<PhysicsComponent>(physics_);
-  AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile()/*, new PhysicalResponse(physics_, false, 1.0f, 0.0f, 1.0f)*/);
-  //AddComponent<CollisionComponent>(collision_, new SquareCollisionProfile(), new DebugResponse());
-   
-  //physics_->SetAcceleration(PhysicsComponent::Gravity);
+  sprite_->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
   GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
-  //GetTransform().SetPosition(glm::vec2(-0.30f, 0.15f));
+  physics_->SetAcceleration(PhysicsComponent::Gravity);
+
+  physics_->SetBounce(0.6f);
+  physics_->SetMass(1.0f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
@@ -43,52 +39,52 @@ DebugGameObject::~DebugGameObject()
 {
 }
 
-IGameObject* DebugGameObject::Clone()
-{ 
-  return new DebugGameObject();
-}
+//IGameObject* DebugGameObject::Clone()
+//{ 
+//  return new DebugGameObject();
+//}
 
 void DebugGameObject::Update(float dt)
 {
-  physics_->SetVelocity(glm::vec2( 0.0f, 0.0f ));
-  //physics_->GetVelocity().x = 0.0f;
+  //physics_->SetVelocity(glm::vec2( 0.0f, 0.0f ));
+  physics_->SetVelocityX(0);
 }
-
+#define SPEED 0.5f
 void DebugGameObject::WKeyPress()
 {
   glm::vec2 velo = physics_->GetVelocity();
-  physics_->SetVelocity({ velo.x, 1.0f });
+  physics_->SetVelocity({ velo.x, SPEED });
 }
 
 void DebugGameObject::SKeyPress()
 {
   glm::vec2 velo = physics_->GetVelocity();
-  physics_->SetVelocity({ velo.x, -1.0f });
+  physics_->SetVelocity({ velo.x, -SPEED });
 }
 
 void DebugGameObject::AKeyPress()
 {
   glm::vec2 velo = physics_->GetVelocity();
-  physics_->SetVelocity({  -1.0f, velo.y});
+  physics_->SetVelocity({  -SPEED, velo.y});
 }
 
 void DebugGameObject::DKeyPress()
 {
    glm::vec2 velo = physics_->GetVelocity();
-  physics_->SetVelocity({  1.0f, velo.y });
+  physics_->SetVelocity({ SPEED, velo.y });
 }
 
 //physics sets the new position and then using the old mtv for the previous collision information it moves the object an insufficient amount given the velocity for the objects
-void DebugGameObject::OnCollisionUpdate(CollisionOccurence otherCollider)
+void DebugGameObject::OnCollisionUpdate(const CollisionOccurence& otherCollider)
 {
 }
 
-void DebugGameObject::OnCollision(CollisionOccurence otherCollider)
+void DebugGameObject::OnCollision(const CollisionOccurence& otherCollider)
 {
   //std::cout << "On Collision Enter" << std::endl;
 }
 
-void DebugGameObject::OnExitCollision(CollisionOccurence otherCollider)
+void DebugGameObject::OnExitCollision(const CollisionOccurence& otherCollider)
 {
   //std::cout << "On Collision Exit" << std::endl;  
 }

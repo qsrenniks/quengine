@@ -34,6 +34,11 @@ Mesh& SpriteComponent::GetMesh()
   return spriteMesh_;
 }
 
+void SpriteComponent::SetColor(const glm::vec4& color)
+{
+  color_ = color;
+}
+
 void SpriteComponent::Update(float dt)
 {
 }

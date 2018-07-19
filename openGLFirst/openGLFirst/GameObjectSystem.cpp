@@ -30,9 +30,9 @@ void GameObjectSystem::AddGameObject(IGameObject* gameObject)
   gameObjectRegistry_.push_back(gameObject);
 }
 
-void GameObjectSystem::AddCollisionComponent(CollisionComponent* collisionComponent)
+void GameObjectSystem::AddRigidBodyGameObject(RigidBodyGameObject* object)
 {
-  collisionGameObjects_.push_back(collisionComponent);
+  collisionGameObjects_.push_back(object);
 }
 
 void GameObjectSystem::DestroyGameObject(IGameObject*& gameObjectToDestroy)
@@ -44,7 +44,7 @@ void GameObjectSystem::DestroyGameObject(IGameObject*& gameObjectToDestroy)
   }
 }
 
-void GameObjectSystem::RemoveCollisonComponent(CollisionComponent* collisionComponent)
+void GameObjectSystem::RemoveCollisonComponent(RigidBodyGameObject* collisionComponent)
 {
   collisionGameObjects_.remove(collisionComponent);
 }
@@ -55,8 +55,8 @@ void GameObjectSystem::CalculateCollisions()
   {
     for (CollisionList::const_iterator otherItr = itr; otherItr != collisionGameObjects_.cend(); otherItr++)
     {
-      CollisionComponent* collComp = *itr;
-      CollisionComponent* otherComp = *otherItr;
+      RigidBodyGameObject* objectA = *itr;
+      RigidBodyGameObject* objectB = *otherItr;
 
       if (itr == otherItr)
       {
@@ -64,8 +64,7 @@ void GameObjectSystem::CalculateCollisions()
       }
 
       //collision check
-      collComp->IsCollidingWith(otherComp);
-
+      objectA->CheckCollisionAgainst(objectB);
     }
   }
 }
@@ -91,8 +90,8 @@ void GameObjectSystem::ResolveCollisions()
     //if they were both responding using the same mtv they would both move in the same direction causing some interesting collision problems
     //occurence.objectA_->GetCollisionResponse()->Respond(-occurence);
     //occurence.objectB_->GetCollisionResponse()->Respond(occurence);
-    collisionResolutionSystem_.DetermineResolution(occurence);
-
+    //collisionResolutionSystem_.DetermineResolution(occurence);
+    PhysicsComponent::RespondToPhysicalCollision(occurence);
 
     occurence.isResolved_ = true;
   };
@@ -124,13 +123,20 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.25f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.75f)); //up
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.25f));  //left
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));//down
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.25f));//down
   //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f));
-  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.2f, 0.5f));
+  SpawnGameObject<DebugGameObject>();
+  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(-0.055f, -0.25f));
+  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.055f, -0.25f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(-0.2f, 0.5f));
   //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(-0.2f, 0.5f));
    
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.25f, -0.25f));
-  SpawnGameObject<DebugGameObject>();
 }
 
 void GameObjectSystem::Update(float dt)
