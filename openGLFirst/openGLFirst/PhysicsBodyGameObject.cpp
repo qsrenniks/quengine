@@ -11,8 +11,8 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
   sprite_->SetColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
   physics_->SetBounce(0.0f);
   //physics_->SetVelocityDecay(0.989f);
-  //physics_->SetAcceleration(PhysicsComponent::Gravity);
-  physics_->SetSimulatePhysics(false);
+  physics_->SetAcceleration(PhysicsComponent::Gravity);
+  //physics_->SetSimulatePhysics(false);
 
   //physics_->SetVelocity(glm::vec2(0.5f, -0.5f));
 

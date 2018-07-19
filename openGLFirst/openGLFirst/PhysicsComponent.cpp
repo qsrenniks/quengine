@@ -25,33 +25,20 @@ bool PhysicsComponent::GetSimulatePhysics()
   return simulatePhysics_;
 }
 
-//void PhysicsComponent::Draw()
-//{
-//
-//}
 
 void PhysicsComponent::Update(float dt)
 {
   if (simulatePhysics_ == false) return;
-  //maybe this instead returns a direction that velocity should be clamped to 
-  //if (GetParent()->PreventPhysics()) return; 
 
   Transform& transformComp = GetParent()->GetTransform();
 
   glm::vec2 translation{0};
-
-  //if (physicalProperties_.mass_ == 0.0f)
-  //{
-  //  acceleration_ = (1 / physicalProperties_.mass_) * velocity_;
-  //}
 
   velocity_ = velocity_ + (acceleration_ * dt);
 
   translation = (velocity_ * dt) + transformComp.GetPosition();
 
   transformComp.SetPosition(glm::vec2(translation));
-
-  //velocity_ *= physicalProperties_.velocityDecay_;
 
   float rotation = transformComp.GetRotation();
 
@@ -140,13 +127,6 @@ void PhysicsComponent::SetVelocityDecay(float velocityDecay)
 //static
 void PhysicsComponent::RespondToPhysicalCollision(CollisionOccurence& occurence)
 {
-  //do physics math here.
-
-  //auto mtvTranslation = [&](RigidBodyGameObject)
-  //{
-
-  //};
-
   auto mtvTranslation = [=](RigidBodyGameObject* object, const glm::vec2& mtv)
   {
     Transform& objectTransform = object->GetTransform();
@@ -158,14 +138,8 @@ void PhysicsComponent::RespondToPhysicalCollision(CollisionOccurence& occurence)
     objectTransform.SetPosition(objectOldPosition);
   };
 
-  //glm::vec2 mtv = occurence.mtv_ / 2.0f;
-  //mtvTranslation(occurence.objectA_, -mtv);
-  //mtvTranslation(occurence.objectB_, mtv);
-
   PhysicsComponent *objectAPhysics = occurence.objectA_->GetPhysicsComponent();
   PhysicsComponent *objectBPhysics = occurence.objectB_->GetPhysicsComponent();
-
-  //mtvTranslation(occurence.objectB_, occurence.mtv_);
 
   if (objectAPhysics->GetSimulatePhysics() == true && objectBPhysics->GetSimulatePhysics() == true)
   {
@@ -180,7 +154,6 @@ void PhysicsComponent::RespondToPhysicalCollision(CollisionOccurence& occurence)
   {
     mtvTranslation(occurence.objectA_, -occurence.mtv_);
   }
-
   
   glm::vec2 AVelocityFinal;
   glm::vec2 BVelocityFinal;
@@ -195,7 +168,6 @@ void PhysicsComponent::RespondToPhysicalCollision(CollisionOccurence& occurence)
 //this calculates the new velocity of the object on impact.
 glm::vec2 PhysicsComponent::CalculateEllasticCollision(const PhysicsComponent* physicsComponent, const glm::vec2& mtv)
 {
-
   glm::vec2 normalizedMTV;
   if (mtv.x == 0.0f && mtv.y == 0.0f)
   {

@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "IComponent.h"
+#include <vector>
 
 struct CollisionOccurence;
 
