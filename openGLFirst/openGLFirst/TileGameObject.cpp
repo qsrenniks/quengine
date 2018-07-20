@@ -8,15 +8,12 @@ TileGameObject::TileGameObject()
 {
   sprite_->SetColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
-  collision_->onEnterOverlap_.AddFunction(this, &TileGameObject::OnOverlapEnter);
-  collision_->onExitOverlap_.AddFunction(this, &TileGameObject::OnOverlapExit);
-
   //physics_->SetRotationalVelocity(45.0f);
   GetTransform().SetScale({ 0.5f, 0.5f });
 
   //GetPhysicsComponent()->Freeze();
   physics_->SetSimulatePhysics(false);
-  GetPhysicsComponent()->SetMass(100000);
+  GetPhysicsComponent()->SetMass(0.0f);
   //GetTransform().SetRotation(45.0f);
 }
 

@@ -29,7 +29,7 @@ public:
 
 private:
 
-  void OnCollisionUpdate(const CollisionOccurence& otherCollider);
+  //void OnCollisionUpdate(const CollisionOccurence& otherCollider);
   void OnCollision(const CollisionOccurence& otherCollider);
   void OnExitCollision(const CollisionOccurence& otherCollider);
 protected:

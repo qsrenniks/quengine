@@ -6,7 +6,8 @@
 
 bool CollisionOccurence::operator==(const CollisionOccurence& otherCollision) const
 {
-  if (objectA_ == otherCollision.objectA_ && objectB_ == otherCollision.objectB_)
+  if (objectA_ == otherCollision.objectA_ && objectB_ == otherCollision.objectB_
+      || objectA_ == otherCollision.objectB_ && objectB_ == otherCollision.objectA_ )
   {
     return true;
   }

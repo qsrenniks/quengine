@@ -62,45 +62,12 @@ void CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider) cons
   collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_);
 }
 
-void CollisionComponent::InformOfCollision(const CollisionOccurence& collisionOccurence)
-{
-  // this function keeps track of collision state on the object.
-  // this function is also responsible for calling the overlap event methods on the collision component
-  // if the state coming in is different then the stored state then state has changed and updates should be made.
-
-  if ((currentCollisionStatus_.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING || currentCollisionStatus_.collisionStatus_ == CollisionOccurence::CollisionStatus::TOUCHING)
-      && collisionOccurence.collisionStatus_ == CollisionOccurence::CollisionStatus::NOT_COLLIDING)
-  {
-    onExitOverlap_.Broadcast(collisionOccurence);
-  }
-  else if ((currentCollisionStatus_.collisionStatus_ == CollisionOccurence::CollisionStatus::NOT_COLLIDING || currentCollisionStatus_.collisionStatus_ == CollisionOccurence::CollisionStatus::TOUCHING)
-      && collisionOccurence.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING)
-  {
-    onEnterOverlap_.Broadcast(collisionOccurence);
-  }
-  //if they are both the same then state hasnt changed so broadcast the update delegate
-  else if (currentCollisionStatus_.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING && collisionOccurence.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING)
-  {
-    onUpdateOverlap_.Broadcast(collisionOccurence);
-  }
-
-  currentCollisionStatus_ = collisionOccurence;
-}
-
-//CollisionResponse* CollisionComponent::GetCollisionResponse()
-//{
-//  return collisionResponse_;
-//}
-
 PolygonalCollisionProfile::PolygonalCollisionProfile()
 {
 }
 
 void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
 {
-
-  //collision components are always parented to rigid body game objects. 
-  //if these are ever null a major error has occurred
   RigidBodyGameObject* objectA = dynamic_cast<RigidBodyGameObject*>(collisionComponent_->GetParent());
   RigidBodyGameObject* objectB = dynamic_cast<RigidBodyGameObject*>(otherProfile->GetCollisionComponent()->GetParent());
 
@@ -140,7 +107,7 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   }
 
   //if no collision occurred then it constructs the collision occurence in a different way and then passes it on to both game objects.
-  if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING)
+  if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING /*|| collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING*/)
   {
     collisionOccurence.ConstructNonCollisionOccurence(objectA, objectB, collisionStatus);
   } 
@@ -169,9 +136,6 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
     //TODO: the engine collision resolution system is only notified of a valid COLLISION occurence event. Maybe it should be notified about all? colliding or non-colliding
     Engine::Instance()->GetGameObjectSystem()->AddCollisionOccurence(collisionOccurence);
   }
-
-  collisionComponent_->InformOfCollision(collisionOccurence);
-  otherProfile->GetCollisionComponent()->InformOfCollision(collisionOccurence);
 }
 
 CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
@@ -186,7 +150,7 @@ CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjec
     //returns collision status
     CollisionOccurence::CollisionStatus collStatus = meshAProjected.IsOverlapping(meshBProjected);
 
-    if (collStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || collStatus == CollisionOccurence::CollisionStatus::TOUCHING)
+    if (collStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING /*|| collStatus == CollisionOccurence::CollisionStatus::TOUCHING*/)
     {
       return collStatus;
     }

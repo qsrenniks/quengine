@@ -12,7 +12,7 @@ class RigidBodyGameObject;
 struct CollisionOccurence
 {
 public:
-  enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, TOUCHING, INVALID };
+  enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, INVALID };
 
   CollisionOccurence(bool isValid = false)
     : collisionStatus_(CollisionStatus::NOT_COLLIDING)

@@ -65,19 +65,7 @@ public:
 
   void IsCollidingWith(CollisionComponent* otherCollider) const;
 
-  delegate<void(const CollisionOccurence& otherCollider)> onEnterOverlap_;
-  delegate<void(const CollisionOccurence& otherCollider)> onUpdateOverlap_;
-  delegate<void(const CollisionOccurence& otherCollider)> onExitOverlap_;
-
-  void InformOfCollision(const CollisionOccurence& collisionStatus);
-
-  //CollisionResponse* GetCollisionResponse();
-
 private:
-
-  CollisionOccurence currentCollisionStatus_;
-
-  //CollisionResponse* collisionResponse_ = nullptr;
 
   CollisionProfile* collisionProfile_ = nullptr;
 };

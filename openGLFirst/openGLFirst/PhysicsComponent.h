@@ -7,10 +7,12 @@ struct CollisionOccurence;
 
 struct PhysicalProperties
 {
+  float GetInverseMass() const;
+
   float mass_ = 1.0f;
   float friction_ = 1.0f;
   float bounce_ = 0.8f;
-  float velocityDecay_ = 0.95f;
+  float velocityDecay_ = 0.97f;
 };
 
 class PhysicsComponent : public IComponent 
@@ -53,9 +55,17 @@ public:
 
   static void RespondToPhysicalCollision(CollisionOccurence& occurence);
 
-  glm::vec2 CalculateEllasticCollision(const PhysicsComponent* physicsComponent, const glm::vec2& mtv);
+  glm::vec2 CalculateBounceVelocities(const PhysicsComponent* physicsComponent, const glm::vec2& mtv);
+
+  void CalculateTwoDEllasticCollision(const PhysicsComponent* physicsComponent, glm::vec2& veloOneFinal, glm::vec2& veloTwoFinal);
+
+  void AddAverageVelocity(const glm::vec2& vector);
 
 private:
+  
+  void ResetAverages();
+
+  int numberOfAverages_ = 1;
 
   glm::vec2 velocity_;
   glm::vec2 acceleration_;

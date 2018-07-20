@@ -14,7 +14,7 @@ public:
 
   //virtual CollisionOccurence GetCollisionOccurence() override;
 
-  void OnCollisionUpdate(const CollisionOccurence& otherCollider);
+  //void OnCollisionUpdate(const CollisionOccurence& otherCollider);
 
 private:
 
