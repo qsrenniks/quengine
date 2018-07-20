@@ -18,9 +18,9 @@ RigidBodyGameObject::~RigidBodyGameObject()
 {
 }
 
-void RigidBodyGameObject::CheckCollisionAgainst(RigidBodyGameObject* otherRigidBody)
+void RigidBodyGameObject::CheckCollisionAgainst(RigidBodyGameObject* otherRigidBody, CollisionOccurence& collOcc)
 {
-  collision_->IsCollidingWith(otherRigidBody->collision_);
+  collision_->IsCollidingWith(otherRigidBody->collision_, collOcc);
 }
 
 CollisionComponent* RigidBodyGameObject::GetCollisionComponent()

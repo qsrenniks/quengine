@@ -20,14 +20,10 @@ DebugGameObject::DebugGameObject()
   sprite_->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
   GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
-  //physics_->SetAcceleration(PhysicsComponent::Gravity);
-
+  physics_->SetAcceleration(PhysicsComponent::Gravity);
 
   physics_->SetBounce(0.0f);
-  physics_->SetMass(1.0f);
-  physics_->SetFriction(0.0f);
-  //physics_->SetVelocityY(-1.0f); 
-  physics_->SetVelocityDecay(0.8f);
+  physics_->SetVelocityDecay(0.9f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);

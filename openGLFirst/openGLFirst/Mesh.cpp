@@ -178,8 +178,8 @@ void Mesh::GetAxis(std::vector<glm::vec2>& axis, const glm::mat4& matrix)
 
 CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projection& otherProjections)
 {
-  bool lessThan = max_ <= otherProjections.min_;
-  bool greaterThan = min_ >= otherProjections.max_;
+  bool lessThan = max_ < otherProjections.min_;
+  bool greaterThan = min_ > otherProjections.max_;
 
   if (lessThan || greaterThan)
   {
@@ -187,10 +187,10 @@ CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projec
   }
 
   //
-  //if (nearlyEqual(max_, otherProjections.min_, 0.004f) || nearlyEqual(min_, otherProjections.max_, 0.004f))
-  //{
-  //  return CollisionOccurence::CollisionStatus::TOUCHING;
-  //}
+  if (glm::epsilonEqual(max_, otherProjections.min_, glm::epsilon<float>()) || glm::epsilonEqual(min_, otherProjections.max_, glm::epsilon<float>()))
+  {
+    return CollisionOccurence::CollisionStatus::NOT_COLLIDING;
+  }
   return CollisionOccurence::CollisionStatus::COLLIDING;
 }
 

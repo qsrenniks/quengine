@@ -14,10 +14,14 @@ public:
   RigidBodyGameObject();
   virtual ~RigidBodyGameObject();
 
-  void CheckCollisionAgainst(RigidBodyGameObject* otherRigidBody);
+  void CheckCollisionAgainst(RigidBodyGameObject* otherRigidBody, CollisionOccurence& collOcc);
 
   CollisionComponent* GetCollisionComponent();
   PhysicsComponent* GetPhysicsComponent();
+
+private:
+
+
 protected:
   PhysicsComponent * physics_;
   CollisionComponent *collision_;

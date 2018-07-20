@@ -57,16 +57,16 @@ void CollisionComponent::Register()
   parent->GetComponentUpdateList().AddFunction(this, &CollisionComponent::Update);
 }
 
-void CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider) const
+void CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc) const
 {
-  collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_);
+  collisionProfile_->IsProfileCollidingWith(otherCollider->collisionProfile_, collOcc);
 }
 
 PolygonalCollisionProfile::PolygonalCollisionProfile()
 {
 }
 
-void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
+void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile, CollisionOccurence& collOcc) const
 {
   RigidBodyGameObject* objectA = dynamic_cast<RigidBodyGameObject*>(collisionComponent_->GetParent());
   RigidBodyGameObject* objectB = dynamic_cast<RigidBodyGameObject*>(otherProfile->GetCollisionComponent()->GetParent());
@@ -95,7 +95,7 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   //sat can return right when an axis is found that it doesnt collide on.
 
   //in preperation for a collision
-  CollisionOccurence collisionOccurence(true);
+  //CollisionOccurence collisionOccurence(true);
 
   //cehcks the first objects axis to inspect collisoin status.
   CollisionOccurence::CollisionStatus collisionStatus = PerformAxisProjection(axisA, meshA, meshB, overlap, smallestAxis);
@@ -109,7 +109,7 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   //if no collision occurred then it constructs the collision occurence in a different way and then passes it on to both game objects.
   if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING /*|| collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING*/)
   {
-    collisionOccurence.ConstructNonCollisionOccurence(objectA, objectB, collisionStatus);
+    collOcc.ConstructNonCollisionOccurence(objectA, objectB, collisionStatus);
   } 
   else if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
   {
@@ -123,18 +123,18 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
     glm::vec2 mtv = smallestAxis * overlap;
 
     //before the collision occurence is documented broadcast the events to both collision game objects.
-    collisionOccurence.mtv_ = mtv;
+    collOcc.mtv_ = mtv;
     glm::vec2 halfMtv_ = mtv / 2.0f;
 
-    collisionOccurence.mtv_AFROMB = -halfMtv_;
-    collisionOccurence.mtv_BFROMA = halfMtv_;
+    collOcc.mtv_AFROMB = -halfMtv_;
+    collOcc.mtv_BFROMA = halfMtv_;
 
-    collisionOccurence.collisionStatus_ = collisionStatus;
-    collisionOccurence.objectA_ = objectA;
-    collisionOccurence.objectB_ = objectB;
+    collOcc.collisionStatus_ = collisionStatus;
+    collOcc.objectA_ = objectA;
+    collOcc.objectB_ = objectB;
 
     //TODO: the engine collision resolution system is only notified of a valid COLLISION occurence event. Maybe it should be notified about all? colliding or non-colliding
-    Engine::Instance()->GetGameObjectSystem()->AddCollisionOccurence(collisionOccurence);
+    //Engine::Instance()->GetGameObjectSystem()->AddCollisionOccurence(collisionOccurence);
   }
 }
 

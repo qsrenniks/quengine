@@ -8,13 +8,9 @@ TileGameObject::TileGameObject()
 {
   sprite_->SetColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
-  //physics_->SetRotationalVelocity(45.0f);
-  GetTransform().SetScale({ 0.5f, 0.5f });
-
-  //GetPhysicsComponent()->Freeze();
   physics_->SetSimulatePhysics(false);
+  GetTransform().SetScale({ 0.5f, 0.5f });
   GetPhysicsComponent()->SetMass(0.0f);
-  //GetTransform().SetRotation(45.0f);
 }
 
 TileGameObject::~TileGameObject()

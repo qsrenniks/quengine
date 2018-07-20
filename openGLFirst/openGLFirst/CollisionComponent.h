@@ -20,7 +20,7 @@ class CollisionProfile
 public:
 
   CollisionProfile();
-  virtual void IsProfileCollidingWith(CollisionProfile* otherProfile) const = 0;
+  virtual void IsProfileCollidingWith(CollisionProfile* otherProfile, CollisionOccurence& collOcc) const = 0;
 
   CollisionComponent* GetCollisionComponent();
   void SetCollisionComponent(CollisionComponent* thisCollider);
@@ -39,7 +39,7 @@ class PolygonalCollisionProfile : public CollisionProfile
 public:
   PolygonalCollisionProfile();
 
-  virtual void IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
+  virtual void IsProfileCollidingWith(CollisionProfile* otherProfile, CollisionOccurence& collOcc) const override;
 
   CollisionOccurence::CollisionStatus PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const;
 
@@ -63,7 +63,7 @@ public:
 
   virtual void Register() override;
 
-  void IsCollidingWith(CollisionComponent* otherCollider) const;
+  void IsCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc) const;
 
 private:
 

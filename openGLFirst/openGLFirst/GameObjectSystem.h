@@ -53,6 +53,8 @@ public:
 
 private:
 
+  void CalculateAndResolveCollisions();
+
   std::list<CollisionOccurence> collisionOccurences_;
 
   void CalculateCollisions();
