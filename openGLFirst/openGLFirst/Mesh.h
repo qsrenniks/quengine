@@ -26,9 +26,9 @@ public:
 
   void Draw();
   
-  glm::vec2 GetWidthHeight();
+  void GetWidthHeight(glm::vec2& widthHeight);
 
-  glm::vec2 GetVertPos(MeshCorner corner, const glm::mat4& matrix);
+  void GetVertPos(MeshCorner corner, const glm::mat4& matrix, glm::vec2& vertPosition);
 
   SpriteComponent* GetSpriteComponent();
 
@@ -41,15 +41,19 @@ public:
     glm::vec2 projection_;
   };
 
-  Projection project(const glm::vec2& lineToProjectOn);
+  void Project(const glm::vec2& lineToProjectOn, Projection& projection);
 
-  void GetAxis(std::vector<glm::vec2>& axis, const glm::mat4& matrix);
+  const std::vector<glm::vec2>& GetAxis();
 
+  void CalculateEdgeNormals();
 private:
 
-  float project(const glm::vec2& point, const glm::vec2& line) const;
+
+  float Project(const glm::vec2& point, const glm::vec2& line) const;
 
   SpriteComponent* spriteComponent_;
+
+  std::vector<glm::vec2> edgeNormals_;
 
   float width_;
   float halfWidth_;

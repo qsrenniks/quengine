@@ -5,15 +5,7 @@
 #include "Engine.h"
 #include <chrono>
 
-static GLFWwindow* window;
 //static Engine engine;
-
-static int frames = 0;
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-  glViewport(0, 0, width, height);
-}
 
 void processInput(GLFWwindow *window)
 {
@@ -23,54 +15,26 @@ void processInput(GLFWwindow *window)
   }
 }
 
-void initWindow()
-{
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-  window = glfwCreateWindow(900, 900, "LearnOpenGL", nullptr, nullptr);
-
-  if (window == nullptr)
-  {
-    std::cout << "Failed to create GLFW window" << std::endl;
-  }
-  glfwMakeContextCurrent(window);
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-  {
-    std::cout << "Failed to initialize GLAD" << std::endl;
-  }
-
-  glViewport(0, 0, 900, 900);
-
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-}
-
 int main()
 {
-  initWindow();
-
   //this starts the engine up and gets it ready to deal with input and things
-  Engine* engine = Engine::Instance(window);
+  Engine* engine = Engine::Instance();
   engine->Load();
 
-  float dt = 0.01667f;
-  while (!glfwWindowShouldClose(window))
+  while (!glfwWindowShouldClose(engine->GetWindow()))
   {
     // input
-    processInput(window);
+    processInput(engine->GetWindow());
 
     //rendering commands here
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     //this does a full game update
-    engine->Update(dt);
+    engine->Update(0.0f);
 
     //check and call events and swap the buffers
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(engine->GetWindow());
     glfwPollEvents();
   }
 

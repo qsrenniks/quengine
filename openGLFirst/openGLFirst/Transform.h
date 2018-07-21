@@ -8,21 +8,26 @@ public:
   Transform();
   ~Transform();
 
-  void SetPosition(glm::vec2 newPosition);
+  void SetPosition(glm::vec2& newPosition);
+  void SetPosition(glm::vec2&& newPosition);
+  void SetPosition(float x, float y);
+
   void SetRotation(float newRotation);
-  void SetScale(glm::vec2 newScale);
+
+  void SetScale(glm::vec2& newScale);
+  void SetScale(glm::vec2&& newScale);
+  void SetScale(float x, float y);
 
   //const glm::vec2& GetUpVector() const;
   //const glm::vec2& GetRightVector() const;
 
-  glm::vec2& GetPosition();
+  const glm::vec2& GetPosition() const;
 
   float GetRotation();
   glm::vec2& GetScale();
 
-  glm::mat4& BuildTransform();
+  const glm::mat4& BuildTransform();
 
-  glm::vec2 GetInstantVelocity();
 
 
 private:
@@ -31,10 +36,9 @@ private:
   //glm::vec2 relativeUpVector_;
   //glm::vec2 relativeRightVector_;
 
-  bool isDirty = true;
+  bool isDirty_ = true;
 
   glm::vec2 position_;
-  glm::vec2 oldPosition_;
 
   float rotation_;
   glm::vec2 scale_;

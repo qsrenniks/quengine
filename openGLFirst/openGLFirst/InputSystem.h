@@ -5,12 +5,14 @@
 #include "IGameplaySystem.h"
 #include "Delegate.h"
 
+struct GLFWwindow;
+
 class InputSystem : public IGameplaySystem
 {
 
 public:
 
-  InputSystem(struct GLFWwindow * window);
+  InputSystem();
   //for polymorphic destruction
   virtual ~InputSystem() = default;
 
@@ -18,31 +20,11 @@ public:
   virtual void Update(float dt) override;
   virtual void Unload() override;
 
-  //virtual void Draw() override;
+  void SetWindow(GLFWwindow * window);
 
-  void MoveCameraUp();
-  void MoveCameraDown();
-  void MoveCameraLeft();
-  void MoveCameraRight();
-
-  //template<typename T>
-  //void AddDelegateAction(std::string actionName, const T& instigatorObject, void (T::*objectAction)(void))
-  //{
-  //  DelegateAction delegateAction(instigatorObject, objectAction);
-
-  //  delegateFunctionMap_[actionName] = delegateAction;
-  //}
-
-  template<class UserClass>
-  void AddInputAction(std::string actionName, UserClass* instigatorObject, void (UserClass::*objectAction)(void))
-  {
-    delegateFunctionMap_[actionName].AddFunction(instigatorObject, objectAction);
-  }
-
-private:
   struct KeyActionPair
   {
-    KeyActionPair(unsigned int key, std::string actionName, bool consumeInput = false) 
+    KeyActionPair(unsigned int key, std::string actionName, bool consumeInput = false)
       : Key_(key)
       , ActionName_(actionName)
       , consumeInput_(consumeInput)
@@ -54,6 +36,25 @@ private:
     bool executeDelegate_;
     std::string ActionName_;
   };
+
+  template<class UserClass>
+  KeyActionPair& AddInputAction(std::string actionName, UserClass* instigatorObject, void (UserClass::*objectAction)(void))
+  {
+    delegateFunctionMap_[actionName].AddFunction(instigatorObject, objectAction);
+
+    auto findKeyActionPair = [&](const KeyActionPair& action) -> bool
+    { 
+      if (action.ActionName_ == actionName)
+      {
+        return true;
+      }
+      return false;
+    };
+
+    return *std::find_if(registeredInputs_.begin(), registeredInputs_.end(), findKeyActionPair);
+  }
+
+private:
 
   GLFWwindow* currentWindow_;
 

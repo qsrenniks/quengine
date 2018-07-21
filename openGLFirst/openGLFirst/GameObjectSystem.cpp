@@ -50,13 +50,18 @@ void GameObjectSystem::RemoveCollisonComponent(RigidBodyGameObject* collisionCom
   collisionGameObjects_.remove(collisionComponent);
 }
 
+void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
+{
+  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(mousePos);
+}
+
 void GameObjectSystem::CalculateAndResolveCollisions()
 {
-  const static int iterations = 4;
+  const static int iterations = 1;
   for (int i = 0; i < iterations; i++)
   {
     CalculateCollisions();
-    //ResolveCollisions();
+    ResolveCollisions();
   }
 }
 
@@ -82,8 +87,8 @@ void GameObjectSystem::CalculateCollisions()
 
       if (occ.IsValid() && occ.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING)
       {
-        PhysicsComponent::RespondToPhysicalCollision(occ);
-        //AddCollisionOccurence(occ);
+        //PhysicsComponent::RespondToPhysicalCollision(occ);
+        AddCollisionOccurence(occ);
       }
     }
   }
@@ -130,21 +135,23 @@ GameObjectSystem::~GameObjectSystem()
 
 void GameObjectSystem::Load()
 {
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.5f, 0.0f)); //right
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.5f)); //up
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-0.5f, 0.0f));  //left
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.5f));//down
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-1500.0f, 0.0f));  //left
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -1500.0f));//down
   SpawnGameObject<DebugGameObject>();
   
   //Double bounce problem
   //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(-0.055f, -0.25f));
   //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.055f, -0.25f));
 
-  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
-  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.1f));
-  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
-  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.1f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));
  
+  Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
+
 }
 
 void GameObjectSystem::Update(float dt)

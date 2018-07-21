@@ -83,11 +83,8 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   Transform& transformA = spriteA->GetParent()->GetTransform();
   Transform& transformB = spriteB->GetParent()->GetTransform();
 
-  std::vector<glm::vec2> axisA;
-  std::vector<glm::vec2> axisB;
-
-  meshA.GetAxis(axisA, transformA.BuildTransform());
-  meshB.GetAxis(axisB, transformB.BuildTransform());
+  const std::vector<glm::vec2>& axisA = meshA.GetAxis();
+  const std::vector<glm::vec2>& axisB = meshB.GetAxis();
 
   float overlap = std::numeric_limits<float>::max();
   glm::vec2 smallestAxis;
@@ -138,14 +135,14 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   }
 }
 
-CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
+CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
 {
-  for (glm::vec2& line : axisA)
+  for (const glm::vec2& line : axisA)
   {
-    line = glm::normalize(line);
-
-    Mesh::Projection meshAProjected = meshA.project(line);
-    Mesh::Projection meshBProjected = meshB.project(line);
+    Mesh::Projection meshAProjected;
+    Mesh::Projection meshBProjected;
+    meshA.Project(line, meshAProjected);
+    meshB.Project(line, meshBProjected);
 
     //returns collision status
     CollisionOccurence::CollisionStatus collStatus = meshAProjected.IsOverlapping(meshBProjected);

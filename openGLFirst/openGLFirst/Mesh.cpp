@@ -38,6 +38,8 @@ Mesh::Mesh(SpriteComponent* spriteComponent, float width, float height)
   glGenVertexArrays(1, &VAO_);
 
   glGenBuffers(1, &EBO_);
+
+  edgeNormals_.assign(4, glm::vec2(0.0f, 0.0f));
 }
 
 Mesh::~Mesh()
@@ -68,26 +70,33 @@ void Mesh::Draw()
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
-glm::vec2 Mesh::GetWidthHeight()
+void Mesh::GetWidthHeight(glm::vec2& widthHeight)
 {
-  return glm::vec2(width_, height_);
+  widthHeight.x = width_;
+  widthHeight.y = height_;
 }
 
-glm::vec2 Mesh::GetVertPos(MeshCorner corner, const glm::mat4& matrix)
+void Mesh::GetVertPos(MeshCorner corner, const glm::mat4& matrix, glm::vec2& vertPosition)
 {
   switch (corner)
   {
   case MeshCorner::TOP_LEFT:
-    return matrix * glm::vec4(glm::vec2(-halfWidth_, halfHeight_),0.0f,1.0f);
+    vertPosition = matrix * glm::vec4(-halfWidth_, halfHeight_, 0.0f, 1.0f);
+    break;
   case MeshCorner::TOP_RIGHT:
-    return matrix * glm::vec4(glm::vec2(halfWidth_, halfHeight_), 0.0f, 1.0f);
+    vertPosition = matrix * glm::vec4(halfWidth_, halfHeight_, 0.0f, 1.0f);
+    break;
   case MeshCorner::BOTTOM_LEFT:
-    return matrix * glm::vec4(glm::vec2(-halfWidth_, -halfHeight_), 0.0f, 1.0f);
+    vertPosition = matrix * glm::vec4(-halfWidth_, -halfHeight_, 0.0f, 1.0f);
+    break;
   case MeshCorner::BOTTOM_RIGHT:
-    return matrix * glm::vec4(glm::vec2(+halfWidth_, -halfHeight_), 0.0f, 1.0f);
+    vertPosition = matrix * glm::vec4(halfWidth_, -halfHeight_, 0.0f, 1.0f);
+    break;
+  default:
+    vertPosition.x = 0.0f;
+    vertPosition.y = 0.0f;
+    break;
   }
-
-  return glm::vec2();
 }
 
 SpriteComponent* Mesh::GetSpriteComponent()
@@ -95,48 +104,19 @@ SpriteComponent* Mesh::GetSpriteComponent()
   return spriteComponent_;
 }
 
-Mesh::Projection Mesh::project(const glm::vec2& lineToProjectOn)
+void Mesh::CalculateEdgeNormals()
 {
-  Transform& objTransform = spriteComponent_->GetParent()->GetTransform();
-  auto matrix = objTransform.BuildTransform();
+  glm::vec2 topLeft;
+  glm::vec2 topRight;
+  glm::vec2 bottomRight;
+  glm::vec2 bottomLeft;
+  
+  const glm::mat4& matrix = GetSpriteComponent()->GetParent()->GetTransform().BuildTransform();
 
-  float min = project(GetVertPos(TOP_LEFT, matrix), lineToProjectOn);
-  float max = min;
-
-  for (int i = 1; i < 4; i++)
-  {
-    float projectionPoint = project(GetVertPos((MeshCorner)i, matrix), lineToProjectOn);
-    if (projectionPoint < min)
-    {
-      min = projectionPoint;
-    }
-    else if (projectionPoint > max)
-    {
-      max = projectionPoint;
-    }
-  }
-
-  Projection projection;
-
-  projection.min_ = min;
-  projection.max_ = max;
-
-  projection.projection_ = glm::vec2(lineToProjectOn.x * min, lineToProjectOn.y * max);
-
-  return projection;
-}
-
-float Mesh::project(const glm::vec2& point, const glm::vec2& line) const
-{
-  return glm::dot(point, line);
-}
-
-void Mesh::GetAxis(std::vector<glm::vec2>& axis, const glm::mat4& matrix)
-{
-  glm::vec2 topLeft = GetVertPos(TOP_LEFT, matrix);
-  glm::vec2 topRight = GetVertPos(TOP_RIGHT, matrix);
-  glm::vec2 bottomRight = GetVertPos(BOTTOM_RIGHT, matrix);
-  glm::vec2 bottomLeft = GetVertPos(BOTTOM_LEFT, matrix);
+  GetVertPos(TOP_LEFT, matrix, topLeft);
+  GetVertPos(TOP_RIGHT, matrix, topRight);
+  GetVertPos(BOTTOM_RIGHT, matrix, bottomRight);
+  GetVertPos(BOTTOM_LEFT, matrix, bottomLeft);
 
   glm::vec2 topEdge = topRight - topLeft;
   glm::vec2 rightEdge = bottomRight - topRight;
@@ -156,25 +136,56 @@ void Mesh::GetAxis(std::vector<glm::vec2>& axis, const glm::mat4& matrix)
   std::swap(leftEdge.x, leftEdge.y);
   leftEdge.x *= -1;
 
-  axis.push_back(topEdge);
-  axis.push_back(rightEdge);
-  axis.push_back(bottomEdge);
-  axis.push_back(leftEdge);
-
+  edgeNormals_[0] = glm::normalize(topEdge);
+  edgeNormals_[1] = glm::normalize(rightEdge);
+  edgeNormals_[2] = glm::normalize(bottomEdge);
+  edgeNormals_[3] = glm::normalize(leftEdge);
 }
 
-//bool nearlyEqual(float a, float b, float tolerance)
-//{
-//  if (a < 0 && b < 0 || a > 0 && b > 0)
-//  {
-//    if (glm::abs(glm::abs(a) - glm::abs(b)) <= tolerance)
-//    {
-//      return true;
-//    }
-//  }
-//
-//  return false;
-//}
+void Mesh::Project(const glm::vec2& lineToProjectOn, Projection& projection)
+{
+  Transform& objTransform = spriteComponent_->GetParent()->GetTransform();
+  auto matrix = objTransform.BuildTransform();
+
+  glm::vec2 vertPosition(0.0f, 0.0f);
+  GetVertPos(TOP_LEFT, matrix, vertPosition);
+
+  float min = Project(vertPosition, lineToProjectOn);
+  float max = min;
+
+  for (int i = 1; i < 4; i++)
+  {    
+    GetVertPos((MeshCorner)i, matrix, vertPosition);
+    float projectionPoint = Project(vertPosition, lineToProjectOn);
+
+    if (projectionPoint < min)
+    {
+      min = projectionPoint;
+    }
+    else if (projectionPoint > max)
+    {
+      max = projectionPoint;
+    }
+  }
+
+  projection.min_ = min;
+  projection.max_ = max;
+
+  projection.projection_ = glm::vec2(lineToProjectOn.x * min, lineToProjectOn.y * max);
+}
+
+float Mesh::Project(const glm::vec2& point, const glm::vec2& line) const
+{
+  return glm::dot(point, line);
+}
+
+const std::vector<glm::vec2>& Mesh::GetAxis()
+{
+  //there might be an optimization to do here. If and only if the object has been rotated do the edge normals ever change.
+  CalculateEdgeNormals();
+
+  return edgeNormals_;
+}
 
 CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projection& otherProjections)
 {

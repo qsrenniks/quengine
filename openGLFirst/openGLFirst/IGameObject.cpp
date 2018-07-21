@@ -5,7 +5,7 @@
 
 IGameObject::IGameObject()
 {
-  sprite_ = new SpriteComponent("vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f }, 0, 1.0f, 1.0f);
+  sprite_ = new SpriteComponent("vertexShader.vs", "fragmentShader.fs", glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f }, 0, 100.0f, 100.0f);
   sprite_->Parent(this);
   sprite_->Register();
 }
@@ -17,6 +17,11 @@ IGameObject::~IGameObject()
     delete comp;
   }
 }
+
+//void IGameObject::OnObjectCreated()
+//{
+//  onObjectCreated_.Broadcast();
+//}
 
 void IGameObject::UpdateGameObject(float dt)
 {

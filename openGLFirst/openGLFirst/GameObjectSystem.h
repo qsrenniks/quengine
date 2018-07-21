@@ -51,6 +51,8 @@ public:
   void DestroyGameObject(IGameObject*& gameObjectToDestroy);
   void RemoveCollisonComponent(RigidBodyGameObject* collisionComponent);
 
+  void OnMouseClick(glm::vec2 mousePos);
+
 private:
 
   void CalculateAndResolveCollisions();

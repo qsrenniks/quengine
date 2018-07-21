@@ -9,7 +9,7 @@ TileGameObject::TileGameObject()
   sprite_->SetColor(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
   physics_->SetSimulatePhysics(false);
-  GetTransform().SetScale({ 0.5f, 0.5f });
+  GetTransform().SetScale({ 10.0f, 10.0f });
   GetPhysicsComponent()->SetMass(0.0f);
 }
 

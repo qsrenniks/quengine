@@ -54,6 +54,8 @@ public:
     return sprite_;
   }
 
+  //void OnObjectCreated();
+
   void UpdateGameObject(float dt);
   void DestroyGameObject();
   bool IsMarkedForDestroy();
@@ -65,20 +67,17 @@ public:
 
   delegate<void(float)>& GetComponentUpdateList();
   delegate<void(void)>& GetDrawList();
-
-  //virtual CollisionOccurence GetCollisionOccurence();
-  const std::string& GetObjectName();
-
+  //delegate<void(void)>& GetOnObjectCreatedList();
 protected:
 
   Transform transform_;
   SpriteComponent * sprite_;
-  //std::string objectName_;
 
 private:
 
   delegate<void(float)> componentUpdateList_;
   delegate<void(void)> componentDrawList_;
+  //delegate<void(void)> onObjectCreated_;
 
   using ComponentList = std::vector<IComponent*>;
 

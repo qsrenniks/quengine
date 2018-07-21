@@ -19,14 +19,17 @@ DebugGameObject::DebugGameObject()
 {
   sprite_->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-  GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
+  GetTransform().SetScale(0.5f, 0.5f);
   physics_->SetAcceleration(PhysicsComponent::Gravity);
 
+  //GetTransform().SetPosition()
+
   physics_->SetBounce(0.0f);
-  physics_->SetVelocityDecay(0.9f);
+  physics_->SetVelocityDecay(0.95f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
-  inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
+  auto& a = inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
+  a.consumeInput_ = true;
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress);
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
@@ -39,31 +42,32 @@ DebugGameObject::~DebugGameObject()
 void DebugGameObject::Update(float dt)
 {
   //physics_->SetVelocityX(0);
+  //std::cout << GetTransform().GetPosition().x << ":" << GetTransform().GetPosition().y << std::endl;
+  Engine::Instance()->GetViewTransform().SetPosition(-GetTransform().GetPosition());
 }
 
-#define SPEED 0.5f
+constexpr static float jumpHeight = 250.0f;
+constexpr static float moveSpeed = 100.0f;
 void DebugGameObject::WKeyPress()
 {
-  glm::vec2 velo = physics_->GetVelocity();
-  physics_->SetVelocity({ velo.x, SPEED });
+  physics_->SetVelocityY(jumpHeight);
 }
 
 void DebugGameObject::SKeyPress()
 {
-  glm::vec2 velo = physics_->GetVelocity(); 
-  physics_->SetVelocity({ velo.x, -SPEED });
+  //glm::vec2 velo = physics_->GetVelocity();
+  //physics_->SetVelocity({ velo.x, -moveSpeed });
+  physics_->SetVelocityY(-moveSpeed);
 }
 
 void DebugGameObject::AKeyPress()
 {
-  glm::vec2 velo = physics_->GetVelocity();
-  physics_->SetVelocity({  -SPEED, velo.y});
+  physics_->SetVelocityX(-moveSpeed);
 }
 
 void DebugGameObject::DKeyPress()
 {
-   glm::vec2 velo = physics_->GetVelocity();
-  physics_->SetVelocity({ SPEED, velo.y });
+  physics_->SetVelocityX(moveSpeed);
 }
 
 void DebugGameObject::OnCollision(const CollisionOccurence& otherCollider)

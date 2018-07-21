@@ -5,8 +5,7 @@
 #include "rapidjson/istreamwrapper.h"
 #include <fstream>
 
-InputSystem::InputSystem(GLFWwindow * window) 
-  : currentWindow_(window)
+InputSystem::InputSystem() 
 {
   //error handling
   std::ifstream fileStream(R"(ConfigFiles\inputs.json)");
@@ -36,16 +35,6 @@ void InputSystem::Load()
 void InputSystem::ExecuteDelegate(int i)
 {
   delegateFunctionMap_[registeredInputs_[i].ActionName_].Broadcast();
-
-  //auto& delegateVector = delegateFunctionMap_[registeredInputs_[i].ActionName_];
-
-  //delegateVector[i].broadcast();
-
-  //for (unsigned int i = 0; i < delegateVector.size(); i++)
-  //{
-  //  delegateVector[i].broadcast();
-  //}
-  
 }
 
 void InputSystem::Update(float dt)
@@ -79,24 +68,7 @@ void InputSystem::Unload()
 
 }
 
-static float dt = 0.0166667f;
-
-void InputSystem::MoveCameraUp()
+void InputSystem::SetWindow(GLFWwindow * window)
 {
-  Engine::Instance()->GetCameraTransform()[3].y += dt;
-}
-
-void InputSystem::MoveCameraDown()
-{
-  Engine::Instance()->GetCameraTransform()[3].y += -dt;
-}
-
-void InputSystem::MoveCameraLeft()
-{
-  Engine::Instance()->GetCameraTransform()[3].x += -dt;
-}
-
-void InputSystem::MoveCameraRight()
-{
-  Engine::Instance()->GetCameraTransform()[3].x += dt;
+  currentWindow_ = window;
 }

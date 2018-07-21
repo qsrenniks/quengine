@@ -20,24 +20,51 @@ Transform::~Transform()
 {
 }
 
-void Transform::SetPosition(glm::vec2 newPosition)
+void Transform::SetPosition(glm::vec2& newPosition)
 {
-  oldPosition_ = position_; 
   position_ = newPosition;
-  isDirty = true;
+
+  isDirty_= true;
+}
+
+void Transform::SetPosition(float x, float y)
+{
+  position_.x = x;
+  position_.y = y;
+
+  isDirty_ = true;
+}
+
+void Transform::SetPosition(glm::vec2&& newPosition)
+{
+  SetPosition(std::forward<glm::vec2&>(newPosition));
 }
 
 void Transform::SetRotation(float newRotation)
 {
   rotation_ = glm::radians(newRotation);
-  //RecalculateUpAndRightVectors();
-  isDirty = true;
+
+  isDirty_= true;
 }
 
-void Transform::SetScale(glm::vec2 newScale)
+void Transform::SetScale(glm::vec2& newScale)
 {
   scale_ = newScale;
-  isDirty = true;
+
+  isDirty_ = true;
+}
+
+void Transform::SetScale(float x, float y)
+{
+  scale_.x = x;
+  scale_.y = y;
+
+  isDirty_ = true;
+}
+
+void Transform::SetScale(glm::vec2&& newScale)
+{
+  SetScale(std::forward<glm::vec2&>(newScale));
 }
 
 //const glm::vec2& Transform::GetUpVector() const
@@ -50,7 +77,7 @@ void Transform::SetScale(glm::vec2 newScale)
 //  return relativeRightVector_;
 //}
 
-glm::vec2& Transform::GetPosition()
+const glm::vec2& Transform::GetPosition() const
 {
   return position_;
 }
@@ -65,40 +92,21 @@ glm::vec2& Transform::GetScale()
   return scale_;
 }
 
-glm::mat4& Transform::BuildTransform()
+const glm::mat4& Transform::BuildTransform()
 {
-  if (isDirty == true)
+  if (isDirty_ == true)
   {
 
     auto translation = glm::translate(glm::mat4(1.0f), glm::vec3(position_, 0.0f));
     auto rotation = glm::rotate(glm::mat4(1.0f), rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
-    auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale_, 0.0f));
+    auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale_, 1.0f));
 
     fullTransform_ = translation * rotation * scale ;
     //fullTransform_ = scale * translation * rotation;
     //fullTransform_ = rotation * scale * translation;
 
-    isDirty = false;
+    isDirty_ = false;
   }
 
   return fullTransform_;
 }
-
-glm::vec2 Transform::GetInstantVelocity()
-{
-  return position_ - oldPosition_;
-}
-
-//const glm::vec2& Transform::GetOldPosition()
-//{
-//  return oldPosition_;
-//}
-
-//void Transform::RecalculateUpAndRightVectors()
-//{
-//  glm::vec3 up(0.0f, 1.0f, 0.0f);
-//  relativeUpVector_ = glm::rotate(up, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
-//  
-//  glm::vec3 right(1.0f, 0.0f, 0.0f);
-//  relativeRightVector_ = glm::rotate(right, rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
-//}

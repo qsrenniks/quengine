@@ -11,6 +11,7 @@ SpriteComponent::SpriteComponent(const char *vertexShader, const char *fragmentS
   , shader_(vertexShader, fragmentShader)
   , color_(color)
 {
+
 }
 
 
@@ -22,8 +23,9 @@ void SpriteComponent::Draw()
 {
   shader_.use();
 
-  //shader_.setMat4("view", glm::inverse(Engine::Instance()->GetViewTransform()));
-  shader_.setMat4("transform", GetParent()->GetTransform().BuildTransform());
+  shader_.setMat4("projection", Engine::Instance()->GetOrthographicTransform());
+  shader_.setMat4("view", Engine::Instance()->GetViewTransform().BuildTransform());
+  shader_.setMat4("model", GetParent()->GetTransform().BuildTransform());
   shader_.setVec4("aColor", color_);
 
   spriteMesh_.Draw();

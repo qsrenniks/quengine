@@ -10,6 +10,7 @@
 
 #include "InputSystem.h"
 #include "GameObjectSystem.h"
+#include "Transform.h"
 //class InputSystem;
 //class GameObjectSystem;
 struct GLFWwindow;
@@ -22,8 +23,7 @@ public:
 
   static void Destroy();
 
-                          //current window only necessary for startup
-  static Engine* Instance(GLFWwindow* currentWindow = nullptr);
+  static Engine* Instance();
 
   void ShutDown();
 
@@ -33,10 +33,6 @@ public:
 
   void Update(float dt);
   
-  //TODO: Remove this from Engine and place in a more camera type system.
-  glm::mat4& GetCameraTransform();
-  glm::mat4& GetViewTransform();
-
   void SetWindow(GLFWwindow* window);
 
   GLFWwindow* GetWindow();
@@ -44,18 +40,32 @@ public:
   InputSystem* GetInputSystem();
   GameObjectSystem* GetGameObjectSystem();
 
+  void TogglePauseGame();
+  
+  const glm::vec2& GetMousePosition();
+
+  delegate<void(glm::vec2)> OnMousePress_;
+  delegate<void(glm::vec2)> OnMouseRelease_;
+  
+  Transform& GetViewTransform();
+  glm::mat4 GetOrthographicTransform();
 protected:
-  Engine(GLFWwindow* currentWindow);
+  Engine();
   ~Engine();
 
 private:
+  
+  int mouseState_ = GLFW_RELEASE;
+
+  Transform viewCamera_;
+
+  glm::vec2 mousePosition_;
+
+  bool isPaused_ = false;
 
   std::vector<ICommand*> commandStack_;
 
   static Engine* instance_;
-
-  glm::mat4 cameraTransform_;
-  glm::mat4 viewTransform_;
 
   GLFWwindow* currentWindow_;
 

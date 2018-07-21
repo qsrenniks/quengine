@@ -11,8 +11,11 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
   sprite_->SetColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
   physics_->SetAcceleration(PhysicsComponent::Gravity);
+  physics_->SetBounce(0.0f);
 
-  GetTransform().SetScale(glm::vec2(0.1f, 0.1f));
+  GetTransform().SetScale(glm::vec2(0.5f, 0.5f));
+  //physics_->SetRotationalVelocity(45.0f);
+
 }
 
 PhysicsBodyGameObject::~PhysicsBodyGameObject()

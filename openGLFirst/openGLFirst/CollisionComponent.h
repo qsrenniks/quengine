@@ -41,7 +41,7 @@ public:
 
   virtual void IsProfileCollidingWith(CollisionProfile* otherProfile, CollisionOccurence& collOcc) const override;
 
-  CollisionOccurence::CollisionStatus PerformAxisProjection(std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const;
+  CollisionOccurence::CollisionStatus PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const;
 
 private:
 

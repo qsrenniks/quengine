@@ -9,7 +9,7 @@
 #include <algorithm>
 
 //PhysicsConstants
-glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -1.0f);
+glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -300.);
 
 PhysicsComponent::PhysicsComponent()
   : velocity_(0.0f, 0.0f)

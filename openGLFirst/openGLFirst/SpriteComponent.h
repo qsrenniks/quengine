@@ -11,6 +11,7 @@ public:
   virtual ~SpriteComponent();
 
   //virtual void Draw() override;
+
   virtual void Update(float dt) override;
 
   virtual void Draw() override;
