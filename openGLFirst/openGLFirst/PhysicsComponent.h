@@ -4,11 +4,12 @@
 #include <vector>
 
 struct CollisionOccurence;
+struct ForceGenerator;
 
 struct PhysicalProperties
 {
   PhysicalProperties()
-    : velocityDecay_(1.0f, 1.0f)
+    : velocityDecay_(0.999f)
   {
   };
 
@@ -16,15 +17,12 @@ struct PhysicalProperties
 
   float mass_ = 1.0f;
   float bounce_ = 0.8f;
-  glm::vec2 velocityDecay_;
+  float velocityDecay_;
 };
+
 
 class PhysicsComponent : public IComponent 
 {
-public: // constants
-
-  static glm::vec2 Gravity;
-
 public:
   PhysicsComponent();
 
@@ -37,12 +35,8 @@ public:
   virtual void Update(float dt) override;
   virtual void Draw() override;
 
-  void SetAcceleration(const glm::vec2& newAcceleration);
   const glm::vec2& GetAcceleration() const;
 
-  void SetVelocity(const glm::vec2& newVelocity);
-  void SetVelocityX(float x);
-  void SetVelocityY(float y);
   const glm::vec2& GetVelocity() const;
 
   float GetRotationalVelocity() const;
@@ -54,12 +48,33 @@ public:
   
   void SetMass(float mass);
   void SetBounce(float bounce);
-  void SetVelocityDecay(float x = 1.0f, float y = 1.0f);
+  void SetVelocityDecay(float x = 1.0f);
 
   static void RespondToPhysicalCollision(CollisionOccurence& occurence);
 
-private:
+  static void ResolveVelocities();
+
+  void AddForce(glm::vec2& force);
+  void ResetForces();
+
+  void AddImpulse(glm::vec2& impulse);
   
+  const glm::vec2& GetCurrentForce();
+
+  void GatherForceGenerators();
+
+  void AddForceGenerator(ForceGenerator* forceGenerator);
+private:
+  void SetAcceleration(const glm::vec2& newAcceleration);
+
+  void SetVelocity(const glm::vec2& newVelocity);
+  void SetVelocityX(float x);
+  void SetVelocityY(float y);  
+
+  std::vector<ForceGenerator*> forceGenerators_;
+
+  glm::vec2 forces_;
+
   glm::vec2 velocity_;
   glm::vec2 acceleration_;
 
@@ -69,4 +84,35 @@ private:
 
   bool simulatePhysics_ = true;
 
+};
+
+struct ForceGenerator
+{
+  virtual glm::vec2 GenerateForce() = 0;
+
+  PhysicsComponent* body_;
+};
+
+
+struct GravityForceGenerator : public ForceGenerator
+{
+  virtual glm::vec2 GenerateForce() override
+  {
+    return gravity * body_->GetPhysicsProperties().mass_;
+  }
+
+  glm::vec2 gravity = {0.0f, -15.0f};
+};
+
+struct PointForceGenerator : public ForceGenerator
+{
+  PointForceGenerator(float x = 0, float y = 0)
+    : pointToPull_(x, y)
+  {
+  }
+
+  virtual glm::vec2 GenerateForce() override;
+  
+
+  glm::vec2 pointToPull_ = { 0.0f, 0.0f };
 };

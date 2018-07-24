@@ -7,9 +7,9 @@
 #include <glm/gtx/vector_angle.hpp>
 #include "RigidBodyGameObject.h"
 #include <algorithm>
+#include "Engine.h"
 
 //PhysicsConstants
-glm::vec2 PhysicsComponent::Gravity = glm::vec2(0.0f, -300.);
 
 PhysicsComponent::PhysicsComponent()
   : velocity_(0.0f, 0.0f)
@@ -17,7 +17,6 @@ PhysicsComponent::PhysicsComponent()
   , rotationalVelocity_(0.0f)
 {
 }
-
 void PhysicsComponent::SetSimulatePhysics(bool simulate)
 {
   simulatePhysics_ = simulate;
@@ -32,23 +31,21 @@ void PhysicsComponent::Update(float dt)
 {
   if (simulatePhysics_ == false) return;
 
-  Transform& transformComp = GetParent()->GetTransform();
+  GatherForceGenerators();
 
-  glm::vec2 translation{0};
+  Transform& transform = GetParent()->GetTransform();
 
-  velocity_ = velocity_ + (acceleration_ * dt);
+  glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
 
-  translation = (velocity_ * dt) + transformComp.GetPosition();
+  transform.SetPosition(newPos);
 
-  transformComp.SetPosition(glm::vec2(translation));
+  velocity_ = velocity_ * glm::pow(physicalProperties_.velocityDecay_, dt) + acceleration_ * dt;
 
-  float rotation = transformComp.GetRotation();
+  acceleration_ = physicalProperties_.GetInverseMass() * forces_;
 
-  rotation += GetRotationalVelocity() * dt;
 
-  transformComp.SetRotation(rotation);
 
-  velocity_ *= physicalProperties_.velocityDecay_;
+  ResetForces();
 }
 
 void PhysicsComponent::Draw()
@@ -58,7 +55,7 @@ void PhysicsComponent::Draw()
 
 void PhysicsComponent::SetAcceleration(const glm::vec2& newAcceleration)
 {
-  acceleration_ = newAcceleration;
+  //acceleration_ = newAcceleration;
 }
 
 const glm::vec2& PhysicsComponent::GetAcceleration() const
@@ -122,10 +119,9 @@ void PhysicsComponent::SetBounce(float bounce)
   physicalProperties_.bounce_ = bounce;
 }
 
-void PhysicsComponent::SetVelocityDecay(float x, float y )
+void PhysicsComponent::SetVelocityDecay(float x )
 {
-  physicalProperties_.velocityDecay_.x = x;
-  physicalProperties_.velocityDecay_.y = y;
+  physicalProperties_.velocityDecay_ = x;
 }
 
 void PhysicsComponent::RespondToPhysicalCollision(CollisionOccurence& occurence)
@@ -133,49 +129,77 @@ void PhysicsComponent::RespondToPhysicalCollision(CollisionOccurence& occurence)
   PhysicsComponent *objectAPhysics = occurence.objectA_->GetPhysicsComponent();
   PhysicsComponent *objectBPhysics = occurence.objectB_->GetPhysicsComponent();
 
-  glm::vec2 AVelocityFinal = objectAPhysics->GetVelocity();
-  glm::vec2 BVelocityFinal = objectBPhysics->GetVelocity();
-
-  glm::vec2 rv = objectBPhysics->GetVelocity() - objectAPhysics->GetVelocity();
-
-  glm::vec2 normal = glm::normalize(occurence.mtv_);
-  if (glm::isnan(normal).x == 1.0f)
+  glm::vec2 relativeVelocity = objectAPhysics->GetVelocity();
+  if (objectBPhysics->GetPhysicsProperties().GetInverseMass() != 0.0f)
   {
-    normal = glm::vec2(0.0f, 0.0f);
+    relativeVelocity -= objectBPhysics->GetVelocity();
   }
+  float seperatingVelocity = glm::dot(relativeVelocity, occurence.mtv_);
 
-  float velAlongNormal = glm::dot(rv, normal);
-
-  if (velAlongNormal > 0)
+  if (seperatingVelocity > 0)
   {
+    //no work needs to be done they are not moving into each other
     return;
   }
 
-  float e = std::min(objectAPhysics->GetPhysicsProperties().bounce_, objectBPhysics->GetPhysicsProperties().bounce_);
+  float newSepVelocity = -seperatingVelocity * glm::length(occurence.mtv_);
+  float deltaVelocity = newSepVelocity - seperatingVelocity;
 
-  //bounce velocity mag
-  float bounceVeloMag = -(1 + e) * velAlongNormal;
-  bounceVeloMag /= (objectAPhysics->GetPhysicsProperties().GetInverseMass()) + (objectBPhysics->GetPhysicsProperties().GetInverseMass());
+  float totalInverseMass = objectAPhysics->GetPhysicsProperties().GetInverseMass();
+  if (objectBPhysics->GetPhysicsProperties().GetInverseMass() != 0.0f)
+  {
+    totalInverseMass += objectBPhysics->GetPhysicsProperties().GetInverseMass();
+  }
 
-  glm::vec2 impulse = bounceVeloMag * normal;
 
-  AVelocityFinal -= (objectAPhysics->GetPhysicsProperties().GetInverseMass()) * impulse;
-  BVelocityFinal += (objectBPhysics->GetPhysicsProperties().GetInverseMass()) * impulse;
 
-  const static float percent = 1.0f;
-  glm::vec2 correction = (glm::length(occurence.mtv_) / (objectAPhysics->GetPhysicsProperties().GetInverseMass() + objectBPhysics->GetPhysicsProperties().GetInverseMass())) * percent * normal;
+  glm::vec2 AImpulse = objectAPhysics->GetPhysicsProperties().mass_ * objectAPhysics->GetVelocity();
+  glm::vec2 BImpulse = objectBPhysics->GetPhysicsProperties().mass_ * objectBPhysics->GetVelocity();
+  
+  //calculate seperating velocity;
 
-  glm::vec2 positionA = objectAPhysics->GetParent()->GetTransform().GetPosition();
-  glm::vec2 positionB = objectBPhysics->GetParent()->GetTransform().GetPosition();
 
-  positionA -= objectAPhysics->GetPhysicsProperties().GetInverseMass() * correction;
-  positionB += objectBPhysics->GetPhysicsProperties().GetInverseMass() * correction;
+  objectAPhysics->AddImpulse(AImpulse);
+  objectBPhysics->AddImpulse(BImpulse);
+}
 
-  objectAPhysics->GetParent()->GetTransform().SetPosition(positionA);
-  objectAPhysics->SetVelocity(AVelocityFinal);
+void PhysicsComponent::ResolveVelocities()
+{
+  //do stuff
+}
 
-  objectBPhysics->GetParent()->GetTransform().SetPosition(positionB);
-  objectBPhysics->SetVelocity(BVelocityFinal);
+void PhysicsComponent::AddForce(glm::vec2& force)
+{
+  forces_ += force;
+}
+
+void PhysicsComponent::ResetForces()
+{
+  forces_ = glm::vec2(0.0f, 0.0f);
+}
+
+void PhysicsComponent::AddImpulse(glm::vec2& impulse)
+{
+  velocity_ = velocity_ + physicalProperties_.GetInverseMass()*impulse;
+}
+
+const glm::vec2& PhysicsComponent::GetCurrentForce()
+{
+  return forces_;
+}
+
+void PhysicsComponent::GatherForceGenerators()
+{
+  for (ForceGenerator* gen : forceGenerators_)
+  {
+    forces_ += gen->GenerateForce();
+  }
+}
+
+void PhysicsComponent::AddForceGenerator(ForceGenerator* forceGenerator)
+{
+  forceGenerator->body_ = this;
+  forceGenerators_.push_back(forceGenerator);
 }
 
 float PhysicsComponent::GetRotationalVelocity() const
@@ -193,4 +217,13 @@ float PhysicalProperties::GetInverseMass() const
   {
     return 1 / mass_;
   }
+}
+
+glm::vec2 PointForceGenerator::GenerateForce()
+{
+  Transform& transform = body_->GetParent()->GetTransform();
+
+  //pointToPull_ = Engine::Instance()->GetMousePosition();
+
+  return pointToPull_ - transform.GetPosition();
 }

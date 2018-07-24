@@ -46,9 +46,6 @@
     <Filter Include="Source Files\Systems\Game Object System">
       <UniqueIdentifier>{62c0f9ef-e3e5-47b8-ae84-8ef6b8dd5ba6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems\Interface">
-      <UniqueIdentifier>{81dcc77a-f904-4cc0-bb7a-97982638bc88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Components\Physics Component">
       <UniqueIdentifier>{8cbfafa3-3a06-447c-9ecd-59b4731ad3d1}</UniqueIdentifier>
     </Filter>
@@ -57,9 +54,6 @@
     </Filter>
     <Filter Include="Source Files\Components\Transform Component\Transform Type">
       <UniqueIdentifier>{72c67f17-0306-4874-9b94-48e1b737075a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Systems\Game State System">
-      <UniqueIdentifier>{3868ba49-1162-4441-a674-334bcd6c4574}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Commands">
       <UniqueIdentifier>{f038fdc9-0e54-4d5f-a3f7-d3ea73696c64}</UniqueIdentifier>
@@ -78,6 +72,15 @@
     </Filter>
     <Filter Include="Source Files\Game Objects\Rigid Body Game Object">
       <UniqueIdentifier>{5f7cc268-4c5b-41e7-8ab7-2b807f99992c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Debug Logging System">
+      <UniqueIdentifier>{7985153c-2fcf-48a5-aa61-72f6381f993c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\System Inteface">
+      <UniqueIdentifier>{e8f1c70a-9659-4353-828a-ee872a611a18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Gameplay System Interface">
+      <UniqueIdentifier>{81dcc77a-f904-4cc0-bb7a-97982638bc88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +115,7 @@
       <Filter>Source Files\Components\Physics Component</Filter>
     </ClCompile>
     <ClCompile Include="IGameplaySystem.cpp">
-      <Filter>Source Files\Systems\Interface</Filter>
+      <Filter>Source Files\Systems\Gameplay System Interface</Filter>
     </ClCompile>
     <ClCompile Include="ICommand.cpp">
       <Filter>Source Files\Commands</Filter>
@@ -141,11 +144,17 @@
     <ClCompile Include="CollisionOccurence.cpp">
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionResolution.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RigidBodyGameObject.cpp">
       <Filter>Source Files\Game Objects\Rigid Body Game Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionResolution.cpp">
+      <Filter>Source Files\Components\Collision Component</Filter>
+    </ClCompile>
+    <ClCompile Include="LoggingSystem.cpp">
+      <Filter>Source Files\Systems\Debug Logging System</Filter>
+    </ClCompile>
+    <ClCompile Include="ISystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +186,7 @@
       <Filter>Source Files\Components\Physics Component</Filter>
     </ClInclude>
     <ClInclude Include="IGameplaySystem.h">
-      <Filter>Source Files\Systems\Interface</Filter>
+      <Filter>Source Files\Systems\Gameplay System Interface</Filter>
     </ClInclude>
     <ClInclude Include="ICommand.h">
       <Filter>Source Files\Commands</Filter>
@@ -209,14 +218,20 @@
     <ClInclude Include="CollisionOccurence.h">
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionResolution.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TextLibrary.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="RigidBodyGameObject.h">
       <Filter>Source Files\Game Objects\Rigid Body Game Object</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggingSystem.h">
+      <Filter>Source Files\Systems\Debug Logging System</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResolution.h">
+      <Filter>Source Files\Components\Collision Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ISystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

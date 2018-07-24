@@ -6,6 +6,8 @@
 #include "ICommand.h"
 #include <memory>
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 Engine* Engine::instance_ = nullptr;
 
@@ -18,6 +20,7 @@ Engine::Engine()
   : currentWindow_(nullptr)
   , inputSystem_()
   , gameObjectSystem_()
+  , loggingSystem_()
 {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -52,28 +55,52 @@ void Engine::AddCommand(ICommand* command)
 static float dt = 0.01667f;
 void Engine::Update(float)
 {
-  if (commandStack_.empty() == false)
-  {
-    auto commandExecuteLambda = [&](ICommand* i) {i->Execute(); };
-    std::for_each(commandStack_.begin(), commandStack_.end(), commandExecuteLambda);
+  std::chrono::system_clock::time_point tickStartTime = std::chrono::system_clock::now();
 
-    commandStack_.clear();
-  }
+  //MAIN LOOP
+  {
+    if (commandStack_.empty() == false)
+    {
+      auto commandExecuteLambda = [&](ICommand* i) {i->Execute(); };
+      std::for_each(commandStack_.begin(), commandStack_.end(), commandExecuteLambda);
+
+      commandStack_.clear();
+    }
   
-  int state = glfwGetMouseButton(currentWindow_, GLFW_MOUSE_BUTTON_LEFT);
-  if (state == GLFW_PRESS /*&& mouseState_ != state*/)
-  {
-    OnMousePress_.Broadcast(GetMousePosition());
-    mouseState_ = state;
-  }
-  else if(state == GLFW_RELEASE && mouseState_ != state)
-  {
-    OnMouseRelease_.Broadcast(GetMousePosition());
-    mouseState_ = state;
+    int state = glfwGetMouseButton(currentWindow_, GLFW_MOUSE_BUTTON_LEFT);
+    if (state == GLFW_PRESS /*&& mouseState_ != state*/)
+    {
+      OnMousePress_.Broadcast(GetMousePosition());
+      mouseState_ = state;
+    }
+    else if(state == GLFW_RELEASE && mouseState_ != state)
+    {
+      OnMouseRelease_.Broadcast(GetMousePosition());
+      mouseState_ = state;
+    }
+
+    inputSystem_.Update(dt);
+    gameObjectSystem_.Update(dt);
   }
 
-  inputSystem_.Update(dt);
-  gameObjectSystem_.Update(dt);
+  std::chrono::system_clock::time_point tickEndTime = std::chrono::system_clock::now();
+
+  std::chrono::duration<double, std::milli> elapsedTime = tickEndTime - tickStartTime;
+
+  //gets sixty fps in terms of milliseconds.
+  static float SixtyFPS = (1.0f / 60.0f) * 1000.0f;
+  if (elapsedTime.count() < SixtyFPS)
+  {
+    std::chrono::duration<double, std::milli> leftOverTime(SixtyFPS - elapsedTime.count());
+    auto delta_ms = std::chrono::duration_cast<std::chrono::milliseconds>(leftOverTime);
+    std::this_thread::sleep_for(std::chrono::milliseconds(delta_ms));
+  }
+  else
+  {
+    loggingSystem_.GetLogStream(EngineLog) << "Lag Detected" << std::endl;
+    std::cout << "lag Detected" << std::endl;
+  }
+
 }
 
 void Engine::SetWindow(GLFWwindow* window)
@@ -94,6 +121,11 @@ InputSystem* Engine::GetInputSystem()
 GameObjectSystem* Engine::GetGameObjectSystem()
 {
   return &gameObjectSystem_;
+}
+
+LoggingSystem* Engine::GetLoggingSystem()
+{
+  return &loggingSystem_;
 }
 
 void Engine::TogglePauseGame()
@@ -158,6 +190,8 @@ Engine::~Engine()
   ShutDown();
 }
 
+std::string Engine::EngineLog = "EngineLog";
+
 void Engine::Destroy()
 {
   delete instance_;
@@ -175,14 +209,23 @@ Engine* Engine::Instance()
 
 void Engine::ShutDown()
 {
+  loggingSystem_.GetLogStream(EngineLog) << "--Engine Unloading--" << std::endl;
+  
   inputSystem_.Unload();
   gameObjectSystem_.Unload();
+  loggingSystem_.Unload();
 }
 
 void Engine::Load()
 {
+  loggingSystem_.Load();
+  loggingSystem_.AddLogStream(EngineLog);
+  loggingSystem_.AddLogStream(GameObjectSystem::GameObjectSystemLog);
+
   inputSystem_.Load();
   gameObjectSystem_.Load();
+
+  loggingSystem_.GetLogStream(EngineLog) << "--Engine Loading--" << std::endl;
 
   auto& a = inputSystem_.AddInputAction("PauseGame", this, &Engine::TogglePauseGame);
   a.consumeInput_ = true;

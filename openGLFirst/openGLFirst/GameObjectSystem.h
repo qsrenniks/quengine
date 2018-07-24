@@ -15,6 +15,8 @@ class RigidBodyGameObject;
 class GameObjectSystem : public IGameplaySystem
 {
 public:
+  static std::string GameObjectSystemLog;
+
   using GameObjectList = std::list<IGameObject*>;
   using CollisionList = std::list<RigidBodyGameObject*>;
 

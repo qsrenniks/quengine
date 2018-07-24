@@ -1,6 +1,7 @@
 #pragma once
+#include "ISystem.h"
 
-class IGameplaySystem 
+class IGameplaySystem : public ISystem
 {
 public:
 
@@ -11,10 +12,7 @@ public:
 
   virtual ~IGameplaySystem() = default;
 
-  virtual void Load() = 0;
   virtual void Update(float dt) = 0;
-  virtual void Unload() = 0;
-
   //SystemTypes GetSystemType() const { return systemType_; };
 
 private:

@@ -29,6 +29,9 @@ void GameObjectSystem::AddCollisionOccurence(const CollisionOccurence& occurence
 void GameObjectSystem::AddGameObject(IGameObject* gameObject)
 {
   gameObjectRegistry_.push_back(gameObject);
+
+  //log to the game object system logger
+  Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystemLog) << "GameObjectSystem: Objects In System: " << gameObjectRegistry_.size() << std::endl;
 }
 
 void GameObjectSystem::AddRigidBodyGameObject(RigidBodyGameObject* object)
@@ -119,6 +122,8 @@ void GameObjectSystem::ResolveCollisions()
   collisionOccurences_.remove_if(isResolved);
 }
 
+std::string GameObjectSystem::GameObjectSystemLog = "GameObjectSystemLog";
+
 GameObjectSystem::GameObjectSystem()
 {
 
@@ -162,7 +167,7 @@ void GameObjectSystem::Update(float dt)
   auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), UpdateGameObjectLambda);
   
-  CalculateAndResolveCollisions();
+  //CalculateAndResolveCollisions();
   
   auto DrawGameObjectLambda = [&](IGameObject* i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DrawGameObjectLambda);

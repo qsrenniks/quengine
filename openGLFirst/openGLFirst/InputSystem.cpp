@@ -8,7 +8,10 @@
 InputSystem::InputSystem() 
 {
   //error handling
-  std::ifstream fileStream(R"(ConfigFiles\inputs.json)");
+  std::ifstream fileStream(R"(data\ConfigFiles\inputs.json)");
+
+  assert(fileStream.is_open());
+
   rapidjson::IStreamWrapper isw(fileStream);
 
   rapidjson::Document inputFile;

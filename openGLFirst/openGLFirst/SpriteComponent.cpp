@@ -22,7 +22,7 @@ SpriteComponent::~SpriteComponent()
 void SpriteComponent::Draw()
 {
   shader_.use();
-
+  
   shader_.setMat4("projection", Engine::Instance()->GetOrthographicTransform());
   shader_.setMat4("view", Engine::Instance()->GetViewTransform().BuildTransform());
   shader_.setMat4("model", GetParent()->GetTransform().BuildTransform());

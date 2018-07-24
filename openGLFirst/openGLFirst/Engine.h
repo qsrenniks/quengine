@@ -11,6 +11,7 @@
 #include "InputSystem.h"
 #include "GameObjectSystem.h"
 #include "Transform.h"
+#include "LoggingSystem.h"
 //class InputSystem;
 //class GameObjectSystem;
 struct GLFWwindow;
@@ -20,6 +21,7 @@ class Factory;
 class Engine
 {
 public:
+  static std::string EngineLog;
 
   static void Destroy();
 
@@ -39,6 +41,7 @@ public:
   
   InputSystem* GetInputSystem();
   GameObjectSystem* GetGameObjectSystem();
+  LoggingSystem* GetLoggingSystem();
 
   void TogglePauseGame();
   
@@ -71,6 +74,7 @@ private:
 
   InputSystem inputSystem_;
   GameObjectSystem gameObjectSystem_;
+  LoggingSystem loggingSystem_;
 };
 
 

@@ -148,6 +148,8 @@
     <ClCompile Include="IGameObject.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="IGameplaySystem.cpp" />
+    <ClCompile Include="ISystem.cpp" />
+    <ClCompile Include="LoggingSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="PhysicsBodyGameObject.cpp" />
@@ -175,6 +177,8 @@
     <ClInclude Include="IGameObject.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="IGameplaySystem.h" />
+    <ClInclude Include="ISystem.h" />
+    <ClInclude Include="LoggingSystem.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PhysicsBodyGameObject.h" />
     <ClInclude Include="PhysicsComponent.h" />
