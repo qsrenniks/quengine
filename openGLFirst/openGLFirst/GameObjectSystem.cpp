@@ -60,19 +60,15 @@ void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
 
 void GameObjectSystem::CalculateAndResolveCollisions()
 {
-  const static int iterations = 1;
-  for (int i = 0; i < iterations; i++)
-  {
-    CalculateCollisions();
-    ResolveCollisions();
-  }
+  CalculateCollisions();
+  ResolveCollisions();
 }
 
 void GameObjectSystem::CalculateCollisions()
 {
   for (CollisionList::const_iterator itr = collisionGameObjects_.cbegin(); itr != collisionGameObjects_.cend(); itr++)
   {
-    for (CollisionList::const_iterator otherItr = itr; otherItr != collisionGameObjects_.cend(); otherItr++)
+    for (CollisionList::const_iterator otherItr = collisionGameObjects_.cbegin(); otherItr != collisionGameObjects_.cend(); otherItr++)
     {
       RigidBodyGameObject* objectA = *itr;
       RigidBodyGameObject* objectB = *otherItr;
@@ -84,14 +80,14 @@ void GameObjectSystem::CalculateCollisions()
 
       //collision check
       CollisionOccurence occ(true);
-      objectA->CheckCollisionAgainst(objectB, occ);
+      objectA->GetCollisionComponent()->IsCollidingWith(objectB->GetCollisionComponent(), occ);
 
-      //this responds to collisions as they come in
-
+      //PhysicsComponent::RespondToPhysicalCollision(occ);
       if (occ.IsValid() && occ.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING)
       {
+        occ.Resolve();
         //PhysicsComponent::RespondToPhysicalCollision(occ);
-        AddCollisionOccurence(occ);
+        //AddCollisionOccurence(occ);
       }
     }
   }
@@ -111,7 +107,8 @@ void GameObjectSystem::ResolveCollisions()
     //you use - occurence so that the mtv can get negated in order to push the objects away from each other.
     //if they were both responding using the same mtv they would both move in the same direction causing some interesting collision problems
 
-    PhysicsComponent::RespondToPhysicalCollision(occurence);
+    //PhysicsComponent::RespondToPhysicalCollision(occurence);
+    occurence.Resolve();
 
     occurence.isResolved_ = true;
   };
@@ -167,7 +164,7 @@ void GameObjectSystem::Update(float dt)
   auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), UpdateGameObjectLambda);
   
-  //CalculateAndResolveCollisions();
+  CalculateAndResolveCollisions();
   
   auto DrawGameObjectLambda = [&](IGameObject* i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DrawGameObjectLambda);

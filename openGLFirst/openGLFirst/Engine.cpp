@@ -52,7 +52,6 @@ void Engine::AddCommand(ICommand* command)
   commandStack_.push_back(command);
 }
 
-static float dt = 0.01667f;
 void Engine::Update(float)
 {
   std::chrono::system_clock::time_point tickStartTime = std::chrono::system_clock::now();
@@ -68,7 +67,7 @@ void Engine::Update(float)
     }
   
     int state = glfwGetMouseButton(currentWindow_, GLFW_MOUSE_BUTTON_LEFT);
-    if (state == GLFW_PRESS /*&& mouseState_ != state*/)
+    if (state == GLFW_PRESS && mouseState_ != state)
     {
       OnMousePress_.Broadcast(GetMousePosition());
       mouseState_ = state;
@@ -79,13 +78,20 @@ void Engine::Update(float)
       mouseState_ = state;
     }
 
-    inputSystem_.Update(dt);
-    gameObjectSystem_.Update(dt);
+    if (isPaused_ == true)
+    {
+      deltaTime_ = 0.0f;
+    }
+
+    inputSystem_.Update(GetDeltaTime());
+    gameObjectSystem_.Update(GetDeltaTime());
   }
 
   std::chrono::system_clock::time_point tickEndTime = std::chrono::system_clock::now();
 
   std::chrono::duration<double, std::milli> elapsedTime = tickEndTime - tickStartTime;
+  
+  deltaTime_ = float(elapsedTime.count());
 
   //gets sixty fps in terms of milliseconds.
   static float SixtyFPS = (1.0f / 60.0f) * 1000.0f;
@@ -94,6 +100,7 @@ void Engine::Update(float)
     std::chrono::duration<double, std::milli> leftOverTime(SixtyFPS - elapsedTime.count());
     auto delta_ms = std::chrono::duration_cast<std::chrono::milliseconds>(leftOverTime);
     std::this_thread::sleep_for(std::chrono::milliseconds(delta_ms));
+    deltaTime_ += delta_ms.count();
   }
   else
   {
@@ -106,6 +113,12 @@ void Engine::Update(float)
 void Engine::SetWindow(GLFWwindow* window)
 {
   currentWindow_ = window;
+}
+
+float Engine::GetDeltaTime()
+{
+  //delta time is in milliseconds gotta divide to get proper delta time
+  return deltaTime_ / 1000.0f;
 }
 
 GLFWwindow* Engine::GetWindow()
@@ -131,16 +144,6 @@ LoggingSystem* Engine::GetLoggingSystem()
 void Engine::TogglePauseGame()
 {
   isPaused_ = !isPaused_;
-
-  if (isPaused_)
-  {
-    dt = 0.0f;
-  }
-  else
-  {
-    dt = 0.01667f;
-  }
-
 }
 
 const glm::vec2& Engine::GetMousePosition()

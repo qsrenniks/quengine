@@ -43,8 +43,6 @@ void PhysicsComponent::Update(float dt)
 
   acceleration_ = physicalProperties_.GetInverseMass() * forces_;
 
-
-
   ResetForces();
 }
 
@@ -124,50 +122,6 @@ void PhysicsComponent::SetVelocityDecay(float x )
   physicalProperties_.velocityDecay_ = x;
 }
 
-void PhysicsComponent::RespondToPhysicalCollision(CollisionOccurence& occurence)
-{
-  PhysicsComponent *objectAPhysics = occurence.objectA_->GetPhysicsComponent();
-  PhysicsComponent *objectBPhysics = occurence.objectB_->GetPhysicsComponent();
-
-  glm::vec2 relativeVelocity = objectAPhysics->GetVelocity();
-  if (objectBPhysics->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    relativeVelocity -= objectBPhysics->GetVelocity();
-  }
-  float seperatingVelocity = glm::dot(relativeVelocity, occurence.mtv_);
-
-  if (seperatingVelocity > 0)
-  {
-    //no work needs to be done they are not moving into each other
-    return;
-  }
-
-  float newSepVelocity = -seperatingVelocity * glm::length(occurence.mtv_);
-  float deltaVelocity = newSepVelocity - seperatingVelocity;
-
-  float totalInverseMass = objectAPhysics->GetPhysicsProperties().GetInverseMass();
-  if (objectBPhysics->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    totalInverseMass += objectBPhysics->GetPhysicsProperties().GetInverseMass();
-  }
-
-
-
-  glm::vec2 AImpulse = objectAPhysics->GetPhysicsProperties().mass_ * objectAPhysics->GetVelocity();
-  glm::vec2 BImpulse = objectBPhysics->GetPhysicsProperties().mass_ * objectBPhysics->GetVelocity();
-  
-  //calculate seperating velocity;
-
-
-  objectAPhysics->AddImpulse(AImpulse);
-  objectBPhysics->AddImpulse(BImpulse);
-}
-
-void PhysicsComponent::ResolveVelocities()
-{
-  //do stuff
-}
-
 void PhysicsComponent::AddForce(glm::vec2& force)
 {
   forces_ += force;
@@ -175,7 +129,8 @@ void PhysicsComponent::AddForce(glm::vec2& force)
 
 void PhysicsComponent::ResetForces()
 {
-  forces_ = glm::vec2(0.0f, 0.0f);
+  forces_.x = 0.0f;
+  forces_.y = 0.0f;
 }
 
 void PhysicsComponent::AddImpulse(glm::vec2& impulse)

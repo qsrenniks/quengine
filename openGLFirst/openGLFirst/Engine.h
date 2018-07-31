@@ -37,6 +37,8 @@ public:
   
   void SetWindow(GLFWwindow* window);
 
+  float GetDeltaTime();
+
   GLFWwindow* GetWindow();
   
   InputSystem* GetInputSystem();
@@ -58,6 +60,8 @@ protected:
 
 private:
   
+  float deltaTime_ = 0.0f;
+
   int mouseState_ = GLFW_RELEASE;
 
   Transform viewCamera_;

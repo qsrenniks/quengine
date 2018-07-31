@@ -24,10 +24,12 @@ public:
 
   void ConstructNonCollisionOccurence(RigidBodyGameObject* objectA, RigidBodyGameObject* objectB, CollisionStatus collisionStatus);
 
-  //minimal translation vector to properlly resolve a collision
-  glm::vec2 mtv_;
-  glm::vec2 mtv_AFROMB;
-  glm::vec2 mtv_BFROMA;
+  void Resolve();
+
+  float penetration_;
+
+  float restitution_;
+  glm::vec2 collisionNormal_;
 
   //glm::vec2 halfMtv_;
   CollisionStatus collisionStatus_;
@@ -46,6 +48,9 @@ public:
   bool isResolved_ = false;
 
 private:
+
+  void ResolveVelocities(float dt);
+  void ResolveInterpenetration(float dt);
 
   bool isValid_ = false;
 };

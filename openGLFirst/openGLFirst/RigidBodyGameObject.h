@@ -14,8 +14,6 @@ public:
   RigidBodyGameObject();
   virtual ~RigidBodyGameObject();
 
-  void CheckCollisionAgainst(RigidBodyGameObject* otherRigidBody, CollisionOccurence& collOcc);
-
   CollisionComponent* GetCollisionComponent();
   PhysicsComponent* GetPhysicsComponent();
 

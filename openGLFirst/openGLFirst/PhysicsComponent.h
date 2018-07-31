@@ -50,11 +50,8 @@ public:
   void SetBounce(float bounce);
   void SetVelocityDecay(float x = 1.0f);
 
-  static void RespondToPhysicalCollision(CollisionOccurence& occurence);
-
-  static void ResolveVelocities();
-
   void AddForce(glm::vec2& force);
+
   void ResetForces();
 
   void AddImpulse(glm::vec2& impulse);
@@ -64,12 +61,14 @@ public:
   void GatherForceGenerators();
 
   void AddForceGenerator(ForceGenerator* forceGenerator);
-private:
-  void SetAcceleration(const glm::vec2& newAcceleration);
 
   void SetVelocity(const glm::vec2& newVelocity);
   void SetVelocityX(float x);
   void SetVelocityY(float y);  
+private:
+
+
+  void SetAcceleration(const glm::vec2& newAcceleration);
 
   std::vector<ForceGenerator*> forceGenerators_;
 
@@ -101,7 +100,7 @@ struct GravityForceGenerator : public ForceGenerator
     return gravity * body_->GetPhysicsProperties().mass_;
   }
 
-  glm::vec2 gravity = {0.0f, -15.0f};
+  glm::vec2 gravity = {0.0f, -100.0f};
 };
 
 struct PointForceGenerator : public ForceGenerator

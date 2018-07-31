@@ -117,14 +117,15 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
     // involved with the collision.
     //
     //creating the collision occurence objects to then be passed to the objecst that were involved with a collision to then be resolved.
-    glm::vec2 mtv = smallestAxis * overlap;
-
     //before the collision occurence is documented broadcast the events to both collision game objects.
-    collOcc.mtv_ = mtv;
-    glm::vec2 halfMtv_ = mtv / 2.0f;
+    //glm::vec2 halfMtv_ = mtv / 2.0f;
+    collOcc.penetration_ = overlap;
+    collOcc.collisionNormal_ = glm::normalize(transformA.GetPosition() - transformB.GetPosition());
 
-    collOcc.mtv_AFROMB = -halfMtv_;
-    collOcc.mtv_BFROMA = halfMtv_;
+    collOcc.restitution_ = 1.0f;
+
+    //collOcc.mtv_AFROMB = -halfMtv_;
+    //collOcc.mtv_BFROMA = halfMtv_;
 
     collOcc.collisionStatus_ = collisionStatus;
     collOcc.objectA_ = objectA;
