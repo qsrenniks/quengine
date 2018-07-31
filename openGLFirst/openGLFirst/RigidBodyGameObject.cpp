@@ -27,3 +27,4 @@ PhysicsComponent* RigidBodyGameObject::GetPhysicsComponent()
 {
   return physics_;
 }
+

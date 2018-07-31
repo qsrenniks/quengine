@@ -16,148 +16,58 @@ bool CollisionOccurence::operator==(const CollisionOccurence& otherCollision) co
   else return false;
 }
 
-void CollisionOccurence::ConstructNonCollisionOccurence(RigidBodyGameObject* objectA, RigidBodyGameObject* objectB, CollisionStatus collisionStatus)
-{
-  objectA_ = objectA;
-  objectB_ = objectB;
-
-  mtv_ = glm::vec2(0.0f, 0.0f);
-
-  collisionStatus_ = collisionStatus;
-}
-
 void CollisionOccurence::Resolve()
 {
   float dt = Engine::Instance()->GetDeltaTime();
+
+  float invMassesSum = objectA_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() + objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass();
+  if (invMassesSum == 0.0f)
+  {
+    return;
+  }
 
   ResolveVelocities(dt);
   ResolveInterpenetration(dt);
 }
 
-bool CollisionOccurence::IsValid()
-{
-  return isValid_;
-}
-
-void CollisionOccurence::SetValid(bool validity)
-{
-  isValid_ = validity;
-}
-
 void CollisionOccurence::ResolveVelocities(float dt)
 {
-  //for object A
-  //calculate seperating velocities
-  glm::vec2 relativeVelocity = objectA_->GetPhysicsComponent()->GetVelocity();
-  if (objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    relativeVelocity -= objectB_->GetPhysicsComponent()->GetVelocity();
-  }
+  PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
+  PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();
 
-  //recommend putting normal contact somwhere else.
-  float seperatingVelocity = glm::dot(relativeVelocity, collisionNormal_);
-  
-  if (seperatingVelocity > 0)
-  {
-    //if they are already seperating dont do anything more.
-    return;
-  }
+  glm::vec2 relativeVelocity = physicsB->GetVelocity() - physicsA->GetVelocity();
 
-  float newSepVelo = -seperatingVelocity * restitution_;
+  float impulseMagnitudeAlongNormal = glm::dot(relativeVelocity, collisionNormal_);
 
-  //check the velocity buildup due to acceleration only
-  glm::vec2 accelerationCausedVelocity = objectA_->GetPhysicsComponent()->GetAcceleration();
-  if (objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    accelerationCausedVelocity -= objectB_->GetPhysicsComponent()->GetAcceleration();
-  }
-
-  float accCausedSepVelocity = glm::dot(accelerationCausedVelocity, collisionNormal_) * dt;
-
-  //if weve got a closing velocity due to acceleration buildup remove it from the new seperating velocity
-  if (accCausedSepVelocity < 0)
-  {
-    newSepVelo += restitution_ * accCausedSepVelocity;
-
-    if (newSepVelo < 0)
-    {
-      newSepVelo = 0;
-    }
-  }
-  
-  float deltaVelocity = newSepVelo - seperatingVelocity;
-
-  float totalInverseMass = objectA_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass();
-  if (objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    totalInverseMass += objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass();
-  }
-
-  //if all particles have infinite mass then no effects are applied
-  if (totalInverseMass <= 0)
+  if (impulseMagnitudeAlongNormal > 0)
   {
     return;
   }
 
-  float impulse = deltaVelocity / totalInverseMass;
+  float restitution = std::min(physicsA->GetPhysicsProperties().bounce_, physicsB->GetPhysicsProperties().bounce_);
 
-  glm::vec2 impulsePerIMass = collisionNormal_ * impulse;
+  float impulseScalar = -(1+restitution) * impulseMagnitudeAlongNormal;
+  
+  float inverseMassSum = physicsA->GetPhysicsProperties().GetInverseMass() + physicsB->GetPhysicsProperties().GetInverseMass();
+  impulseScalar /= inverseMassSum;
 
-  glm::vec2 otherVelo = objectB_->GetPhysicsComponent()->GetVelocity();
+  glm::vec2 impulse = impulseScalar * collisionNormal_;
 
-  objectA_->GetPhysicsComponent()->SetVelocity(otherVelo + impulsePerIMass * objectA_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass());
-  if (objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    objectB_->GetPhysicsComponent()->SetVelocity(objectA_->GetPhysicsComponent()->GetVelocity() + impulsePerIMass * -objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass());
-  }
+  float aInvMass = physicsA->GetPhysicsProperties().GetInverseMass();
+  float bInvMass = physicsB->GetPhysicsProperties().GetInverseMass();
+
+  physicsA->AddVelocity(-(aInvMass * impulse));
+  physicsB->AddVelocity(bInvMass* impulse);
 }
 
 void CollisionOccurence::ResolveInterpenetration(float dt)
 {
-  //for object A
-  if (penetration_ <= 0.0f)
-  {
-    return;
-  }
+  PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
+  PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();
 
-  float totalInverseMass = objectA_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass();
-  if (objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    totalInverseMass += objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass();
-  }
+  const static float percentage = 0.2f;
+  glm::vec2 correction = penetration_ / (physicsA->GetPhysicsProperties().GetInverseMass() + physicsB->GetPhysicsProperties().GetInverseMass()) * percentage * collisionNormal_;
 
-  //if all particles have infinite mass then no effects are applied
-  if (totalInverseMass <= 0)
-  {
-    return;
-  }
-
-  glm::vec2 movePerIMass = collisionNormal_ * (penetration_ / totalInverseMass);
-
-  glm::vec2 newPositionA;
-  glm::vec2 newPositionB;
-
-  newPositionA = (movePerIMass * objectA_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass());
-  if (objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() != 0.0f)
-  {
-    newPositionB = (movePerIMass * -objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass());
-  }
-  else
-  {
-    newPositionB.x = 0.0f;
-    newPositionB.y = 0.0f;
-  }
-
-  objectA_->GetTransform().SetPosition(objectA_->GetTransform().GetPosition() + newPositionA);
-  objectB_->GetTransform().SetPosition(objectB_->GetTransform().GetPosition() + newPositionB);
+  objectA_->GetTransform().SetPosition(objectA_->GetTransform().GetPosition() - physicsA->GetPhysicsProperties().GetInverseMass() * correction);
+  objectB_->GetTransform().SetPosition(objectB_->GetTransform().GetPosition() + physicsB->GetPhysicsProperties().GetInverseMass() * correction);
 }
-
-//CollisionOccurence CollisionOccurence::operator-()
-//{
-//  CollisionOccurence copy = *this;
-//
-//  copy.mtv_ *= -1.0f;
-//  copy.halfMtv_ *= -1.0f;
-//
-//  return copy;
-//}

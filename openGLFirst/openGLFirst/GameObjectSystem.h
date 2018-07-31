@@ -34,15 +34,19 @@ public:
   {
     GameObject* newGameObject = new GameObject(_Args...);
 
-    //CollisionComponent *collisionComponent = newGameObject->GetComponent<CollisionComponent>();
-    //if (collisionComponent != nullptr)
-    //{
-    //  AddCollisionComponent(collisionComponent);
-    //}
-
     AddGameObject(newGameObject);
 
     return newGameObject;
+  }
+
+  template<typename Component, class... _Types>
+  Component* SpawnComponent(_Types&&... _Args)
+  {
+    Component* newComponent = new Component(_Args...);
+
+    //do something here to register it with the system.
+
+    return newComponent;
   }
 
   void AddCollisionOccurence(const CollisionOccurence& occurence);
@@ -62,7 +66,7 @@ private:
   std::list<CollisionOccurence> collisionOccurences_;
 
   void CalculateCollisions();
-  void ResolveCollisions();
+  void ResetBodies();
   GameObjectList gameObjectRegistry_;
 
   CollisionList collisionGameObjects_;

@@ -103,37 +103,18 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
     collisionStatus = PerformAxisProjection(axisB, meshA, meshB, overlap, smallestAxis);
   }
 
-  //if no collision occurred then it constructs the collision occurence in a different way and then passes it on to both game objects.
-  if (collisionStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING /*|| collisionStatus == CollisionOccurence::CollisionStatus::TOUCHING*/)
+  //we check if it collided. And if it did then we pack it full of new information
+  if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
   {
-    collOcc.ConstructNonCollisionOccurence(objectA, objectB, collisionStatus);
-  } 
-  else if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
-  {
-    //this only falls through if a collision has occured
-
-    //
-    // this next step essentially fills an instance of collision occurence with information about the collision and then passes that on to the gameobjecst
-    // involved with the collision.
-    //
-    //creating the collision occurence objects to then be passed to the objecst that were involved with a collision to then be resolved.
-    //before the collision occurence is documented broadcast the events to both collision game objects.
-    //glm::vec2 halfMtv_ = mtv / 2.0f;
     collOcc.penetration_ = overlap;
-    collOcc.collisionNormal_ = glm::normalize(transformA.GetPosition() - transformB.GetPosition());
-
-    collOcc.restitution_ = 1.0f;
-
-    //collOcc.mtv_AFROMB = -halfMtv_;
-    //collOcc.mtv_BFROMA = halfMtv_;
-
-    collOcc.collisionStatus_ = collisionStatus;
+    collOcc.collisionNormal_ = smallestAxis;
     collOcc.objectA_ = objectA;
     collOcc.objectB_ = objectB;
-
-    //TODO: the engine collision resolution system is only notified of a valid COLLISION occurence event. Maybe it should be notified about all? colliding or non-colliding
-    //Engine::Instance()->GetGameObjectSystem()->AddCollisionOccurence(collisionOccurence);
+    collOcc.restitution_ = std::min(objectA->GetPhysicsComponent()->GetPhysicsProperties().bounce_, objectB->GetPhysicsComponent()->GetPhysicsProperties().bounce_);
   }
+
+  //then give it the status of that collision and return;
+  collOcc.collisionStatus_ = collisionStatus;
 }
 
 CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const

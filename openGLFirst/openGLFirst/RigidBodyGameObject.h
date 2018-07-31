@@ -19,7 +19,6 @@ public:
 
 private:
 
-
 protected:
   PhysicsComponent * physics_;
   CollisionComponent *collision_;

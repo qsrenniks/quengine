@@ -157,6 +157,11 @@ void PhysicsComponent::AddForceGenerator(ForceGenerator* forceGenerator)
   forceGenerators_.push_back(forceGenerator);
 }
 
+void PhysicsComponent::AddVelocity(const glm::vec2& velToAdd)
+{
+  velocity_ += velToAdd;
+}
+
 float PhysicsComponent::GetRotationalVelocity() const
 {
   return rotationalVelocity_;

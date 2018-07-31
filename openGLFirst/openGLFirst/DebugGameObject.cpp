@@ -21,10 +21,11 @@ DebugGameObject::DebugGameObject()
 
   GetTransform().SetScale(0.5f, 0.5f);
 
-  physics_->AddForceGenerator(new GravityForceGenerator());
+  //physics_->AddForceGenerator(new GravityForceGenerator());
 
   physics_->SetBounce(0.0f);
-  physics_->SetVelocityDecay(0.95f);
+  physics_->SetMass(1.0f);
+  //physics_->SetVelocityDecay(0.95f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   auto& a = inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
@@ -43,6 +44,7 @@ void DebugGameObject::Update(float dt)
   //physics_->SetVelocityX(0);
   //std::cout << GetTransform().GetPosition().x << ":" << GetTransform().GetPosition().y << std::endl;
   Engine::Instance()->GetViewTransform().SetPosition(-GetTransform().GetPosition());
+  physics_->SetVelocity(glm::vec2(0.0f, -200.0f));
 }
 
 constexpr static float jumpHeight = 250.0f;
@@ -50,7 +52,7 @@ constexpr static float moveSpeed = 100.0f;
 void DebugGameObject::WKeyPress()
 {
   glm::vec2 dir(0.0f, moveSpeed);
-  physics_->AddForce(dir);
+  physics_->SetVelocity(dir);
 }
 
 void DebugGameObject::SKeyPress()
@@ -58,19 +60,19 @@ void DebugGameObject::SKeyPress()
   //glm::vec2 velo = physics_->GetVelocity();
   //physics_->SetVelocity({ velo.x, -moveSpeed });
   glm::vec2 dir(0.0f, -moveSpeed);
-  physics_->AddForce(dir);
+  physics_->SetVelocity(dir);
 }
 
 void DebugGameObject::AKeyPress()
 {
   glm::vec2 dir(-moveSpeed, 0.0f);
-  physics_->AddForce(dir);
+  physics_->SetVelocity(dir);
 }
 
 void DebugGameObject::DKeyPress()
 {
   glm::vec2 dir(moveSpeed, 0.0f);
-  physics_->AddForce(dir);
+  physics_->SetVelocity(dir);
 }
 
 void DebugGameObject::OnCollision(const CollisionOccurence& otherCollider)

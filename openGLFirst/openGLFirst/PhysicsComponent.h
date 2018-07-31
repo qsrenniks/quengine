@@ -9,7 +9,7 @@ struct ForceGenerator;
 struct PhysicalProperties
 {
   PhysicalProperties()
-    : velocityDecay_(0.999f)
+    : velocityDecay_(1.0f)
   {
   };
 
@@ -61,6 +61,8 @@ public:
   void GatherForceGenerators();
 
   void AddForceGenerator(ForceGenerator* forceGenerator);
+
+  void AddVelocity(const glm::vec2& velToAdd);
 
   void SetVelocity(const glm::vec2& newVelocity);
   void SetVelocityX(float x);
