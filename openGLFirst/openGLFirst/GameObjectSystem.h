@@ -2,13 +2,13 @@
 #include "IGameplaySystem.h"
 #include "CollisionResolution.h"
 #include <list>
+#include <memory>
 
 class IGameObject;
 class CollisionComponent;
 class PhysicsComponent;
 struct CollisionOccurence;
-class RigidBodyGameObject;
-
+class RigidBodyComponent;
 //
 // game object system definition
 //
@@ -17,8 +17,12 @@ class GameObjectSystem : public IGameplaySystem
 public:
   static std::string GameObjectSystemLog;
 
-  using GameObjectList = std::list<IGameObject*>;
-  using CollisionList = std::list<RigidBodyGameObject*>;
+  //ownership of all game objects is to the game object system
+  using GameObjectList = std::list<std::unique_ptr<IGameObject>>;
+
+  //this class does not have ownership of the rigidbody components
+  //since ownership is not to this class cleanup for this list is not required
+  using CollisionList = std::list<RigidBodyComponent*>;
 
   GameObjectSystem();
 
@@ -32,30 +36,24 @@ public:
   template<typename GameObject, class... _Types>
   GameObject* SpawnGameObject(_Types&&... _Args)
   {
-    GameObject* newGameObject = new GameObject(_Args...);
+    std::unique_ptr<GameObject> newGameObject = std::make_unique<GameObject>(_Args...);
+  
+    //move invalidates the object so i store the ptr to return later.
+    GameObject* newGameObjectPTR = newGameObject.get();
 
-    AddGameObject(newGameObject);
+    AddGameObject(std::move(newGameObject));
 
-    return newGameObject;
-  }
-
-  template<typename Component, class... _Types>
-  Component* SpawnComponent(_Types&&... _Args)
-  {
-    Component* newComponent = new Component(_Args...);
-
-    //do something here to register it with the system.
-
-    return newComponent;
+    return newGameObjectPTR;
   }
 
   void AddCollisionOccurence(const CollisionOccurence& occurence);
   //void RemoveCollisionOccurence();
-  void AddGameObject(IGameObject* gameObject);
-  void AddRigidBodyGameObject(RigidBodyGameObject* object);
 
-  void DestroyGameObject(IGameObject*& gameObjectToDestroy);
-  void RemoveCollisonComponent(RigidBodyGameObject* collisionComponent);
+  void AddGameObject(std::unique_ptr<IGameObject>&& gameObject);
+  void RegisterRigidBodyComponent(RigidBodyComponent* object);
+
+  void DestroyGameObject(std::unique_ptr<IGameObject>& gameObjectToDestroy);
+  void RemoveCollisonComponent(RigidBodyComponent* collisionComponent);
 
   void OnMouseClick(glm::vec2 mousePos);
 
@@ -69,7 +67,7 @@ private:
   void ResetBodies();
   GameObjectList gameObjectRegistry_;
 
-  CollisionList collisionGameObjects_;
+  CollisionList rigidBodyComponentRegistry_;
 
   //CollisionResolution collisionResolutionSystem_;
   

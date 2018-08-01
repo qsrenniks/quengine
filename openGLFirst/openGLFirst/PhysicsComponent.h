@@ -6,21 +6,6 @@
 struct CollisionOccurence;
 struct ForceGenerator;
 
-struct PhysicalProperties
-{
-  PhysicalProperties()
-    : velocityDecay_(1.0f)
-  {
-  };
-
-  float GetInverseMass() const;
-
-  float mass_ = 1.0f;
-  float bounce_ = 0.8f;
-  float velocityDecay_;
-};
-
-
 class PhysicsComponent : public IComponent 
 {
 public:
@@ -30,61 +15,40 @@ public:
 
   void SetSimulatePhysics(bool simulate);
   bool GetSimulatePhysics();
-
-  //virtual void Draw() override;
   virtual void Update(float dt) override;
   virtual void Draw() override;
-
   const glm::vec2& GetAcceleration() const;
-
   const glm::vec2& GetVelocity() const;
-
   float GetRotationalVelocity() const;
   void SetRotationalVelocity(float val);
-
-  const PhysicalProperties& GetPhysicsProperties() const;
-  void SetPhysicalProperties(float mass, float bounce);
-  void SetPhysicalProperties(const PhysicalProperties& physicalProperties);
-  
   void SetMass(float mass);
-  void SetBounce(float bounce);
   void SetVelocityDecay(float x = 1.0f);
-
   void AddForce(glm::vec2& force);
-
   void ResetForces();
-
   void AddImpulse(glm::vec2& impulse);
-  
   const glm::vec2& GetCurrentForce();
-
   void GatherForceGenerators();
-
   void AddForceGenerator(ForceGenerator* forceGenerator);
-
   void AddVelocity(const glm::vec2& velToAdd);
-
   void SetVelocity(const glm::vec2& newVelocity);
   void SetVelocityX(float x);
   void SetVelocityY(float y);  
-private:
 
+  float GetMass();
+  float GetInverseMass();
+private:
 
   void SetAcceleration(const glm::vec2& newAcceleration);
 
   std::vector<ForceGenerator*> forceGenerators_;
-
   glm::vec2 forces_;
-
   glm::vec2 velocity_;
   glm::vec2 acceleration_;
-
   float rotationalVelocity_;
-
-  PhysicalProperties physicalProperties_;
-
+  float mass_ = 1.0f;
+  float inverseMass_ = 1.0f;
+  float velocityDecay_;
   bool simulatePhysics_ = true;
-
 };
 
 struct ForceGenerator
@@ -99,7 +63,7 @@ struct GravityForceGenerator : public ForceGenerator
 {
   virtual glm::vec2 GenerateForce() override
   {
-    return gravity * body_->GetPhysicsProperties().mass_;
+    return gravity * body_->GetMass();
   }
 
   glm::vec2 gravity = {0.0f, -100.0f};

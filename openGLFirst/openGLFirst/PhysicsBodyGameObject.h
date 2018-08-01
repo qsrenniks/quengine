@@ -1,22 +1,24 @@
 #pragma once
 
-#include "RigidBodyGameObject.h"
+#include "IGameObject.h"
 
-class PhysicsBodyGameObject : public RigidBodyGameObject
+class RigidBodyComponent;
+
+class PhysicsBodyGameObject : public IGameObject
 {
 public:
   PhysicsBodyGameObject();
   virtual ~PhysicsBodyGameObject();
 
-  //virtual PhysicsBodyGameObject* Clone() override;
-
   virtual void Update(float dt) override;
 
-  //virtual CollisionOccurence GetCollisionOccurence() override;
+protected:
 
-  //void OnCollisionUpdate(const CollisionOccurence& otherCollider);
+  RigidBodyComponent* rigidBody_ = nullptr;
 
 private:
+  
+
 
 };
 

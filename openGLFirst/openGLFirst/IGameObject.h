@@ -23,13 +23,15 @@ public:
   void AddComponent(Component*& component, _Types&&... _Args)
   {
     //this expands the _Types pack into the parameters passed in to construct the object 
-    component = new Component(_Args...);
+    std::unique_ptr<Component> unique = std::make_unique<Component>(_Args...);
+
+    component = unique.get();
 
     component->Parent(this);
 
     component->Register();
     
-    componentList_.push_back(component);
+    componentList_.push_back(std::move(unique));
   }
 
   template<typename T>
@@ -37,9 +39,9 @@ public:
   {
     T* tempPtr = nullptr;
 
-    for (auto component : componentList_)
+    for (std::unique_ptr<IComponent>& component : componentList_)
     {
-      if ((tempPtr = dynamic_cast<T*>(component)) != nullptr)
+      if ((tempPtr = dynamic_cast<T*>(component.get())) != nullptr)
       {
         break;
       }
@@ -79,7 +81,7 @@ private:
   delegate<void(void)> componentDrawList_;
   //delegate<void(void)> onObjectCreated_;
 
-  using ComponentList = std::vector<IComponent*>;
+  using ComponentList = std::vector<std::unique_ptr<IComponent>>;
 
   ComponentList componentList_;
   bool markForDestroy_ = false;

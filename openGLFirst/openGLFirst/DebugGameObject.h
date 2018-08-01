@@ -1,12 +1,10 @@
 #pragma once
 #include "CollisionComponent.h"
-#include "RigidBodyGameObject.h"
+#include "IGameObject.h"
 
-class SpriteComponent;
-class PhysicsComponent;
-class CollisionComponent;
+class RigidBodyComponent;
 
-class DebugGameObject : public RigidBodyGameObject
+class DebugGameObject : public IGameObject
 {
 public: //public vars
 
@@ -26,13 +24,15 @@ public:
   void AKeyPress();
 
   //virtual CollisionOccurence GetCollisionOccurence() override;
+protected:
+
+  RigidBodyComponent * rigidBodyComponent_ = nullptr;
 
 private:
 
   //void OnCollisionUpdate(const CollisionOccurence& otherCollider);
   void OnCollision(const CollisionOccurence& otherCollider);
   void OnExitCollision(const CollisionOccurence& otherCollider);
-protected:
 
 };
 

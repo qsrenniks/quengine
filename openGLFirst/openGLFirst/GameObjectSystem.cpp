@@ -19,38 +19,39 @@
 #include <random>
 #include "PhysicsBodyGameObject.h"
 #include "CollisionOccurence.h"
-#include "RigidBodyGameObject.h"
+#include "RigidBodyComponent.h"
 
 void GameObjectSystem::AddCollisionOccurence(const CollisionOccurence& occurence)
 {
   collisionOccurences_.push_back(occurence);
 }
 
-void GameObjectSystem::AddGameObject(IGameObject* gameObject)
+void GameObjectSystem::AddGameObject(std::unique_ptr<IGameObject>&& gameObject)
 {
-  gameObjectRegistry_.push_back(gameObject);
+  //loop through list of game objects. is unique ptr is empty put it there. if it is not push it back
+  //this could be a simple perf improvement
+  gameObjectRegistry_.push_back(std::move(gameObject));
 
   //log to the game object system logger
   Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystemLog) << "GameObjectSystem: Objects In System: " << gameObjectRegistry_.size() << std::endl;
 }
 
-void GameObjectSystem::AddRigidBodyGameObject(RigidBodyGameObject* object)
+void GameObjectSystem::RegisterRigidBodyComponent(RigidBodyComponent* object)
 {
-  collisionGameObjects_.push_back(object);
+  rigidBodyComponentRegistry_.push_back(object);
 }
 
-void GameObjectSystem::DestroyGameObject(IGameObject*& gameObjectToDestroy)
+void GameObjectSystem::DestroyGameObject(std::unique_ptr<IGameObject>& gameObjectToDestroy)
 {
   if (gameObjectToDestroy->IsMarkedForDestroy())
   {
     gameObjectRegistry_.remove(gameObjectToDestroy);
-    gameObjectToDestroy = nullptr;
   }
 }
 
-void GameObjectSystem::RemoveCollisonComponent(RigidBodyGameObject* collisionComponent)
+void GameObjectSystem::RemoveCollisonComponent(RigidBodyComponent* collisionComponent)
 {
-  collisionGameObjects_.remove(collisionComponent);
+  rigidBodyComponentRegistry_.remove(collisionComponent);
 }
 
 void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
@@ -66,12 +67,12 @@ void GameObjectSystem::CalculateAndResolveCollisions()
 
 void GameObjectSystem::CalculateCollisions()
 {
-  for (CollisionList::const_iterator itr = collisionGameObjects_.cbegin(); itr != collisionGameObjects_.cend(); itr++)
+  for (CollisionList::const_iterator itr = rigidBodyComponentRegistry_.cbegin(); itr != rigidBodyComponentRegistry_.cend(); itr++)
   {
-    for (CollisionList::const_iterator otherItr = itr; otherItr != collisionGameObjects_.cend(); otherItr++)
+    for (CollisionList::const_iterator otherItr = itr; otherItr != rigidBodyComponentRegistry_.cend(); otherItr++)
     {
-      RigidBodyGameObject* objectA = *itr;
-      RigidBodyGameObject* objectB = *otherItr;
+      RigidBodyComponent* objectA = *itr;
+      RigidBodyComponent* objectB = *otherItr;
 
       if (itr == otherItr)
       {
@@ -109,11 +110,6 @@ GameObjectSystem::GameObjectSystem()
 
 GameObjectSystem::~GameObjectSystem()
 {
-  for (auto& gameObjects : gameObjectRegistry_)
-  {
-    delete gameObjects;
-    gameObjects = nullptr;
-  }
 }
 
 void GameObjectSystem::Load()
@@ -130,16 +126,16 @@ void GameObjectSystem::Load()
 
 void GameObjectSystem::Update(float dt)
 {
-  auto DestroyGameObjectLambda = [&](auto i) { DestroyGameObject(i); };
-  std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DestroyGameObjectLambda);
+  auto DestroyGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { DestroyGameObject(i); };
+  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
 
-  auto UpdateGameObjectLambda = [&](auto i) { i->UpdateGameObject(dt); };
-  std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), UpdateGameObjectLambda);
+  auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
+  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
   CalculateAndResolveCollisions();
   
-  auto DrawGameObjectLambda = [&](IGameObject* i) { i->GetDrawList().Broadcast(); };
-  std::for_each(gameObjectRegistry_.cbegin(), gameObjectRegistry_.cend(), DrawGameObjectLambda);
+  auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
+  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
 }
 
 void GameObjectSystem::Unload()

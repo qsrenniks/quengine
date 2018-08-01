@@ -70,9 +70,6 @@
     <Filter Include="Source Files\Game Objects\Transform">
       <UniqueIdentifier>{5a179636-8a3b-45e5-964f-49ea404a0499}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game Objects\Rigid Body Game Object">
-      <UniqueIdentifier>{5f7cc268-4c5b-41e7-8ab7-2b807f99992c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Systems\Debug Logging System">
       <UniqueIdentifier>{7985153c-2fcf-48a5-aa61-72f6381f993c}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,9 @@
     </Filter>
     <Filter Include="Source Files\Systems\Gameplay System Interface">
       <UniqueIdentifier>{81dcc77a-f904-4cc0-bb7a-97982638bc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Rigid Body Component">
+      <UniqueIdentifier>{0cda68d9-e6d6-41d6-b010-a8c437eb3f91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,9 +144,6 @@
     <ClCompile Include="CollisionOccurence.cpp">
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClCompile>
-    <ClCompile Include="RigidBodyGameObject.cpp">
-      <Filter>Source Files\Game Objects\Rigid Body Game Object</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionResolution.cpp">
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClCompile>
@@ -154,6 +151,9 @@
       <Filter>Source Files\Systems\Debug Logging System</Filter>
     </ClCompile>
     <ClCompile Include="ISystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,9 +221,6 @@
     <ClInclude Include="TextLibrary.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidBodyGameObject.h">
-      <Filter>Source Files\Game Objects\Rigid Body Game Object</Filter>
-    </ClInclude>
     <ClInclude Include="LoggingSystem.h">
       <Filter>Source Files\Systems\Debug Logging System</Filter>
     </ClInclude>
@@ -231,6 +228,9 @@
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClInclude>
     <ClInclude Include="ISystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

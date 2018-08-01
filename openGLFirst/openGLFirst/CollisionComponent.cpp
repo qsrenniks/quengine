@@ -8,7 +8,7 @@
 #include <algorithm>
 #include "CollisionOccurence.h"
 #include "PhysicsComponent.h"
-#include "RigidBodyGameObject.h"
+#include "RigidBodyComponent.h"
 
 CollisionComponent::CollisionComponent(CollisionProfile* profile/*, CollisionResponse* collisionResponse*/)
   : collisionProfile_(profile)
@@ -68,8 +68,8 @@ PolygonalCollisionProfile::PolygonalCollisionProfile()
 
 void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile, CollisionOccurence& collOcc) const
 {
-  RigidBodyGameObject* objectA = dynamic_cast<RigidBodyGameObject*>(collisionComponent_->GetParent());
-  RigidBodyGameObject* objectB = dynamic_cast<RigidBodyGameObject*>(otherProfile->GetCollisionComponent()->GetParent());
+  IGameObject* objectA = collisionComponent_->GetParent();
+  IGameObject* objectB = otherProfile->GetCollisionComponent()->GetParent();
 
   assert(objectA != nullptr && objectB != nullptr);
 
@@ -108,9 +108,9 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   {
     collOcc.penetration_ = overlap;
     collOcc.collisionNormal_ = smallestAxis;
-    collOcc.objectA_ = objectA;
-    collOcc.objectB_ = objectB;
-    collOcc.restitution_ = std::min(objectA->GetPhysicsComponent()->GetPhysicsProperties().bounce_, objectB->GetPhysicsComponent()->GetPhysicsProperties().bounce_);
+    collOcc.objectA_ = objectA->GetComponent<RigidBodyComponent>();
+    collOcc.objectB_ = objectB->GetComponent<RigidBodyComponent>();
+    collOcc.restitution_ = std::min(collOcc.objectA_->bounce_, collOcc.objectB_->bounce_);
   }
 
   //then give it the status of that collision and return;

@@ -1,16 +1,13 @@
 #pragma once
-#include "RigidBodyGameObject.h"
+#include "IGameObject.h"
 
 class SpriteComponent;
 class CollisionComponent;
 class PhysicsComponent;
+class RigidBodyComponent;
 
-class TileGameObject : public RigidBodyGameObject
+class TileGameObject : public IGameObject
 {
-public: //vars
-
-  //static std::string TileGameObjectName;
-
 public:
   TileGameObject();
   ~TileGameObject();
@@ -20,6 +17,10 @@ public:
 
   void OnOverlapEnter(const CollisionOccurence& otherCollider);
   void OnOverlapExit(const CollisionOccurence& otherCollider);
+
+protected:
+
+  RigidBodyComponent * rigidBodyComponent_ = nullptr;
 
 private:
 };

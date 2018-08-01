@@ -3,16 +3,16 @@
 #include "CollisionComponent.h"
 #include "PhysicsComponent.h"
 #include "SpriteComponent.h"
+#include "RigidBodyComponent.h"
 
 PhysicsBodyGameObject::PhysicsBodyGameObject()
 {
-  //collision_->onUpdateOverlap_.AddFunction(this, &PhysicsBodyGameObject::OnCollisionUpdate);
-
   sprite_->SetColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
-  physics_->AddForceGenerator(new GravityForceGenerator());
-  physics_->SetBounce(0.0f);
-  physics_->SetVelocityDecay(0.90f);
+  AddComponent<RigidBodyComponent>(rigidBody_, 0.0f);
+
+  rigidBody_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
+  rigidBody_->GetPhysicsComponent()->SetVelocityDecay(0.90f);
 
   GetTransform().SetScale(glm::vec2(0.5f, 0.5f));
   //physics_->SetRotationalVelocity(45.0f);

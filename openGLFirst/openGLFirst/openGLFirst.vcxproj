@@ -154,7 +154,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="PhysicsBodyGameObject.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
-    <ClCompile Include="RigidBodyGameObject.cpp" />
+    <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -182,7 +182,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="PhysicsBodyGameObject.h" />
     <ClInclude Include="PhysicsComponent.h" />
-    <ClInclude Include="RigidBodyGameObject.h" />
+    <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Engine.h" />

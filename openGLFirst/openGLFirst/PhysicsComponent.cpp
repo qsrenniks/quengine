@@ -5,7 +5,6 @@
 #include "CollisionOccurence.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/vector_angle.hpp>
-#include "RigidBodyGameObject.h"
 #include <algorithm>
 #include "Engine.h"
 
@@ -39,9 +38,9 @@ void PhysicsComponent::Update(float dt)
 
   transform.SetPosition(newPos);
 
-  velocity_ = velocity_ * glm::pow(physicalProperties_.velocityDecay_, dt) + acceleration_ * dt;
+  velocity_ = velocity_ * glm::pow(velocityDecay_, dt) + acceleration_ * dt;
 
-  acceleration_ = physicalProperties_.GetInverseMass() * forces_;
+  acceleration_ = inverseMass_ * forces_;
 
   ResetForces();
 }
@@ -81,6 +80,16 @@ void PhysicsComponent::SetVelocityY(float y)
   velocity_.y = y;
 }
 
+float PhysicsComponent::GetMass()
+{
+  return mass_;
+}
+
+float PhysicsComponent::GetInverseMass()
+{
+  return inverseMass_;
+}
+
 const glm::vec2& PhysicsComponent::GetVelocity() const
 {
   return velocity_;
@@ -91,35 +100,23 @@ void PhysicsComponent::SetRotationalVelocity(float val)
   rotationalVelocity_ = val;
 }
 
-const PhysicalProperties& PhysicsComponent::GetPhysicsProperties() const
-{
-  return physicalProperties_;
-}
-
-void PhysicsComponent::SetPhysicalProperties(float mass, float bounce)
-{
-  physicalProperties_.mass_ = mass;
-  physicalProperties_.bounce_ = bounce;
-}
-
-void PhysicsComponent::SetPhysicalProperties(const PhysicalProperties& physicalProperties)
-{
-  physicalProperties_ = physicalProperties;
-}
-
 void PhysicsComponent::SetMass(float mass)
 {
-  physicalProperties_.mass_ = mass;
-}
+  mass_ = mass;
 
-void PhysicsComponent::SetBounce(float bounce)
-{
-  physicalProperties_.bounce_ = bounce;
+  if (mass_ == 0.0f)
+  {
+    inverseMass_ = 0.0f;
+  }
+  else
+  {
+    inverseMass_ = 1 / mass_;
+  }
 }
 
 void PhysicsComponent::SetVelocityDecay(float x )
 {
-  physicalProperties_.velocityDecay_ = x;
+  velocityDecay_ = x;
 }
 
 void PhysicsComponent::AddForce(glm::vec2& force)
@@ -135,7 +132,7 @@ void PhysicsComponent::ResetForces()
 
 void PhysicsComponent::AddImpulse(glm::vec2& impulse)
 {
-  velocity_ = velocity_ + physicalProperties_.GetInverseMass()*impulse;
+  velocity_ = velocity_ + inverseMass_ * impulse;
 }
 
 const glm::vec2& PhysicsComponent::GetCurrentForce()
@@ -165,18 +162,6 @@ void PhysicsComponent::AddVelocity(const glm::vec2& velToAdd)
 float PhysicsComponent::GetRotationalVelocity() const
 {
   return rotationalVelocity_;
-}
-
-float PhysicalProperties::GetInverseMass() const
-{
-  if (mass_ == 0)
-  {
-    return 0;
-  }
-  else
-  {
-    return 1 / mass_;
-  }
 }
 
 glm::vec2 PointForceGenerator::GenerateForce()

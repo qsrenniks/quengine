@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "CollisionOccurence.h"
 #include "PhysicsComponent.h"
-#include "RigidBodyGameObject.h"
 #include "Transform.h"
 #include "CollisionComponent.h"
 #include "Engine.h"
+#include "RigidBodyComponent.h"
 
 bool CollisionOccurence::operator==(const CollisionOccurence& otherCollision) const
 {
@@ -20,7 +20,7 @@ void CollisionOccurence::Resolve()
 {
   float dt = Engine::Instance()->GetDeltaTime();
 
-  float invMassesSum = objectA_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass() + objectB_->GetPhysicsComponent()->GetPhysicsProperties().GetInverseMass();
+  float invMassesSum = objectA_->GetPhysicsComponent()->GetInverseMass() + objectB_->GetPhysicsComponent()->GetInverseMass();
   if (invMassesSum == 0.0f)
   {
     return;
@@ -44,17 +44,17 @@ void CollisionOccurence::ResolveVelocities(float dt)
     return;
   }
 
-  float restitution = std::min(physicsA->GetPhysicsProperties().bounce_, physicsB->GetPhysicsProperties().bounce_);
+  float restitution = std::min(objectA_->bounce_, objectB_->bounce_);
 
   float impulseScalar = -(1+restitution) * impulseMagnitudeAlongNormal;
   
-  float inverseMassSum = physicsA->GetPhysicsProperties().GetInverseMass() + physicsB->GetPhysicsProperties().GetInverseMass();
+  float inverseMassSum = physicsA->GetInverseMass() + physicsB->GetInverseMass();
   impulseScalar /= inverseMassSum;
 
   glm::vec2 impulse = impulseScalar * collisionNormal_;
 
-  float aInvMass = physicsA->GetPhysicsProperties().GetInverseMass();
-  float bInvMass = physicsB->GetPhysicsProperties().GetInverseMass();
+  float aInvMass = physicsA->GetInverseMass();
+  float bInvMass = physicsB->GetInverseMass();
 
   physicsA->AddVelocity(-(aInvMass * impulse));
   physicsB->AddVelocity(bInvMass* impulse);
@@ -65,9 +65,13 @@ void CollisionOccurence::ResolveInterpenetration(float dt)
   PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
   PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();
 
-  const static float percentage = 0.2f;
-  glm::vec2 correction = penetration_ / (physicsA->GetPhysicsProperties().GetInverseMass() + physicsB->GetPhysicsProperties().GetInverseMass()) * percentage * collisionNormal_;
+  Transform& transformA = objectA_->GetParent()->GetTransform();
+  Transform& transformB = objectB_->GetParent()->GetTransform();
 
-  objectA_->GetTransform().SetPosition(objectA_->GetTransform().GetPosition() - physicsA->GetPhysicsProperties().GetInverseMass() * correction);
-  objectB_->GetTransform().SetPosition(objectB_->GetTransform().GetPosition() + physicsB->GetPhysicsProperties().GetInverseMass() * correction);
+
+  const static float percentage = 0.2f;
+  glm::vec2 correction = penetration_ / (physicsA->GetInverseMass() + physicsB->GetInverseMass()) * percentage * collisionNormal_;
+
+  transformA.SetPosition(transformA.GetPosition() - physicsA->GetInverseMass() * correction);
+  transformB.SetPosition(transformB.GetPosition() + physicsB->GetInverseMass() * correction);
 }
