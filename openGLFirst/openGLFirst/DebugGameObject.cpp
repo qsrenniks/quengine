@@ -25,7 +25,7 @@ DebugGameObject::DebugGameObject()
 
   rigidBodyComponent_->GetPhysicsComponent()->SetMass(1.0f);
   rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
-  rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
+  //rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   auto& a = inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);

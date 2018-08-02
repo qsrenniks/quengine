@@ -47,7 +47,7 @@ private:
   float rotationalVelocity_;
   float mass_ = 1.0f;
   float inverseMass_ = 1.0f;
-  float velocityDecay_;
+  float velocityDecay_ = 1.0f;
   bool simulatePhysics_ = true;
 };
 

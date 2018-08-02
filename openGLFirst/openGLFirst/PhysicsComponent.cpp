@@ -8,6 +8,7 @@
 #include <algorithm>
 #include "Engine.h"
 
+#include <iostream>
 //PhysicsConstants
 
 PhysicsComponent::PhysicsComponent()
@@ -33,6 +34,9 @@ void PhysicsComponent::Update(float dt)
   GatherForceGenerators();
 
   Transform& transform = GetParent()->GetTransform();
+
+  Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystem::GameObjectSystemLog) << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
+  std::cout << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
 
   glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
 

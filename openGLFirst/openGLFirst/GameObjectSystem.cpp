@@ -117,10 +117,19 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-1500.0f, 0.0f));  //left
-  SpawnGameObject<PhysicsBodyGameObject>();
+  //SpawnGameObject<PhysicsBodyGameObject>();
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -1500.0f));//down
   SpawnGameObject<DebugGameObject>();
  
+  //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
+  //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
+
+  //objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
+  //objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));
+
+  //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(100.0f, 0.0f)); // left
+  //objB->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, 0.0f)); // right
+
   Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
 }
 
@@ -129,13 +138,15 @@ void GameObjectSystem::Update(float dt)
   auto DestroyGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { DestroyGameObject(i); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
 
+  auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
+  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
+
+  CalculateAndResolveCollisions();
+
   auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
-  CalculateAndResolveCollisions();
   
-  auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
-  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
 }
 
 void GameObjectSystem::Unload()
