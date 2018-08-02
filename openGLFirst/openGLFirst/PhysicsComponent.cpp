@@ -33,6 +33,8 @@ void PhysicsComponent::Update(float dt)
 
   GatherForceGenerators();
 
+  lastFrameAcceleration_ = acceleration_ + (inverseMass_ * forces_);
+
   Transform& transform = GetParent()->GetTransform();
 
   Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystem::GameObjectSystemLog) << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
@@ -82,6 +84,11 @@ void PhysicsComponent::SetVelocityX(float x)
 void PhysicsComponent::SetVelocityY(float y)
 {
   velocity_.y = y;
+}
+
+const glm::vec2& PhysicsComponent::GetAccelerationLastFrame()
+{
+  return lastFrameAcceleration_;
 }
 
 float PhysicsComponent::GetMass()

@@ -30,7 +30,7 @@ PhysicsBodyGameObject::~PhysicsBodyGameObject()
 
 void PhysicsBodyGameObject::Update(float dt)
 {
-
+  //rigidBody_->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, 0.0f));
 }
 
 //void PhysicsBodyGameObject::OnCollisionUpdate(const CollisionOccurence& otherCollider)

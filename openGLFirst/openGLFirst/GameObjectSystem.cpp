@@ -116,16 +116,17 @@ void GameObjectSystem::Load()
 {
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-1500.0f, 0.0f));  //left
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
   //SpawnGameObject<PhysicsBodyGameObject>();
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -1500.0f));//down
-  SpawnGameObject<DebugGameObject>();
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -1500.0f));//down
+  //SpawnGameObject<DebugGameObject>();
  
-  //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
-  //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
-
-  //objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
-  //objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));
+  PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
+  PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
+  //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
+  
+  objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
+  objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));
 
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(100.0f, 0.0f)); // left
   //objB->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, 0.0f)); // right

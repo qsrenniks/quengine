@@ -107,10 +107,11 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
   {
     collOcc.penetration_ = overlap;
-    collOcc.collisionNormal_ = smallestAxis;
+    collOcc.collisionNormal_ = -smallestAxis;
     collOcc.objectA_ = objectA->GetComponent<RigidBodyComponent>();
     collOcc.objectB_ = objectB->GetComponent<RigidBodyComponent>();
-    collOcc.restitution_ = std::min(collOcc.objectA_->bounce_, collOcc.objectB_->bounce_);
+    //collOcc.restitution_ = std::min(collOcc.objectA_->bounce_, collOcc.objectB_->bounce_);
+    collOcc.restitution_ = 0.2f;
   }
 
   //then give it the status of that collision and return;

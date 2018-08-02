@@ -33,7 +33,7 @@ public:
   void SetVelocity(const glm::vec2& newVelocity);
   void SetVelocityX(float x);
   void SetVelocityY(float y);  
-
+  const glm::vec2& GetAccelerationLastFrame();
   float GetMass();
   float GetInverseMass();
 private:
@@ -44,6 +44,7 @@ private:
   glm::vec2 forces_;
   glm::vec2 velocity_;
   glm::vec2 acceleration_;
+  glm::vec2 lastFrameAcceleration_;
   float rotationalVelocity_;
   float mass_ = 1.0f;
   float inverseMass_ = 1.0f;
@@ -66,7 +67,7 @@ struct GravityForceGenerator : public ForceGenerator
     return gravity * body_->GetMass();
   }
 
-  glm::vec2 gravity = {0.0f, -100.0f};
+  glm::vec2 gravity = {-100.0f, 0.0f};
 };
 
 struct PointForceGenerator : public ForceGenerator
