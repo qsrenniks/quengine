@@ -75,6 +75,14 @@ struct GravityForceGenerator : public ForceGenerator
   glm::vec2 gravity = {0.0f, -350.0f};
 };
 
+//struct DragForceGenerator : public ForceGenerator
+//{
+//  virtual glm::vec2 GenerateForce() override
+//  {
+//    return 
+//  }
+//};
+
 struct PointForceGenerator : public ForceGenerator
 {
   PointForceGenerator(float x = 0, float y = 0)

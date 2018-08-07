@@ -91,7 +91,7 @@ void GameObjectSystem::CalculateCollisions()
         //or add it to the list of resolutions
         collisionOccurences_.push_back(occ);
         //TODO: fix magic number
-        occ.ResolveInterpenetration(0.01667f);
+        occ.ResolveInterpenetration();
 
         //occ.ResolveForces();
       }
@@ -110,7 +110,7 @@ void GameObjectSystem::ResolveAllOccurences()
   {
     for (auto& occ : collisionOccurences_)
     {
-      occ.ResolveVelocities(0.01667f);
+      occ.ResolveVelocities();
     }
   }
 
@@ -137,7 +137,7 @@ void GameObjectSystem::Load()
   SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
-  PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
+  //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   

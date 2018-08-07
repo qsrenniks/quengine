@@ -19,7 +19,6 @@ public:
   {
   }
 
-  void Resolve();
 
   CollisionStatus collisionStatus_;
   float penetration_;
@@ -29,8 +28,8 @@ public:
   RigidBodyComponent* objectB_ = nullptr;
   bool operator==(const CollisionOccurence& otherCollision) const;
   bool isResolved_ = false;
-  void ResolveVelocities(float dt);
-  void ResolveInterpenetration(float dt);
+  void ResolveVelocities();
+  void ResolveInterpenetration();
 
 private:
 };

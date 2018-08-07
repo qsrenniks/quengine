@@ -17,21 +17,7 @@ bool CollisionOccurence::operator==(const CollisionOccurence& otherCollision) co
   else return false;
 }
 
-void CollisionOccurence::Resolve()
-{
-  float dt = Engine::Instance()->GetDeltaTime();
-
-  float invMassesSum = objectA_->GetPhysicsComponent()->GetInverseMass() + objectB_->GetPhysicsComponent()->GetInverseMass();
-  if (invMassesSum <= 0.0f)
-  {
-    return;
-  }
-
-  ResolveVelocities(dt);
-  ResolveInterpenetration(dt);
-}
-
-void CollisionOccurence::ResolveVelocities(float dt)
+void CollisionOccurence::ResolveVelocities()
 {
   PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
   PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();
@@ -55,11 +41,9 @@ void CollisionOccurence::ResolveVelocities(float dt)
 
   physicsA->AddVelocity(additiveAVelocity);
   physicsB->AddVelocity(additiveBVelocity);
-
-
 }
 
-void CollisionOccurence::ResolveInterpenetration(float dt)
+void CollisionOccurence::ResolveInterpenetration()
 {
   PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
   PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();

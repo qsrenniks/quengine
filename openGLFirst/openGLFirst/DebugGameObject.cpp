@@ -24,12 +24,12 @@ DebugGameObject::DebugGameObject()
   GetTransform().SetScale(0.5f, 0.5f);
 
   rigidBodyComponent_->GetPhysicsComponent()->SetMass(1.0f);
-  //rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
+  rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
   //rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   auto& a = inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
-  a.consumeInput_ = false;
+  a.consumeInput_ = true;
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress);
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
@@ -50,11 +50,11 @@ void DebugGameObject::Update(float dt)
   //rigidBodyComponent_->GetPhysicsComponent()->SetVelocity(glm::vec2(0.0f, -200.0f));
 }
 
-constexpr static float jumpHeight = 250.0f;
+constexpr static float jumpHeight = 25000.0f;
 constexpr static float moveSpeed = 1000;
 void DebugGameObject::WKeyPress()
 {
-  glm::vec2 dir(0.0f, moveSpeed);
+  glm::vec2 dir(0.0f, jumpHeight);
   //rigidBodyComponent_->GetPhysicsComponent()->SetVelocity(dir);
   //glm::vec2 pos = transform_.GetPosition();
   //transform_.SetPosition(pos + dir);
