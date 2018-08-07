@@ -31,7 +31,7 @@ int main()
     glClear(GL_COLOR_BUFFER_BIT);
     
     //this does a full game update
-    engine->Update(0.0f);
+    engine->Update();
 
     //check and call events and swap the buffers
     glfwSwapBuffers(engine->GetWindow());

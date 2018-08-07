@@ -52,7 +52,7 @@ void Engine::AddCommand(ICommand* command)
   commandStack_.push_back(command);
 }
 
-void Engine::Update(float)
+void Engine::Update()
 {
   std::chrono::system_clock::time_point tickStartTime = std::chrono::system_clock::now();
 
@@ -84,14 +84,16 @@ void Engine::Update(float)
     }
 
     inputSystem_.Update(GetDeltaTime());
-    gameObjectSystem_.Update(GetDeltaTime());
+    const static float dt = 0.01667f;
+    //gameObjectSystem_.Update(GetDeltaTime());
+    gameObjectSystem_.Update(dt);
   }
 
   std::chrono::system_clock::time_point tickEndTime = std::chrono::system_clock::now();
 
   std::chrono::duration<double, std::milli> elapsedTime = tickEndTime - tickStartTime;
   
-  deltaTime_ = float(elapsedTime.count());
+  deltaTime_ = float(elapsedTime.count()) / 1000.0f;
 
   //gets sixty fps in terms of milliseconds.
   static float SixtyFPS = (1.0f / 60.0f) * 1000.0f;
@@ -118,7 +120,7 @@ void Engine::SetWindow(GLFWwindow* window)
 float Engine::GetDeltaTime()
 {
   //delta time is in milliseconds gotta divide to get proper delta time
-  return deltaTime_ / 1000.0f;
+  return deltaTime_;
 }
 
 GLFWwindow* Engine::GetWindow()

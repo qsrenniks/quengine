@@ -27,6 +27,7 @@ void CollisionOccurence::Resolve()
   }
 
   ResolveVelocities(dt);
+  //ResolveForces(dt);
   ResolveInterpenetration(dt);
 }
 
@@ -35,77 +36,44 @@ void CollisionOccurence::ResolveVelocities(float dt)
   PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
   PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();
 
-  float seperatingVelocity = 0;
+  glm::vec2 rv = physicsB->GetVelocity() - physicsA->GetVelocity();
+  float contactVel = glm::dot(rv, collisionNormal_);
 
-  glm::vec2 relativeVelocity = physicsA->GetVelocity() - physicsB->GetVelocity();
-
-  seperatingVelocity = glm::dot(relativeVelocity, collisionNormal_);
-
-  if (seperatingVelocity > 0)
-  {
-    return;
-  }
-  
-  float newSepVelocity = -seperatingVelocity * restitution_;
-
-  glm::vec2 accCausedVelocity = physicsA->GetAcceleration() - physicsB->GetAcceleration();
-
-  float accCausedSepVelocity = glm::dot(accCausedVelocity, collisionNormal_) * dt;
-   
-  if (accCausedSepVelocity < 0)
-  {
-    newSepVelocity += restitution_ * accCausedSepVelocity;
-
-    if (newSepVelocity < 0.0f)
-    {
-      newSepVelocity = 0.0f;
-    }
-  }
-
-  float deltaVelocity = newSepVelocity - seperatingVelocity;
-
-  float totalInverseMass = physicsA->GetInverseMass() + physicsB->GetInverseMass();
-
-  if (totalInverseMass <= 0)
+  if (contactVel > 0)
   {
     return;
   }
 
-  float impulse = deltaVelocity / totalInverseMass;
+  float restitution = std::min(objectA_->bounce_, objectB_->bounce_);
 
-  glm::vec2 impulsePerIMass = collisionNormal_ * impulse;
+  //impulse scalar
+  float j = -(1.0f + restitution) * contactVel;
+  j /= physicsA->GetInverseMass() + physicsB->GetInverseMass();
 
-  physicsA->SetVelocity(physicsA->GetVelocity() + impulsePerIMass * physicsA->GetInverseMass());
-  physicsB->SetVelocity(physicsB->GetVelocity() + impulsePerIMass * -physicsB->GetInverseMass());
+  glm::vec2 impulse = j * collisionNormal_;
 
-  /* glm::vec2 relativeVelocity = physicsB->GetVelocity() - physicsA->GetVelocity();
+  physicsA->AddVelocity(-physicsA->GetInverseMass() * impulse);
+  physicsB->AddVelocity(physicsB->GetInverseMass() * impulse);
 
-  float impulseMagnitudeAlongNormal = glm::dot(relativeVelocity, collisionNormal_);
+}
 
-  if (impulseMagnitudeAlongNormal > 0)
-  {
-    return;
-  }
+void CollisionOccurence::ResolveForces()
+{
+  //apply forces to object A
 
-  float impulseScalar = -(1+restitution_) * impulseMagnitudeAlongNormal;*/
-  
-  //float velocityFromAcc = glm::dot(physicsA->GetAccelerationLastFrame(), collisionNormal_);
-  //if (physicsB->GetInverseMass() != 0.0f)
-  //{
-  //  velocityFromAcc -= glm::dot(physicsB->GetAccelerationLastFrame(), collisionNormal_);
-  //}
-  //float deltaVelocity = -relativeVelocity.x - restitution_ * (relativeVelocity.x - velocityFromAcc);
-  //
- /* float inverseMassSum = physicsA->GetInverseMass() + physicsB->GetInverseMass();
-  impulseScalar /= inverseMassSum;
 
-  glm::vec2 impulse = impulseScalar * collisionNormal_;
+  PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
+  //glm::vec2 forceA = -physicsA->GetForceLastFrame();
+  physicsA->ZeroOutAcceleration();
+  //physicsA->AddForce(forceA);
 
-  float aInvMass = physicsA->GetInverseMass();
-  float bInvMass = physicsB->GetInverseMass();
+  ////apply forces to object B
+  PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();
+  //glm::vec2 forceB = -physicsB->GetForceLastFrame();
 
-  physicsA->AddVelocity(-(aInvMass * impulse));
-  physicsB->AddVelocity(bInvMass* impulse);*/
+  physicsB->ZeroOutAcceleration();
+
+  //physicsB->AddForce(forceB);
 }
 
 void CollisionOccurence::ResolveInterpenetration(float dt)
@@ -116,25 +84,11 @@ void CollisionOccurence::ResolveInterpenetration(float dt)
   Transform& transformA = objectA_->GetParent()->GetTransform();
   Transform& transformB = objectB_->GetParent()->GetTransform();
 
-  if (penetration_ <= 0.0f)
-  {
-    return;
-  }
-
-  float totalInverseMass = physicsA->GetInverseMass() + physicsB->GetInverseMass();
-
-  //if (totalInverseMass <= 0.0f)
-  //{
-  //  return;
-  //}
-
-  glm::vec2 movePerIMass = collisionNormal_ * (penetration_ / totalInverseMass);
-
-  glm::vec2 movementA = movePerIMass * physicsA->GetInverseMass();
-  glm::vec2 movementB = movePerIMass * -physicsB->GetInverseMass();
-
-  transformA.SetPosition(transformA.GetPosition() + movementA);
-  transformB.SetPosition(transformB.GetPosition() + movementB);
+  const float k_slop = 0.01f; // Penetration allowance
+  const float percent = 0.2f; // Penetration percentage to correct
+  glm::vec2 correction = (std::max(penetration_ - k_slop, 0.0f) / (physicsA->GetInverseMass() + physicsB->GetInverseMass())) * percent * collisionNormal_;
+  transformA.SetPosition(transformA.GetPosition() - physicsA->GetInverseMass() * correction);
+  transformB.SetPosition(transformB.GetPosition() + physicsB->GetInverseMass() * correction);
 
   //const static float percentage = 0.2f;
   //glm::vec2 correction = penetration_ / (physicsA->GetInverseMass() + physicsB->GetInverseMass()) * percentage * collisionNormal_;

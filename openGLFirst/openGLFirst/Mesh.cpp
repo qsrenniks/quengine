@@ -200,7 +200,7 @@ CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projec
   //
   if (glm::epsilonEqual(max_, otherProjections.min_, glm::epsilon<float>()) || glm::epsilonEqual(min_, otherProjections.max_, glm::epsilon<float>()))
   {
-    return CollisionOccurence::CollisionStatus::NOT_COLLIDING;
+    return CollisionOccurence::CollisionStatus::TOUCHING;
   }
   return CollisionOccurence::CollisionStatus::COLLIDING;
 }

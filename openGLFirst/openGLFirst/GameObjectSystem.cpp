@@ -62,7 +62,7 @@ void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
 void GameObjectSystem::CalculateAndResolveCollisions()
 {
   CalculateCollisions();
-  ResetBodies();
+  ResolveAllOccurences();
 }
 
 void GameObjectSystem::CalculateCollisions()
@@ -85,20 +85,67 @@ void GameObjectSystem::CalculateCollisions()
 
       if (occ.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING)
       {
-        occ.Resolve();
+        //occ.Resolve();
+        //or add it to the list of resolutions
+        collisionOccurences_.push_back(occ);
+        //TODO: fix magic number
+        occ.ResolveInterpenetration(0.01667f);
+        //occ.ResolveForces();
       }
     }
   }
 }
 
-void GameObjectSystem::ResetBodies()
+void GameObjectSystem::ResolveAllOccurences()
 {
-  //auto lambda = [&](RigidBodyGameObject* object) 
+  //if (collisionOccurences_.empty())
   //{
-  //  object->SetResolved(false);
-  //};
+  //  return;
+  //}
+  
+  //for (std::list<CollisionOccurence>::reverse_iterator start = collisionOccurences_.rbegin(); start != collisionOccurences_.rend(); start++)
+  //{
+  //  CollisionOccurence& collOcc = *start;
 
-  //std::for_each(collisionGameObjects_.begin(), collisionGameObjects_.end(), lambda);
+  //  collOcc.Resolve();
+
+  //  //collisionOccurences_.remove(collOcc);
+  //}
+  
+  //float dt = Engine::Instance()->GetDeltaTime();
+
+  //for (auto start = collisionOccurences_.begin(); start != collisionOccurences_.end(); start++)
+  //{
+  //  CollisionOccurence& collOcc = *start;
+  //  collOcc.ResolveInterpenetration(dt);
+  //}
+
+  //const static int iterations = 16 ;
+  //for (int i = 0; i < iterations; i++)
+  //{
+  //  for (auto start = collisionOccurences_.begin(); start != collisionOccurences_.end(); start++)
+  //  {
+  //    CollisionOccurence& collOcc = *start;
+  //    collOcc.ResolveVelocities(dt);
+  //    //collOcc.Resolve();
+
+
+  //  }
+  //}
+  const static int iterations = 15;
+
+  for (int i = 0; i < iterations; i++)
+  {
+    for (auto& occ : collisionOccurences_)
+    {
+      //TODO: fix magiv number
+      occ.ResolveVelocities(0.01667f);
+    }
+  }
+
+
+  //////they should all be resolve so i just gotta clear them all.
+  collisionOccurences_.clear();
 }
 
 std::string GameObjectSystem::GameObjectSystemLog = "GameObjectSystemLog";
@@ -116,17 +163,17 @@ void GameObjectSystem::Load()
 {
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
   //SpawnGameObject<PhysicsBodyGameObject>();
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -1500.0f));//down
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -700.0f));//down
   //SpawnGameObject<DebugGameObject>();
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
-  PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
+  //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   
-  objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
-  objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));
+  //objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
+  //objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));
 
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(100.0f, 0.0f)); // left
   //objB->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, 0.0f)); // right
@@ -139,15 +186,15 @@ void GameObjectSystem::Update(float dt)
   auto DestroyGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { DestroyGameObject(i); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
 
-  auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
-  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
-
-  CalculateAndResolveCollisions();
 
   auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
+  CalculateAndResolveCollisions();
+
   
+  auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
+  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
 }
 
 void GameObjectSystem::Unload()

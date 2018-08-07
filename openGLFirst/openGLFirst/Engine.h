@@ -33,7 +33,7 @@ public:
 
   void Load();
 
-  void Update(float dt);
+  void Update();
   
   void SetWindow(GLFWwindow* window);
 

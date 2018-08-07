@@ -37,16 +37,18 @@ void PhysicsComponent::Update(float dt)
 
   Transform& transform = GetParent()->GetTransform();
 
-  Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystem::GameObjectSystemLog) << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
-  std::cout << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
-
-  glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
-
-  transform.SetPosition(newPos);
+  //Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystem::GameObjectSystemLog) << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
 
   velocity_ = velocity_ * glm::pow(velocityDecay_, dt) + acceleration_ * dt;
 
   acceleration_ = inverseMass_ * forces_;
+
+  lastFrameForce_ = forces_;
+
+  glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
+
+  std::cout << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
+  transform.SetPosition(newPos);
 
   ResetForces();
 }
@@ -91,6 +93,12 @@ const glm::vec2& PhysicsComponent::GetAccelerationLastFrame()
   return lastFrameAcceleration_;
 }
 
+void PhysicsComponent::ZeroOutAcceleration()
+{
+  acceleration_.x = 0.0f;
+  acceleration_.y = 0.0f;
+}
+
 float PhysicsComponent::GetMass()
 {
   return mass_;
@@ -130,6 +138,11 @@ void PhysicsComponent::SetVelocityDecay(float x )
   velocityDecay_ = x;
 }
 
+const glm::vec2& PhysicsComponent::GetForce()
+{
+  return forces_;
+}
+
 void PhysicsComponent::AddForce(glm::vec2& force)
 {
   forces_ += force;
@@ -146,9 +159,9 @@ void PhysicsComponent::AddImpulse(glm::vec2& impulse)
   velocity_ = velocity_ + inverseMass_ * impulse;
 }
 
-const glm::vec2& PhysicsComponent::GetCurrentForce()
+const glm::vec2& PhysicsComponent::GetForceLastFrame()
 {
-  return forces_;
+  return lastFrameForce_;
 }
 
 void PhysicsComponent::GatherForceGenerators()

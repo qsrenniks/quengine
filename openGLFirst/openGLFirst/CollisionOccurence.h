@@ -13,7 +13,7 @@ class RigidBodyComponent;
 struct CollisionOccurence
 {
 public:
-  enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, INVALID };
+  enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, TOUCHING, INVALID };
 
   CollisionOccurence()
     : collisionStatus_(CollisionStatus::INVALID)
@@ -30,8 +30,9 @@ public:
   RigidBodyComponent* objectB_ = nullptr;
   bool operator==(const CollisionOccurence& otherCollision) const;
   bool isResolved_ = false;
-private:
 
   void ResolveVelocities(float dt);
+  void ResolveForces();
   void ResolveInterpenetration(float dt);
+private:
 };

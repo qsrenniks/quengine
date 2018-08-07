@@ -64,7 +64,7 @@ private:
   std::list<CollisionOccurence> collisionOccurences_;
 
   void CalculateCollisions();
-  void ResetBodies();
+  void ResolveAllOccurences();
   GameObjectList gameObjectRegistry_;
 
   CollisionList rigidBodyComponentRegistry_;
