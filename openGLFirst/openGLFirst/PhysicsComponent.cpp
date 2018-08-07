@@ -30,23 +30,22 @@ bool PhysicsComponent::GetSimulatePhysics()
 void PhysicsComponent::Update(float dt)
 {
   if (simulatePhysics_ == false) return;
+
   GatherForceGenerators();
 
-  //lastFrameAcceleration_ = acceleration_ + (inverseMass_ * forces_);
-
-  Transform& transform = GetParent()->GetTransform();
-
-  velocityAtFrameStart_ = velocity_;
-
-  velocity_ = velocity_ * glm::pow(velocityDecay_, dt) + acceleration_ * dt;
-
   acceleration_ = inverseMass_ * forces_;
+  velocity_ = velocity_ + (acceleration_ * dt);
+  velocity_ *= velocityDecay_;
 
-  //lastFrameForce_ = forces_;
-
+  std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
+  Transform& transform = GetParent()->GetTransform();
   glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
 
+  float rotation = transform.GetRotation();
+  rotation += rotationalVelocity_ * dt;
+
   transform.SetPosition(newPos);
+  transform.SetRotation(rotation);
 
   ResetForces();
 }
@@ -162,10 +161,10 @@ void PhysicsComponent::AddImpulse(glm::vec2& impulse)
   velocity_ = velocity_ + inverseMass_ * impulse;
 }
 
-//const glm::vec2& PhysicsComponent::GetForceLastFrame()
-//{
-//  return lastFrameForce_;
-//}
+const glm::vec2& PhysicsComponent::GetForceLastFrame()
+{
+  return lastFrameForce_;
+}
 
 void PhysicsComponent::GatherForceGenerators()
 {

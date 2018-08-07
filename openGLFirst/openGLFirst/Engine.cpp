@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Engine.h"
-//#include "GameObjectSystem.h"
+
+#include "GameObjectSystem.h"
 #include "InputSystem.h"
+#include "LoggingSystem.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 #include "ICommand.h"
 #include <memory>
@@ -18,9 +21,9 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 Engine::Engine()
   : currentWindow_(nullptr)
-  , inputSystem_()
-  , gameObjectSystem_()
-  , loggingSystem_()
+  , inputSystem_(/*std::make_unique<InputSystem>()*/)
+  , gameObjectSystem_(/*std::make_unique<GameObjectSystem>()*/)
+  , loggingSystem_(/*std::make_unique<LoggingSystem>()*/)
 {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -54,6 +57,10 @@ void Engine::AddCommand(ICommand* command)
 
 void Engine::Update()
 {
+  //rendering commands here
+  glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+
   std::chrono::system_clock::time_point tickStartTime = std::chrono::system_clock::now();
 
   //MAIN LOOP
@@ -110,6 +117,26 @@ void Engine::Update()
     std::cout << "lag Detected" << std::endl;
   }
 
+  //check and call events and swap the buffers
+  glfwSwapBuffers(currentWindow_);
+  glfwPollEvents();
+}
+
+ENGINE_DECL void Engine::GameLoop()
+{
+  while (!glfwWindowShouldClose(currentWindow_))
+  {
+    // input
+    if (glfwGetKey(currentWindow_, GLFW_KEY_0) == GLFW_PRESS)
+    {
+      glfwSetWindowShouldClose(currentWindow_, true);
+    }
+
+    //this does a full game update
+    Update();
+
+
+  }
 }
 
 void Engine::SetWindow(GLFWwindow* window)
@@ -200,6 +227,7 @@ std::string Engine::EngineLog = "EngineLog";
 void Engine::Destroy()
 {
   delete instance_;
+  glfwTerminate();
 }
 
 Engine* Engine::Instance()

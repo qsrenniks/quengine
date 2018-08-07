@@ -12,21 +12,15 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
   AddComponent<RigidBodyComponent>(rigidBody_);
 
   rigidBody_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
-  //rigidBody_->GetPhysicsComponent()->SetVelocityDecay(0.90f);
-
   GetTransform().SetScale(glm::vec2(0.5f, 0.5f));
-  //physics_->SetRotationalVelocity(45.0f);
+
+  rigidBody_->GetPhysicsComponent()->SetRotationalVelocity(45.0f);
 
 }
 
 PhysicsBodyGameObject::~PhysicsBodyGameObject()
 {
 }
-//
-//PhysicsBodyGameObject* PhysicsBodyGameObject::Clone()
-//{
-//  return new PhysicsBodyGameObject();
-//}
 
 void PhysicsBodyGameObject::Update(float dt)
 {

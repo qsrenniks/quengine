@@ -102,19 +102,19 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
     //checks all object b axis if a collision still has not been detected
     collisionStatus = PerformAxisProjection(axisB, meshA, meshB, overlap, smallestAxis);
   }
+
+  //if overlap is small enough consider them touching
+  if (overlap < 0.01f)
+  {
+    collisionStatus = CollisionOccurence::CollisionStatus::TOUCHING;
+  }
   
   //sets the objects
   collOcc.objectA_ = objectA->GetComponent<RigidBodyComponent>();
   collOcc.objectB_ = objectB->GetComponent<RigidBodyComponent>();
-
-  //we check if it collided. And if it did then we pack it full of new information
-  if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
-  {
-    collOcc.penetration_ = overlap;
-    collOcc.collisionNormal_ = smallestAxis;
-    collOcc.restitution_ = std::min(collOcc.objectA_->bounce_, collOcc.objectB_->bounce_);
-    //collOcc.restitution_ = 0.2f;
-  }
+  collOcc.penetration_ = overlap;
+  collOcc.collisionNormal_ = smallestAxis;
+  collOcc.restitution_ = std::min(collOcc.objectA_->bounce_, collOcc.objectB_->bounce_);
 
   //then give it the status of that collision and return;
   collOcc.collisionStatus_ = collisionStatus;

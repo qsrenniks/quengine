@@ -26,13 +26,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -84,7 +84,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BUILDING_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
@@ -111,6 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <PreprocessorDefinitions>BUILDING_ENGINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -133,16 +134,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CollisionComponent.cpp" />
-    <ClCompile Include="CollisionOccurence.cpp" />
-    <ClCompile Include="CollisionResolution.cpp" />
-    <ClCompile Include="DebugGameObject.cpp" />
-    <ClCompile Include="EngineCmder.cpp" />
-    <ClCompile Include="GameObjectSystem.cpp" />
-    <ClCompile Include="glad.c">
+    <ClCompile Include="..\openGLLib\Include\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="CollisionOccurence.cpp" />
+    <ClCompile Include="DebugGameObject.cpp" />
+    <ClCompile Include="EngineCmder.cpp" />
+    <ClCompile Include="GameObjectSystem.cpp" />
     <ClCompile Include="ICommand.cpp" />
     <ClCompile Include="IComponent.cpp" />
     <ClCompile Include="IGameObject.cpp" />
@@ -150,7 +150,6 @@
     <ClCompile Include="IGameplaySystem.cpp" />
     <ClCompile Include="ISystem.cpp" />
     <ClCompile Include="LoggingSystem.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="PhysicsBodyGameObject.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
@@ -167,7 +166,6 @@
   <ItemGroup>
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionOccurence.h" />
-    <ClInclude Include="CollisionResolution.h" />
     <ClInclude Include="DebugGameObject.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="EngineCmder.h" />

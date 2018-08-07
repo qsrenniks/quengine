@@ -1,6 +1,5 @@
 #pragma once
 #include "IComponent.h"
-#include <glm/glm.hpp>
 
 class CollisionComponent;
 class PhysicsComponent;
@@ -30,9 +29,8 @@ public:
   RigidBodyComponent* objectB_ = nullptr;
   bool operator==(const CollisionOccurence& otherCollision) const;
   bool isResolved_ = false;
-
   void ResolveVelocities(float dt);
-  void ResolveForces();
   void ResolveInterpenetration(float dt);
+
 private:
 };

@@ -84,12 +84,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IComponent.cpp">
       <Filter>Source Files\Components\Interface</Filter>
     </ClCompile>
@@ -144,9 +138,6 @@
     <ClCompile Include="CollisionOccurence.cpp">
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionResolution.cpp">
-      <Filter>Source Files\Components\Collision Component</Filter>
-    </ClCompile>
     <ClCompile Include="LoggingSystem.cpp">
       <Filter>Source Files\Systems\Debug Logging System</Filter>
     </ClCompile>
@@ -154,6 +145,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RigidBodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\openGLLib\Include\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -223,9 +217,6 @@
     </ClInclude>
     <ClInclude Include="LoggingSystem.h">
       <Filter>Source Files\Systems\Debug Logging System</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionResolution.h">
-      <Filter>Source Files\Components\Collision Component</Filter>
     </ClInclude>
     <ClInclude Include="ISystem.h">
       <Filter>Header Files</Filter>

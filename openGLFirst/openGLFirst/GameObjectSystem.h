@@ -1,13 +1,12 @@
 #pragma once
 #include "IGameplaySystem.h"
-#include "CollisionResolution.h"
 #include <list>
 #include <memory>
+#include "CollisionOccurence.h"
 
 class IGameObject;
 class CollisionComponent;
 class PhysicsComponent;
-struct CollisionOccurence;
 class RigidBodyComponent;
 //
 // game object system definition

@@ -23,7 +23,6 @@ DebugGameObject::DebugGameObject()
 
   GetTransform().SetScale(0.5f, 0.5f);
 
-  rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.5f);
   rigidBodyComponent_->GetPhysicsComponent()->SetMass(1.0f);
   //rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
   //rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
@@ -49,7 +48,7 @@ void DebugGameObject::Update(float dt)
 }
 
 constexpr static float jumpHeight = 250.0f;
-constexpr static float moveSpeed = 100.0f;
+constexpr static float moveSpeed = 1000;
 void DebugGameObject::WKeyPress()
 {
   glm::vec2 dir(0.0f, moveSpeed);

@@ -1,45 +1,55 @@
 #pragma once
-#include "IGameplaySystem.h"
 #include "Delegate.h"
 #include <glm/glm.hpp>
 #include <array>
 #include <vector>
-#include <stack>
-#include <set>
+#include <string>
 #include <memory>
 
+#include "Transform.h"
 #include "InputSystem.h"
 #include "GameObjectSystem.h"
-#include "Transform.h"
 #include "LoggingSystem.h"
+
 //class InputSystem;
 //class GameObjectSystem;
+//class LoggingSystem;
 struct GLFWwindow;
 class ICommand;
 class Factory;
+
+#ifdef BUILDING_ENGINE
+#define ENGINE_DECL __declspec(dllexport)
+#else
+#define ENGINE_DECL __declspec(dllimport)
+#endif
+
+//class ENGINE_DECL std::string;
 
 class Engine
 {
 public:
   static std::string EngineLog;
 
-  static void Destroy();
+  static ENGINE_DECL void Destroy();
 
-  static Engine* Instance();
+  static ENGINE_DECL Engine*  Instance();
 
   void ShutDown();
 
   void AddCommand(ICommand* command);
 
-  void Load();
+  ENGINE_DECL void Load();
 
-  void Update();
+  ENGINE_DECL void Update();
+
+  ENGINE_DECL void GameLoop();
   
   void SetWindow(GLFWwindow* window);
 
   float GetDeltaTime();
 
-  GLFWwindow* GetWindow();
+  ENGINE_DECL GLFWwindow* GetWindow();
   
   InputSystem* GetInputSystem();
   GameObjectSystem* GetGameObjectSystem();
@@ -55,6 +65,7 @@ public:
   Transform& GetViewTransform();
   glm::mat4 GetOrthographicTransform();
 protected:
+
   Engine();
   ~Engine();
 
@@ -62,7 +73,7 @@ private:
   
   float deltaTime_ = 0.0f;
 
-  int mouseState_ = GLFW_RELEASE;
+  int mouseState_ = 0;
 
   Transform viewCamera_;
 

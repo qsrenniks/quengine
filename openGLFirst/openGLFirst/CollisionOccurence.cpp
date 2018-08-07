@@ -28,7 +28,6 @@ void CollisionOccurence::Resolve()
   }
 
   ResolveVelocities(dt);
-  //ResolveForces(dt);
   ResolveInterpenetration(dt);
 }
 
@@ -45,44 +44,19 @@ void CollisionOccurence::ResolveVelocities(float dt)
     return;
   }
 
-  //look to velocity last frame to determine where an object can and cant go 
-
   float restitution = std::min(objectA_->bounce_, objectB_->bounce_);
-
   //impulse scalar
   float j = -(1.0f + restitution) * contactVel;
   j /= physicsA->GetInverseMass() + physicsB->GetInverseMass();
 
   glm::vec2 impulse = j * collisionNormal_;
+  glm::vec2 additiveAVelocity = -physicsA->GetInverseMass() * impulse;
+  glm::vec2 additiveBVelocity = physicsB->GetInverseMass() * impulse;
 
-  glm::vec2 newVelocityA = -physicsA->GetInverseMass() * impulse;
-  glm::vec2 newVelocityB = physicsB->GetInverseMass() * impulse;
-
-  physicsA->AddVelocity(newVelocityA);
-  physicsB->AddVelocity(newVelocityB);
-
-  std::cout << "A: X: " << physicsA->GetVelocity().x << " Y:" << physicsA->GetVelocity().y << std::endl;
-  std::cout << "B: X: " << physicsB->GetVelocity().x << " Y:" << physicsB->GetVelocity().y << std::endl;
-
-}
-
-void CollisionOccurence::ResolveForces()
-{
-  //apply forces to object A
+  physicsA->AddVelocity(additiveAVelocity);
+  physicsB->AddVelocity(additiveBVelocity);
 
 
-  PhysicsComponent* physicsA = objectA_->GetPhysicsComponent();
-  //glm::vec2 forceA = -physicsA->GetForceLastFrame();
-  physicsA->ZeroOutAcceleration();
-  //physicsA->AddForce(forceA);
-
-  ////apply forces to object B
-  PhysicsComponent* physicsB = objectB_->GetPhysicsComponent();
-  //glm::vec2 forceB = -physicsB->GetForceLastFrame();
-
-  physicsB->ZeroOutAcceleration();
-
-  //physicsB->AddForce(forceB);
 }
 
 void CollisionOccurence::ResolveInterpenetration(float dt)
@@ -94,14 +68,8 @@ void CollisionOccurence::ResolveInterpenetration(float dt)
   Transform& transformB = objectB_->GetParent()->GetTransform();
 
   const float k_slop = 0.01f; // Penetration allowance
-  const float percent = 0.2f; // Penetration percentage to correct
+  const float percent = 1.0f; // Penetration percentage to correct
   glm::vec2 correction = (std::max(penetration_ - k_slop, 0.0f) / (physicsA->GetInverseMass() + physicsB->GetInverseMass())) * percent * collisionNormal_;
   transformA.SetPosition(transformA.GetPosition() - physicsA->GetInverseMass() * correction);
   transformB.SetPosition(transformB.GetPosition() + physicsB->GetInverseMass() * correction);
-
-  //const static float percentage = 0.2f;
-  //glm::vec2 correction = penetration_ / (physicsA->GetInverseMass() + physicsB->GetInverseMass()) * percentage * collisionNormal_;
-
-  //transformA.SetPosition(transformA.GetPosition() - physicsA->GetInverseMass() * correction);
-  //transformB.SetPosition(transformB.GetPosition() + physicsB->GetInverseMass() * correction);
 }

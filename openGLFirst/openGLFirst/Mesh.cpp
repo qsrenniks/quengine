@@ -198,10 +198,10 @@ CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projec
   }
 
   //
-  if (glm::epsilonEqual(max_, otherProjections.min_, glm::epsilon<float>()) || glm::epsilonEqual(min_, otherProjections.max_, glm::epsilon<float>()))
-  {
-    return CollisionOccurence::CollisionStatus::TOUCHING;
-  }
+  //if (glm::epsilonEqual(max_, otherProjections.min_, 0.005f) || glm::epsilonEqual(min_, otherProjections.max_, 0.005f))
+  //{
+  //  return CollisionOccurence::CollisionStatus::TOUCHING;
+  //}
   return CollisionOccurence::CollisionStatus::COLLIDING;
 }
 

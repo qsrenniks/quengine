@@ -8,7 +8,7 @@
 InputSystem::InputSystem() 
 {
   //error handling
-  std::ifstream fileStream(R"(data\ConfigFiles\inputs.json)");
+  std::ifstream fileStream(R"(..\data\ConfigFiles\inputs.json)");
 
   assert(fileStream.is_open());
 

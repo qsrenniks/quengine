@@ -9,6 +9,7 @@
 #include "PhysicsComponent.h"
 #include "CollisionComponent.h"
 #include <iostream>
+
 //
 // test
 //
@@ -20,6 +21,7 @@
 #include "PhysicsBodyGameObject.h"
 #include "CollisionOccurence.h"
 #include "RigidBodyComponent.h"
+#include "LoggingSystem.h"
 
 void GameObjectSystem::AddCollisionOccurence(const CollisionOccurence& occurence)
 {
@@ -83,12 +85,14 @@ void GameObjectSystem::CalculateCollisions()
       CollisionOccurence occ;
       objectA->GetCollisionComponent()->IsCollidingWith(objectB->GetCollisionComponent(), occ);
 
-      if (occ.collisionStatus_ == CollisionOccurence::CollisionStatus::COLLIDING)
+      if (occ.collisionStatus_ != CollisionOccurence::CollisionStatus::NOT_COLLIDING)
       {
         //occ.Resolve();
         //or add it to the list of resolutions
         collisionOccurences_.push_back(occ);
         //TODO: fix magic number
+        occ.ResolveInterpenetration(0.01667f);
+
         //occ.ResolveForces();
       }
     }
@@ -97,51 +101,19 @@ void GameObjectSystem::CalculateCollisions()
 
 void GameObjectSystem::ResolveAllOccurences()
 {
-  //if (collisionOccurences_.empty())
-  //{
-  //  return;
-  //}
-  
-  //for (std::list<CollisionOccurence>::reverse_iterator start = collisionOccurences_.rbegin(); start != collisionOccurences_.rend(); start++)
-  //{
-  //  CollisionOccurence& collOcc = *start;
-
-  //  collOcc.Resolve();
-
-  //  //collisionOccurences_.remove(collOcc);
-  //}
-  
-  //float dt = Engine::Instance()->GetDeltaTime();
-
-  //for (auto start = collisionOccurences_.begin(); start != collisionOccurences_.end(); start++)
-  //{
-  //  CollisionOccurence& collOcc = *start;
-  //  collOcc.ResolveInterpenetration(dt);
-  //}
-
-  //const static int iterations = 16 ;
-  //for (int i = 0; i < iterations; i++)
-  //{
-  //  for (auto start = collisionOccurences_.begin(); start != collisionOccurences_.end(); start++)
-  //  {
-  //    CollisionOccurence& collOcc = *start;
-  //    collOcc.ResolveVelocities(dt);
-  //    //collOcc.Resolve();
-
-
-  //  }
-  //}
-
-  for (auto& occ : collisionOccurences_)
+  if (collisionOccurences_.empty() == true)
   {
-    //TODO: fix magiv number
-    occ.ResolveVelocities(0.01667f);
-    occ.ResolveInterpenetration(0.01667f);
+    return;
+  }
+  const static int iterations = 10;
+  for (int i = 0; i < iterations; i++)
+  {
+    for (auto& occ : collisionOccurences_)
+    {
+      occ.ResolveVelocities(0.01667f);
+    }
   }
 
-
-
-  //////they should all be resolve so i just gotta clear them all.
   collisionOccurences_.clear();
 }
 
@@ -162,14 +134,14 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -700.0f));//down
-  //SpawnGameObject<DebugGameObject>();
+  SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   
-  objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, -100.0f));
+  //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, -100.0f));
 
   //objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
   //objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));

@@ -26,7 +26,7 @@ public:
   void ResetForces();
   void AddImpulse(glm::vec2& impulse);
   void GatherForceGenerators();
-  //const glm::vec2& GetForceLastFrame();
+  const glm::vec2& GetForceLastFrame();
   void AddForceGenerator(ForceGenerator* forceGenerator);
   const glm::vec2& GetVelocity() const;
   const glm::vec2& GetVelocityAtFrameStart() const;
@@ -45,7 +45,7 @@ private:
 
   std::vector<ForceGenerator*> forceGenerators_;
   glm::vec2 forces_;
-  //glm::vec2 lastFrameForce_;
+  glm::vec2 lastFrameForce_;
   glm::vec2 velocity_;
   glm::vec2 velocityAtFrameStart_;
   glm::vec2 acceleration_;
@@ -72,7 +72,7 @@ struct GravityForceGenerator : public ForceGenerator
     return gravity * body_->GetMass();
   }
 
-  glm::vec2 gravity = {0.0f, -100.0f};
+  glm::vec2 gravity = {0.0f, -350.0f};
 };
 
 struct PointForceGenerator : public ForceGenerator
