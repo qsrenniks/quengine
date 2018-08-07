@@ -118,6 +118,9 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
 
   //then give it the status of that collision and return;
   collOcc.collisionStatus_ = collisionStatus;
+
+  collOcc.objectA_->UpdateCollisionWith(collOcc.objectB_, collisionStatus);
+  collOcc.objectB_->UpdateCollisionWith(collOcc.objectA_, collisionStatus);
 }
 
 CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const

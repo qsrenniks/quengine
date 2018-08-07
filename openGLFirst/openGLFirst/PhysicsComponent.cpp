@@ -37,7 +37,7 @@ void PhysicsComponent::Update(float dt)
   velocity_ = velocity_ + (acceleration_ * dt);
   velocity_ *= velocityDecay_;
 
-  std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
+  //std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
   Transform& transform = GetParent()->GetTransform();
   glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
 

@@ -22,6 +22,10 @@ public:
   void SKeyPress();
   void DKeyPress();
   void AKeyPress();
+  
+  void OnCollisionEnter(RigidBodyComponent* otherBody);
+  void OnCollisionExit(RigidBodyComponent* otherBody);
+
 
   //virtual CollisionOccurence GetCollisionOccurence() override;
 protected:
