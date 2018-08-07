@@ -89,7 +89,6 @@ void GameObjectSystem::CalculateCollisions()
         //or add it to the list of resolutions
         collisionOccurences_.push_back(occ);
         //TODO: fix magic number
-        occ.ResolveInterpenetration(0.01667f);
         //occ.ResolveForces();
       }
     }
@@ -132,16 +131,14 @@ void GameObjectSystem::ResolveAllOccurences()
 
   //  }
   //}
-  const static int iterations = 15;
 
-  for (int i = 0; i < iterations; i++)
+  for (auto& occ : collisionOccurences_)
   {
-    for (auto& occ : collisionOccurences_)
-    {
-      //TODO: fix magiv number
-      occ.ResolveVelocities(0.01667f);
-    }
+    //TODO: fix magiv number
+    occ.ResolveVelocities(0.01667f);
+    occ.ResolveInterpenetration(0.01667f);
   }
+
 
 
   //////they should all be resolve so i just gotta clear them all.
@@ -172,6 +169,8 @@ void GameObjectSystem::Load()
   //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   
+  objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, -100.0f));
+
   //objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
   //objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));
 
@@ -186,12 +185,10 @@ void GameObjectSystem::Update(float dt)
   auto DestroyGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { DestroyGameObject(i); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
 
-
   auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
   CalculateAndResolveCollisions();
-
   
   auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);

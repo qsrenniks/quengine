@@ -30,24 +30,22 @@ bool PhysicsComponent::GetSimulatePhysics()
 void PhysicsComponent::Update(float dt)
 {
   if (simulatePhysics_ == false) return;
-
   GatherForceGenerators();
 
-  lastFrameAcceleration_ = acceleration_ + (inverseMass_ * forces_);
+  //lastFrameAcceleration_ = acceleration_ + (inverseMass_ * forces_);
 
   Transform& transform = GetParent()->GetTransform();
 
-  //Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystem::GameObjectSystemLog) << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
+  velocityAtFrameStart_ = velocity_;
 
   velocity_ = velocity_ * glm::pow(velocityDecay_, dt) + acceleration_ * dt;
 
   acceleration_ = inverseMass_ * forces_;
 
-  lastFrameForce_ = forces_;
+  //lastFrameForce_ = forces_;
 
   glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
 
-  std::cout << "X: " << velocity_.x << ": Y: " << velocity_.y << std::endl;
   transform.SetPosition(newPos);
 
   ResetForces();
@@ -60,7 +58,7 @@ void PhysicsComponent::Draw()
 
 void PhysicsComponent::SetAcceleration(const glm::vec2& newAcceleration)
 {
-  //acceleration_ = newAcceleration;
+  acceleration_ = newAcceleration;
 }
 
 const glm::vec2& PhysicsComponent::GetAcceleration() const
@@ -88,10 +86,10 @@ void PhysicsComponent::SetVelocityY(float y)
   velocity_.y = y;
 }
 
-const glm::vec2& PhysicsComponent::GetAccelerationLastFrame()
-{
-  return lastFrameAcceleration_;
-}
+//const glm::vec2& PhysicsComponent::GetAccelerationLastFrame()
+//{
+//  return lastFrameAcceleration_;
+//}
 
 void PhysicsComponent::ZeroOutAcceleration()
 {
@@ -112,6 +110,11 @@ float PhysicsComponent::GetInverseMass()
 const glm::vec2& PhysicsComponent::GetVelocity() const
 {
   return velocity_;
+}
+
+const glm::vec2& PhysicsComponent::GetVelocityAtFrameStart() const
+{
+  return velocityAtFrameStart_;
 }
 
 void PhysicsComponent::SetRotationalVelocity(float val)
@@ -159,10 +162,10 @@ void PhysicsComponent::AddImpulse(glm::vec2& impulse)
   velocity_ = velocity_ + inverseMass_ * impulse;
 }
 
-const glm::vec2& PhysicsComponent::GetForceLastFrame()
-{
-  return lastFrameForce_;
-}
+//const glm::vec2& PhysicsComponent::GetForceLastFrame()
+//{
+//  return lastFrameForce_;
+//}
 
 void PhysicsComponent::GatherForceGenerators()
 {

@@ -9,7 +9,7 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
 {
   sprite_->SetColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
-  AddComponent<RigidBodyComponent>(rigidBody_, 0.0f);
+  AddComponent<RigidBodyComponent>(rigidBody_);
 
   rigidBody_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
   //rigidBody_->GetPhysicsComponent()->SetVelocityDecay(0.90f);

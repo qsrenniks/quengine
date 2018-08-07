@@ -5,6 +5,7 @@
 #include "CollisionComponent.h"
 #include "Engine.h"
 #include "RigidBodyComponent.h"
+#include <iostream>
 
 bool CollisionOccurence::operator==(const CollisionOccurence& otherCollision) const
 {
@@ -44,6 +45,8 @@ void CollisionOccurence::ResolveVelocities(float dt)
     return;
   }
 
+  //look to velocity last frame to determine where an object can and cant go 
+
   float restitution = std::min(objectA_->bounce_, objectB_->bounce_);
 
   //impulse scalar
@@ -52,8 +55,14 @@ void CollisionOccurence::ResolveVelocities(float dt)
 
   glm::vec2 impulse = j * collisionNormal_;
 
-  physicsA->AddVelocity(-physicsA->GetInverseMass() * impulse);
-  physicsB->AddVelocity(physicsB->GetInverseMass() * impulse);
+  glm::vec2 newVelocityA = -physicsA->GetInverseMass() * impulse;
+  glm::vec2 newVelocityB = physicsB->GetInverseMass() * impulse;
+
+  physicsA->AddVelocity(newVelocityA);
+  physicsB->AddVelocity(newVelocityB);
+
+  std::cout << "A: X: " << physicsA->GetVelocity().x << " Y:" << physicsA->GetVelocity().y << std::endl;
+  std::cout << "B: X: " << physicsB->GetVelocity().x << " Y:" << physicsB->GetVelocity().y << std::endl;
 
 }
 
