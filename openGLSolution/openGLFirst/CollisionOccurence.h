@@ -5,6 +5,7 @@ class CollisionComponent;
 class PhysicsComponent;
 class RigidBodyComponent;
 
+enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, TOUCHING, INVALID };
 //
 // This class is created in the event of a collision in the update loop. 
 // if a collision is detected this class is created then pushed onto the gameobjectsystem to later be resolved
@@ -12,13 +13,11 @@ class RigidBodyComponent;
 struct CollisionOccurence
 {
 public:
-  enum class CollisionStatus : int { NOT_COLLIDING, COLLIDING, TOUCHING, INVALID };
 
   CollisionOccurence()
     : collisionStatus_(CollisionStatus::INVALID)
   {
   }
-
 
   CollisionStatus collisionStatus_;
   float penetration_;

@@ -8,6 +8,8 @@
 class PhysicsComponent;
 class CollisionComponent;
 
+enum class CollisionStatus : int;
+
 class RigidBodyComponent : public IComponent
 {
 public:
@@ -30,7 +32,7 @@ public:
   delegate<void(RigidBodyComponent* otherObject)> onCollisionEnter_;
   delegate<void(RigidBodyComponent* otherObject)> onCollisionExit_;
 
-  void UpdateCollisionWith(RigidBodyComponent* otherBody, CollisionOccurence::CollisionStatus status);
+  void UpdateCollisionWith(RigidBodyComponent* otherBody, CollisionStatus status);
   CollisionList& GetOverlappingBodies();
 protected:
 

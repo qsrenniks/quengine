@@ -1,16 +1,11 @@
 #include "stdafx.h"
 #include "CollisionComponent.h"
-//#include "GameObjectSystem.h"
-#include "Engine.h"
-//#include "IGameObject.h"
+#include "IGameObject.h"
 #include "SpriteComponent.h"
-#include <iostream>
-#include <algorithm>
 #include "CollisionOccurence.h"
-#include "PhysicsComponent.h"
 #include "RigidBodyComponent.h"
 
-CollisionComponent::CollisionComponent(CollisionProfile* profile/*, CollisionResponse* collisionResponse*/)
+CollisionComponent::CollisionComponent(NPCollisionProfile* profile/*, CollisionResponse* collisionResponse*/)
   : collisionProfile_(profile)
   //, collisionResponse_(collisionResponse)
 {
@@ -20,33 +15,18 @@ CollisionComponent::CollisionComponent(CollisionProfile* profile/*, CollisionRes
 
 CollisionComponent::~CollisionComponent()
 {
-  //GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
-  //sys->RemoveCollisonComponent(this);
-
   delete collisionProfile_;
-  //delete collisionResponse_;
 }
 
 void CollisionComponent::Update(float dt)
 {
-  //if (isOverlappingWithSomething_)
-  //{
-  //  onUpdateOverlap_.Broadcast(overlappingColliders_);
-  //}
+  //this is where we update the broadphase collision
 }
 
 void CollisionComponent::Draw()
 {
 
 }
-
-//void CollisionComponent::Parent(IGameObject* parent)
-//{
-//  IComponent::Parent(parent);
-//
-//  GameObjectSystem* sys = Engine::Instance()->GetGameObjectSystem();
-//  sys->AddCollisionComponent(this);
-//} 
 
 void CollisionComponent::Register()
 {
@@ -66,7 +46,7 @@ PolygonalCollisionProfile::PolygonalCollisionProfile()
 {
 }
 
-void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile, CollisionOccurence& collOcc) const
+void PolygonalCollisionProfile::IsProfileCollidingWith(NPCollisionProfile* otherProfile, CollisionOccurence& collOcc) const
 {
   IGameObject* objectA = collisionComponent_->GetParent();
   IGameObject* objectB = otherProfile->GetCollisionComponent()->GetParent();
@@ -90,14 +70,12 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   glm::vec2 smallestAxis;
 
   //sat can return right when an axis is found that it doesnt collide on.
-
   //in preperation for a collision
   //CollisionOccurence collisionOccurence(true);
-
   //cehcks the first objects axis to inspect collisoin status.
-  CollisionOccurence::CollisionStatus collisionStatus = PerformAxisProjection(axisA, meshA, meshB, overlap, smallestAxis);
+  CollisionStatus collisionStatus = PerformAxisProjection(axisA, meshA, meshB, overlap, smallestAxis);
 
-  if (collisionStatus == CollisionOccurence::CollisionStatus::COLLIDING)
+  if (collisionStatus == CollisionStatus::COLLIDING)
   {
     //checks all object b axis if a collision still has not been detected
     collisionStatus = PerformAxisProjection(axisB, meshA, meshB, overlap, smallestAxis);
@@ -106,7 +84,7 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   //if overlap is small enough consider them touching
   if (overlap < 0.01f)
   {
-    collisionStatus = CollisionOccurence::CollisionStatus::TOUCHING;
+    collisionStatus = CollisionStatus::TOUCHING;
   }
   
   //sets the objects
@@ -123,7 +101,7 @@ void PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherPr
   collOcc.objectB_->UpdateCollisionWith(collOcc.objectA_, collisionStatus);
 }
 
-CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
+CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
 {
   for (const glm::vec2& line : axisA)
   {
@@ -133,15 +111,15 @@ CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjec
     meshB.Project(line, meshBProjected);
 
     //returns collision status
-    CollisionOccurence::CollisionStatus collStatus = meshAProjected.IsOverlapping(meshBProjected);
+    CollisionStatus collStatus = meshAProjected.IsOverlapping(meshBProjected);
 
     //std::cout << int(collStatus) << std::endl;
 
-    if (collStatus == CollisionOccurence::CollisionStatus::NOT_COLLIDING || collStatus == CollisionOccurence::CollisionStatus::TOUCHING)
+    if (collStatus == CollisionStatus::NOT_COLLIDING || collStatus == CollisionStatus::TOUCHING)
     {
       return collStatus;
     }
-    else if (collStatus == CollisionOccurence::CollisionStatus::COLLIDING)
+    else if (collStatus == CollisionStatus::COLLIDING)
     {
       float o = meshAProjected.GetOverlap(meshBProjected);
 
@@ -153,19 +131,19 @@ CollisionOccurence::CollisionStatus PolygonalCollisionProfile::PerformAxisProjec
     }
   }
 
-  return CollisionOccurence::CollisionStatus::COLLIDING;
+  return CollisionStatus::COLLIDING;
 }
 
-CollisionProfile::CollisionProfile()
+NPCollisionProfile::NPCollisionProfile()
 {
 }
 
-CollisionComponent* CollisionProfile::GetCollisionComponent()
+CollisionComponent* NPCollisionProfile::GetCollisionComponent()
 {
   return collisionComponent_;
 }
 
-void CollisionProfile::SetCollisionComponent(CollisionComponent* thisCollider)
+void NPCollisionProfile::SetCollisionComponent(CollisionComponent* thisCollider)
 {
   collisionComponent_ = thisCollider;
 }

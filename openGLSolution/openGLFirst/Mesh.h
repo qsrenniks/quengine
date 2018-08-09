@@ -4,10 +4,10 @@
 #include "GameObjectSystem.h"
 #include "glm/vec2.hpp"
 #include "glm/mat4x4.hpp"
-#include "CollisionOccurence.h"
 #include <vector>
 
 class SpriteComponent;
+enum class CollisionStatus : int;
 
 class Mesh
 {
@@ -34,7 +34,7 @@ public:
 
   struct Projection
   {
-    CollisionOccurence::CollisionStatus IsOverlapping(const Projection& otherProjections);
+    CollisionStatus IsOverlapping(const Projection& otherProjections);
     float GetOverlap(const Projection& otherProjection);
     float min_;
     float max_;

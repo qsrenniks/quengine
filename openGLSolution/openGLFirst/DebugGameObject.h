@@ -22,10 +22,6 @@ public:
   void SKeyPress();
   void DKeyPress();
   void AKeyPress();
-  
-  void OnCollisionEnter(RigidBodyComponent* otherBody);
-  void OnCollisionExit(RigidBodyComponent* otherBody);
-
 
   //virtual CollisionOccurence GetCollisionOccurence() override;
 protected:
@@ -34,9 +30,6 @@ protected:
 
 private:
 
-  //void OnCollisionUpdate(const CollisionOccurence& otherCollider);
-  void OnCollision(const CollisionOccurence& otherCollider);
-  void OnExitCollision(const CollisionOccurence& otherCollider);
 
 };
 

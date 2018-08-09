@@ -63,6 +63,10 @@ private:
   std::list<CollisionOccurence> collisionOccurences_;
 
   void CalculateCollisions();
+
+  void BroadphaseCollisionDetection();
+  void NarrowPhaseCollisionDetection();
+
   void ResolveAllOccurences();
   GameObjectList gameObjectRegistry_;
 

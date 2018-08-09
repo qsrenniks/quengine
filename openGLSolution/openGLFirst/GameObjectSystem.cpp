@@ -71,12 +71,12 @@ void GameObjectSystem::CalculateCollisions()
 {
   for (CollisionList::const_iterator itr = rigidBodyComponentRegistry_.cbegin(); itr != rigidBodyComponentRegistry_.cend(); itr++)
   {
+    RigidBodyComponent* objectA = *itr;
     for (CollisionList::const_iterator otherItr = itr; otherItr != rigidBodyComponentRegistry_.cend(); otherItr++)
     {
-      RigidBodyComponent* objectA = *itr;
       RigidBodyComponent* objectB = *otherItr;
 
-      if (itr == otherItr)
+      if (objectA == objectB)
       {
         continue; 
       }
@@ -85,7 +85,7 @@ void GameObjectSystem::CalculateCollisions()
       CollisionOccurence occ;
       objectA->GetCollisionComponent()->IsCollidingWith(objectB->GetCollisionComponent(), occ);
 
-      if (occ.collisionStatus_ != CollisionOccurence::CollisionStatus::NOT_COLLIDING)
+      if (occ.collisionStatus_ != CollisionStatus::NOT_COLLIDING)
       {
         //occ.Resolve();
         //or add it to the list of resolutions
@@ -97,6 +97,16 @@ void GameObjectSystem::CalculateCollisions()
       }
     }
   }
+}
+
+void GameObjectSystem::BroadphaseCollisionDetection()
+{
+
+}
+
+void GameObjectSystem::NarrowPhaseCollisionDetection()
+{
+
 }
 
 void GameObjectSystem::ResolveAllOccurences()

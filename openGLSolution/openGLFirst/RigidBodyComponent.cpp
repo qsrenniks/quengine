@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "RigidBodyComponent.h"
+#include "IGameObject.h"
 #include "GameObjectSystem.h"
 #include "Engine.h"
 #include "PhysicsComponent.h"
@@ -54,17 +55,18 @@ CollisionComponent* RigidBodyComponent::GetCollisionComponent()
   return collision_;
 }
 
-void RigidBodyComponent::UpdateCollisionWith(RigidBodyComponent* otherBody, CollisionOccurence::CollisionStatus status)
+void RigidBodyComponent::UpdateCollisionWith(RigidBodyComponent* otherBody, CollisionStatus status)
 {
   //this is where we broadcast the status delegates
   bool isUnique = IsBodyUnique(otherBody);
 
-  if (isUnique && status != CollisionOccurence::CollisionStatus::NOT_COLLIDING)
+  if (isUnique && status != CollisionStatus::NOT_COLLIDING)
   {
     onCollisionEnter_.Broadcast(otherBody);
+    //TODO: this could be greatly improved with a max overlaps feature.
     rigidBodyCollisions_.push_back(otherBody);
   }
-  else if(isUnique == false && status == CollisionOccurence::CollisionStatus::NOT_COLLIDING)
+  else if(isUnique == false && status == CollisionStatus::NOT_COLLIDING)
   {
     onCollisionExit_.Broadcast(otherBody);
     rigidBodyCollisions_.remove(otherBody);

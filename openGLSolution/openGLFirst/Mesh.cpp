@@ -187,22 +187,30 @@ const std::vector<glm::vec2>& Mesh::GetAxis()
   return edgeNormals_;
 }
 
-CollisionOccurence::CollisionStatus Mesh::Projection::IsOverlapping(const Projection& otherProjections)
+CollisionStatus Mesh::Projection::IsOverlapping(const Projection& otherProjections)
 {
   bool lessThan = max_ < otherProjections.min_;
   bool greaterThan = min_ > otherProjections.max_;
 
+  // a = min b = min
+  // A = max B = max
+  // 
+  // | = contact point
+
+  // a-----------A   b-------------B not colliding
+  //
+  // a-----b--|--A-----Bs colliding
+  //     micro: bA
+  // a---------A|b--------------B colliding
+  //
+  // a----------Ab--------------B not colliding
+
   if (lessThan || greaterThan)
   {
-    return CollisionOccurence::CollisionStatus::NOT_COLLIDING;
+    return CollisionStatus::NOT_COLLIDING;
   }
 
-  //
-  //if (glm::epsilonEqual(max_, otherProjections.min_, 0.005f) || glm::epsilonEqual(min_, otherProjections.max_, 0.005f))
-  //{
-  //  return CollisionOccurence::CollisionStatus::TOUCHING;
-  //}
-  return CollisionOccurence::CollisionStatus::COLLIDING;
+  return CollisionStatus::COLLIDING;
 }
 
 float Mesh::Projection::GetOverlap(const Projection& otherProjection)

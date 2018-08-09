@@ -12,6 +12,7 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
   AddComponent<RigidBodyComponent>(rigidBody_);
 
   rigidBody_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
+  rigidBody_->GetPhysicsComponent()->SetMass(10.0f);
   GetTransform().SetScale(glm::vec2(0.5f, 0.5f));
 
   //rigidBody_->GetPhysicsComponent()->SetRotationalVelocity(45.0f);

@@ -7,6 +7,8 @@
 #include "RigidBodyComponent.h"
 #include <iostream>
 
+#include "IGameObject.h"
+
 bool CollisionOccurence::operator==(const CollisionOccurence& otherCollision) const
 {
   if (objectA_ == otherCollision.objectA_ && objectB_ == otherCollision.objectB_
