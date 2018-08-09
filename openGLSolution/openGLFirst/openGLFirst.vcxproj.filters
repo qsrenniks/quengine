@@ -82,6 +82,9 @@
     <Filter Include="Source Files\Components\Rigid Body Component">
       <UniqueIdentifier>{0cda68d9-e6d6-41d6-b010-a8c437eb3f91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Collision Component\Collision Detection Classes">
+      <UniqueIdentifier>{402b6541-a01a-46f0-beb4-ab75e1720941}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -135,19 +138,28 @@
     <ClCompile Include="PhysicsBodyGameObject.cpp">
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionOccurence.cpp">
-      <Filter>Source Files\Components\Collision Component</Filter>
-    </ClCompile>
     <ClCompile Include="LoggingSystem.cpp">
       <Filter>Source Files\Systems\Debug Logging System</Filter>
     </ClCompile>
-    <ClCompile Include="ISystem.cpp">
+    <ClCompile Include="..\openGLLib\Include\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RigidBodyComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components\Rigid Body Component</Filter>
     </ClCompile>
-    <ClCompile Include="..\openGLLib\Include\glad.c">
+    <ClCompile Include="ISystem.cpp">
+      <Filter>Source Files\Systems\System Inteface</Filter>
+    </ClCompile>
+    <ClCompile Include="BPCollisionProfile.cpp">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionOccurence.cpp">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="NPCollisionProfile.cpp">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="PolygonalCollisionProfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,19 +221,28 @@
     <ClInclude Include="PhysicsBodyGameObject.h">
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionOccurence.h">
-      <Filter>Source Files\Components\Collision Component</Filter>
-    </ClInclude>
     <ClInclude Include="TextLibrary.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="LoggingSystem.h">
       <Filter>Source Files\Systems\Debug Logging System</Filter>
     </ClInclude>
-    <ClInclude Include="ISystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RigidBodyComponent.h">
+      <Filter>Source Files\Components\Rigid Body Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ISystem.h">
+      <Filter>Source Files\Systems\System Inteface</Filter>
+    </ClInclude>
+    <ClInclude Include="BPCollisionProfile.h">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionOccurence.h">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="NPCollisionProfile.h">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="PolygonalCollisionProfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -232,5 +253,6 @@
     <None Include="fragmentShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="NPCollisionProfile" />
   </ItemGroup>
 </Project>

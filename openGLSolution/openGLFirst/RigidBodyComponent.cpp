@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "PhysicsComponent.h"
 #include "CollisionComponent.h"
+#include "PolygonalCollisionProfile.h"
 
 RigidBodyComponent::RigidBodyComponent(float bounce /*= 0.0f*/)
   : bounce_(bounce)
@@ -42,7 +43,7 @@ void RigidBodyComponent::Parent(IGameObject* parent)
 
   //these go here and not in construction since you need the parent to create the game objects
   parent->AddComponent<PhysicsComponent>(physics_);
-  parent->AddComponent<CollisionComponent>(collision_, new PolygonalCollisionProfile());
+  parent->AddComponent<CollisionComponent>(collision_, new PolygonalCollisionProfile(), nullptr);
 }
 
 PhysicsComponent* RigidBodyComponent::GetPhysicsComponent()

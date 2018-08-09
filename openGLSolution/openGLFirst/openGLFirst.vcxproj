@@ -138,6 +138,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="BPCollisionProfile.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="CollisionOccurence.cpp" />
     <ClCompile Include="DebugGameObject.cpp" />
@@ -151,8 +152,10 @@
     <ClCompile Include="ISystem.cpp" />
     <ClCompile Include="LoggingSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="NPCollisionProfile.cpp" />
     <ClCompile Include="PhysicsBodyGameObject.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="PolygonalCollisionProfile.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -164,6 +167,7 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BPCollisionProfile.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionOccurence.h" />
     <ClInclude Include="DebugGameObject.h" />
@@ -178,8 +182,10 @@
     <ClInclude Include="ISystem.h" />
     <ClInclude Include="LoggingSystem.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="NPCollisionProfile.h" />
     <ClInclude Include="PhysicsBodyGameObject.h" />
     <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PolygonalCollisionProfile.h" />
     <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteComponent.h" />
@@ -191,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.fs" />
+    <None Include="NPCollisionProfile" />
     <None Include="vertexShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -101,7 +101,8 @@ void GameObjectSystem::CalculateCollisions()
 
 void GameObjectSystem::BroadphaseCollisionDetection()
 {
-
+  //generates a list of collision occurences that may or may not be colliding depending on the narrow phase collision detection
+  //this performs a simple aabb test.
 }
 
 void GameObjectSystem::NarrowPhaseCollisionDetection()
