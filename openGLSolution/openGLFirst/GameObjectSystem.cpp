@@ -145,7 +145,7 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -700.0f));//down
-  SpawnGameObject<DebugGameObject>();
+  //SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
@@ -160,7 +160,7 @@ void GameObjectSystem::Load()
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(100.0f, 0.0f)); // left
   //objB->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, 0.0f)); // right
 
-  Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
+  //Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
 }
 
 void GameObjectSystem::Update(float dt)
