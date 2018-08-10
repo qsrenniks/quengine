@@ -58,7 +58,11 @@ void GameObjectSystem::RemoveCollisonComponent(RigidBodyComponent* collisionComp
 
 void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
 {
-  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(mousePos);
+  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(mousePos);
+  glm::vec2 currentScale = Engine::Instance()->GetViewTransform().GetScale();
+  currentScale.x += 2.0f;
+  currentScale.y += 2.0f;
+  Engine::Instance()->GetViewTransform().SetScale(currentScale);
 }
 
 void GameObjectSystem::CalculateAndResolveCollisions()
@@ -144,8 +148,8 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -700.0f));//down
-  //SpawnGameObject<DebugGameObject>();
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.0f));//down
+  SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
@@ -160,7 +164,7 @@ void GameObjectSystem::Load()
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(100.0f, 0.0f)); // left
   //objB->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, 0.0f)); // right
 
-  //Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
+  Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
 }
 
 void GameObjectSystem::Update(float dt)
@@ -171,7 +175,7 @@ void GameObjectSystem::Update(float dt)
   auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
-  CalculateAndResolveCollisions();
+  //CalculateAndResolveCollisions();
   
   auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);

@@ -18,7 +18,6 @@ public:
   virtual void Update(float dt) override;
 
   void WKeyPress();
-
   void SKeyPress();
   void DKeyPress();
   void AKeyPress();

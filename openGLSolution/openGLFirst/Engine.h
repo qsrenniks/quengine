@@ -10,6 +10,7 @@
 #include "InputSystem.h"
 #include "GameObjectSystem.h"
 #include "LoggingSystem.h"
+#include "RenderingSystem.h"
 
 //class InputSystem;
 //class GameObjectSystem;
@@ -54,6 +55,7 @@ public:
   InputSystem* GetInputSystem();
   GameObjectSystem* GetGameObjectSystem();
   LoggingSystem* GetLoggingSystem();
+  RenderingSystem* GetRenderingSystem();
 
   void TogglePauseGame();
   
@@ -90,6 +92,7 @@ private:
   InputSystem inputSystem_;
   GameObjectSystem gameObjectSystem_;
   LoggingSystem loggingSystem_;
+  RenderingSystem renderingSystem_;
 };
 
 

@@ -85,6 +85,9 @@
     <Filter Include="Source Files\Components\Collision Component\Collision Detection Classes">
       <UniqueIdentifier>{402b6541-a01a-46f0-beb4-ab75e1720941}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Rendering System">
+      <UniqueIdentifier>{afd91ca6-7f9f-4aa2-aa2d-5e7823a09606}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -161,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="PolygonalCollisionProfile.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingSystem.cpp">
+      <Filter>Source Files\Systems\Rendering System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="PolygonalCollisionProfile.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingSystem.h">
+      <Filter>Source Files\Systems\Rendering System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

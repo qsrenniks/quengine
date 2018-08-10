@@ -23,15 +23,17 @@ DebugGameObject::DebugGameObject()
 
   GetTransform().SetScale(0.5f, 0.5f);
 
-  rigidBodyComponent_->GetPhysicsComponent()->SetMass(1.0f);
-  rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
+  //rigidBodyComponent_->GetPhysicsComponent()->SetMass(1.0f);
+  //rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
   //rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   auto& a = inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
-  a.consumeInput_ = true;
+  //TODO: switch this to true for juming
+  a.consumeInput_ = false;
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
+  inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress );
 }
 
 DebugGameObject::~DebugGameObject()
@@ -42,12 +44,17 @@ void DebugGameObject::Update(float dt)
 {
 }
 
-constexpr static float jumpHeight = 25000.0f;
-constexpr static float moveSpeed = 1000;
+constexpr static float jumpHeight = 15.0f;
 constexpr static float translationalSpeed = 10;
 void DebugGameObject::WKeyPress()
 {
-  glm::vec2 dir(0.0f, jumpHeight);
+  glm::vec2 dir(0.0f, translationalSpeed);
+  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+}
+
+void DebugGameObject::SKeyPress()
+{
+  glm::vec2 dir(0.0f, -translationalSpeed);
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
 }
 
@@ -55,17 +62,13 @@ void DebugGameObject::AKeyPress()
 {
   glm::vec2 dir(-translationalSpeed, 0.0f);
 
-  glm::vec2 pos = transform_.GetPosition();
-  transform_.SetPosition(pos + dir);
-
+  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
 }
 
 void DebugGameObject::DKeyPress()
 {
   glm::vec2 dir(translationalSpeed, 0.0f);
 
-  glm::vec2 pos = transform_.GetPosition();
-  transform_.SetPosition(pos + dir);
-
+  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
 }
 

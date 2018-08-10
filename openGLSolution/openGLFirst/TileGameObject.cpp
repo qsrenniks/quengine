@@ -13,7 +13,7 @@ TileGameObject::TileGameObject()
 
 
   rigidBodyComponent_->GetPhysicsComponent()->SetSimulatePhysics(false);
-  GetTransform().SetScale({ 1000.0f, 10.0f });
+  GetTransform().SetScale({ 1.0f, 1.0f });
   rigidBodyComponent_->GetPhysicsComponent()->SetMass(0.0f);
 }
 

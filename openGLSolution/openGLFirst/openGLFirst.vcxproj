@@ -156,6 +156,7 @@
     <ClCompile Include="PhysicsBodyGameObject.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PolygonalCollisionProfile.cpp" />
+    <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="PhysicsBodyGameObject.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PolygonalCollisionProfile.h" />
+    <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteComponent.h" />

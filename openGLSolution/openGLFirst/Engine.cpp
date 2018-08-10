@@ -24,6 +24,7 @@ Engine::Engine()
   , inputSystem_(/*std::make_unique<InputSystem>()*/)
   , gameObjectSystem_(/*std::make_unique<GameObjectSystem>()*/)
   , loggingSystem_(/*std::make_unique<LoggingSystem>()*/)
+  , renderingSystem_()
 {
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -48,6 +49,7 @@ Engine::Engine()
   glfwSetFramebufferSizeCallback(currentWindow_, framebuffer_size_callback);
 
   inputSystem_.SetWindow(currentWindow_);
+  viewCamera_.SetScale({200.0f, 200.0f});
 }
 
 void Engine::AddCommand(ICommand* command)
@@ -170,6 +172,11 @@ LoggingSystem* Engine::GetLoggingSystem()
   return &loggingSystem_;
 }
 
+RenderingSystem* Engine::GetRenderingSystem()
+{
+  return &renderingSystem_;
+}
+
 void Engine::TogglePauseGame()
 {
   isPaused_ = !isPaused_;
@@ -247,6 +254,7 @@ void Engine::ShutDown()
   inputSystem_.Unload();
   gameObjectSystem_.Unload();
   loggingSystem_.Unload();
+  renderingSystem_.Unload();
 }
 
 void Engine::Load()
@@ -262,4 +270,6 @@ void Engine::Load()
 
   auto& a = inputSystem_.AddInputAction("PauseGame", this, &Engine::TogglePauseGame);
   a.consumeInput_ = true;
+
+  renderingSystem_.Load();
 }

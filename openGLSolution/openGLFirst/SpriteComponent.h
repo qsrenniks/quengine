@@ -25,6 +25,6 @@ private:
 
   glm::vec4 color_{1.0f};
 
-  Shader shader_;
+  //Shader shader_;
 };
 

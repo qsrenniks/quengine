@@ -32,21 +32,21 @@ Mesh::Mesh(SpriteComponent* spriteComponent, float width, float height)
   vertices_[3][1] = halfHeight_;
   vertices_[3][2] = 0.0f;
 
-  glGenBuffers(1, &VBO_);
+  //glGenBuffers(1, &VBO_);
 
-  //unsigned int VAO;
-  glGenVertexArrays(1, &VAO_);
+  ////unsigned int VAO;
+  //glGenVertexArrays(1, &VAO_);
 
-  glGenBuffers(1, &EBO_);
+  //glGenBuffers(1, &EBO_);
 
   edgeNormals_.assign(4, glm::vec2(0.0f, 0.0f));
 }
 
 Mesh::~Mesh()
 {
-  glDeleteVertexArrays(1, &VAO_);
-  glDeleteBuffers(1, &VBO_);
-  glDeleteBuffers(1, &EBO_);
+  //glDeleteVertexArrays(1, &VAO_);
+  //glDeleteBuffers(1, &VBO_);
+  //glDeleteBuffers(1, &EBO_);
 }
 
 void Mesh::Draw()
