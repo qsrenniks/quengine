@@ -57,6 +57,15 @@ void RenderingSystem::DrawSquare(const glm::mat4& transform, const glm::vec4& co
   defaultShader_.setVec4("aColor", color);
 
   glBindVertexArray(vaos[Square_Shape]);
+
+  if (wireframeMode == true)
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
+  else
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
   glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
@@ -70,4 +79,15 @@ Shader& RenderingSystem::GetActiveShader()
   //TODO: make this actually return or use the current shader.
   //objects that are rendering here should be able to change the shader as well.
   return defaultShader_;
+}
+
+void RenderingSystem::GetShapeVertices(PolygonalShapes shape, int& numOfVerts, const GLfloat* vertices)
+{
+  switch (shape)
+  {
+  case Square_Shape:
+    numOfVerts = NumVertices;
+    vertices = (GLfloat*)square_vertices;
+    break;
+  }
 }

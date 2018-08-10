@@ -24,8 +24,6 @@ public:
   Mesh(SpriteComponent* spriteComponent, float width, float height);
   ~Mesh();
 
-  void Draw();
-  
   void GetWidthHeight(glm::vec2& widthHeight);
 
   void GetVertPos(MeshCorner corner, const glm::mat4& matrix, glm::vec2& vertPosition);

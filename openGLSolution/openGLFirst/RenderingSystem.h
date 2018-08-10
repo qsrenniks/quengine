@@ -19,6 +19,8 @@ public:
 
   Shader& GetActiveShader();
 
+  void GetShapeVertices(PolygonalShapes shape, int& numOfVerts, const GLfloat* vertices);
+
 protected:
 
 
