@@ -68,7 +68,7 @@ void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
 void GameObjectSystem::CalculateAndResolveCollisions()
 {
   CalculateCollisions();
-  ResolveAllOccurences();
+  //ResolveAllOccurences();
 }
 
 void GameObjectSystem::CalculateCollisions()
@@ -89,16 +89,16 @@ void GameObjectSystem::CalculateCollisions()
       CollisionOccurence occ;
       objectA->GetCollisionComponent()->IsCollidingWith(objectB->GetCollisionComponent(), occ);
 
-      if (occ.collisionStatus_ != CollisionStatus::NOT_COLLIDING)
-      {
-        //occ.Resolve();
-        //or add it to the list of resolutions
-        collisionOccurences_.push_back(occ);
-        //TODO: fix magic number
-        occ.ResolveInterpenetration();
+      //if (occ.collisionStatus_ != CollisionStatus::NOT_COLLIDING)
+      //{
+      //  //occ.Resolve();
+      //  //or add it to the list of resolutions
+      //  collisionOccurences_.push_back(occ);
+      //  //TODO: fix magic number
+      //  occ.ResolveInterpenetration();
 
-        //occ.ResolveForces();
-      }
+      //  //occ.ResolveForces();
+      //}
     }
   }
 }
@@ -175,7 +175,7 @@ void GameObjectSystem::Update(float dt)
   auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
-  //CalculateAndResolveCollisions();
+  CalculateAndResolveCollisions();
   
   auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);

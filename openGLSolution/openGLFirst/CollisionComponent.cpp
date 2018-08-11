@@ -7,6 +7,7 @@
 
 #include "NPCollisionProfile.h"
 #include "BPCollisionProfile.h"
+#include "Engine.h"
 
 CollisionComponent::CollisionComponent(NPCollisionProfile* npCollisionProfile, BPCollisionProfile* bpCollisionProfile)
   : npCollisionProfile_(npCollisionProfile)
@@ -30,6 +31,8 @@ void CollisionComponent::Update(float dt)
 void CollisionComponent::Draw()
 {
   //this might draw the aabb box for the broadphase collision detection system.
+  glm::vec2 position = GetParent()->GetTransform().GetPosition();
+  Engine::Instance()->GetRenderingSystem()->DrawSquare(position, true);
 }
 
 void CollisionComponent::Register()

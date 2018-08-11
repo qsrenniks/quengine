@@ -23,12 +23,15 @@ public:
   void AKeyPress();
 
   //virtual CollisionOccurence GetCollisionOccurence() override;
+  void OnCollisionEnter(RigidBodyComponent* otherObject);
+  void OnCollisionExit(RigidBodyComponent* otherObject);
 protected:
 
   RigidBodyComponent * rigidBodyComponent_ = nullptr;
 
 private:
-
+  
+  
 
 };
 

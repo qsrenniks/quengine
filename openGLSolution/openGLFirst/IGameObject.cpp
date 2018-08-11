@@ -5,7 +5,7 @@
 
 IGameObject::IGameObject()
 {
-  AddComponent<SpriteComponent>(sprite_, R"(..\vertexShader.vs)", R"(..\fragmentShader.fs)", glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f }, 0, 100.0f, 100.0f);
+  AddComponent<SpriteComponent>(sprite_, glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f }, 0);
 }
 
 IGameObject::~IGameObject()

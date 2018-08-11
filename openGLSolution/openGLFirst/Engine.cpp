@@ -49,7 +49,7 @@ Engine::Engine()
   glfwSetFramebufferSizeCallback(currentWindow_, framebuffer_size_callback);
 
   inputSystem_.SetWindow(currentWindow_);
-  viewCamera_.SetScale({200.0f, 200.0f});
+  viewCamera_.SetScale({ 100.0f, 100.0f });
 }
 
 void Engine::AddCommand(ICommand* command)

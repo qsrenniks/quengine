@@ -4,11 +4,13 @@
 
 BPCollisionProfile::BPCollisionProfile()
 {
+
 }
 
 
 BPCollisionProfile::~BPCollisionProfile()
 {
+
 }
 
 void BPCollisionProfile::UpdateAABB()

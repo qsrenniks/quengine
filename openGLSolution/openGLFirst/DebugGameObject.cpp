@@ -34,6 +34,9 @@ DebugGameObject::DebugGameObject()
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress );
+
+  rigidBodyComponent_->onCollisionEnter_.AddFunction(this, &DebugGameObject::OnCollisionEnter);
+  rigidBodyComponent_->onCollisionExit_.AddFunction(this, &DebugGameObject::OnCollisionExit);
 }
 
 DebugGameObject::~DebugGameObject()
@@ -63,6 +66,16 @@ void DebugGameObject::AKeyPress()
   glm::vec2 dir(-translationalSpeed, 0.0f);
 
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+}
+
+void DebugGameObject::OnCollisionEnter(RigidBodyComponent* otherObject)
+{
+  std::cout << "On Collision Enter" << std::endl;
+}
+
+void DebugGameObject::OnCollisionExit(RigidBodyComponent* otherObject)
+{
+  std::cout << "On Collision Exit" << std::endl;
 }
 
 void DebugGameObject::DKeyPress()

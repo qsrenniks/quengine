@@ -7,7 +7,7 @@
 class SpriteComponent : public IComponent
 {
 public:
-  SpriteComponent(const char *vertexShader, const char *fragmentShader, glm::vec4 color, int z = 0, float width = 1.0f, float height = 1.0f);
+  SpriteComponent(glm::vec4 color, int z = 0, float width = 1.0f, float height = 1.0f);
   virtual ~SpriteComponent();
 
   //virtual void Draw() override;
