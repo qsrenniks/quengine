@@ -30,7 +30,9 @@ public:
   virtual void Register() override;
 
   void IsCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc) const;
-
+  
+  CollisionStatus IsBPCollidingWith(CollisionComponent* otherCollider);
+  CollisionStatus IsNPCollidingWith(CollisionComponent* otherCollider);
 
 private:
 

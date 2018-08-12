@@ -94,6 +94,9 @@
     <Filter Include="Source Files\Systems\Systems\System Inteface">
       <UniqueIdentifier>{e8f1c70a-9659-4353-828a-ee872a611a18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Collision Component\Collision Profile">
+      <UniqueIdentifier>{245f8623-d9bb-47c1-bcf1-5ad73434b09e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -173,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="RenderingSystem.cpp">
       <Filter>Source Files\Systems\Systems\Rendering System</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionProfile.cpp">
+      <Filter>Source Files\Components\Collision Component\Collision Profile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="RenderingSystem.h">
       <Filter>Source Files\Systems\Systems\Rendering System</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionProfile.h">
+      <Filter>Source Files\Components\Collision Component\Collision Profile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 #pragma once
+#include "CollisionProfile.h"
 
 class CollisionComponent;
 struct CollisionOccurence;
@@ -8,7 +9,7 @@ struct CollisionOccurence;
 //
 // NP Stands for Narrow Phase
 //
-class NPCollisionProfile
+class NPCollisionProfile : public CollisionProfile
 {
 public:
 

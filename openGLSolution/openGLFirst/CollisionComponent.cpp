@@ -49,3 +49,13 @@ void CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider, Coll
   npCollisionProfile_->IsProfileCollidingWith(otherCollider->npCollisionProfile_, collOcc);
 }
 
+CollisionStatus CollisionComponent::IsBPCollidingWith(CollisionComponent* otherCollider)
+{
+  
+}
+
+CollisionStatus CollisionComponent::IsNPCollidingWith(CollisionComponent* otherCollider)
+{
+
+}
+

@@ -93,6 +93,7 @@ void GameObjectSystem::BroadphaseCollisionDetection()
       }
 
       //TODO: do broadphase collision check here.
+
     } 
   }
 

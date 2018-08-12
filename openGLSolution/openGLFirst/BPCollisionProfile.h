@@ -1,5 +1,7 @@
 #pragma once
-class BPCollisionProfile
+#include "CollisionProfile.h"
+
+class BPCollisionProfile : public CollisionProfile
 {
 public:
   BPCollisionProfile();
