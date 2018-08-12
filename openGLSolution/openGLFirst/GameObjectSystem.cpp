@@ -65,53 +65,45 @@ void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
   Engine::Instance()->GetViewTransform().SetScale(currentScale);
 }
 
-void GameObjectSystem::CalculateAndResolveCollisions()
+void GameObjectSystem::RunCollisionUpdate()
 {
-  CalculateCollisions();
-  //ResolveAllOccurences();
-}
-
-void GameObjectSystem::CalculateCollisions()
-{
-  for (CollisionList::const_iterator itr = rigidBodyComponentRegistry_.cbegin(); itr != rigidBodyComponentRegistry_.cend(); itr++)
-  {
-    RigidBodyComponent* objectA = *itr;
-    for (CollisionList::const_iterator otherItr = itr; otherItr != rigidBodyComponentRegistry_.cend(); otherItr++)
-    {
-      RigidBodyComponent* objectB = *otherItr;
-
-      if (objectA == objectB)
-      {
-        continue; 
-      }
-
-      //collision check
-      CollisionOccurence occ;
-      objectA->GetCollisionComponent()->IsCollidingWith(objectB->GetCollisionComponent(), occ);
-
-      //if (occ.collisionStatus_ != CollisionStatus::NOT_COLLIDING)
-      //{
-      //  //occ.Resolve();
-      //  //or add it to the list of resolutions
-      //  collisionOccurences_.push_back(occ);
-      //  //TODO: fix magic number
-      //  occ.ResolveInterpenetration();
-
-      //  //occ.ResolveForces();
-      //}
-    }
-  }
+  //generates a list of occurences.
+  //the occurence is just filled with the objects that might be colliding.
+  BroadphaseCollisionDetection();
+  //runs through those occurences and resolves them one by one.
+  //narrow phase does a deeper check of the objects colliding and then fills the occurences with that information
+  NarrowPhaseCollisionDetection();
+  //now resolve all collision occurences
 }
 
 void GameObjectSystem::BroadphaseCollisionDetection()
 {
   //generates a list of collision occurences that may or may not be colliding depending on the narrow phase collision detection
   //this performs a simple aabb test.
+
+  for (auto iterStart = rigidBodyComponentRegistry_.begin(); iterStart != rigidBodyComponentRegistry_.end(); iterStart++)
+  {
+    RigidBodyComponent* objectA = *iterStart;
+    for (auto iterInner = iterStart; iterInner != rigidBodyComponentRegistry_.end(); iterInner++)
+    {
+      RigidBodyComponent* objectB = *iterInner;
+      if (objectA == objectB)
+      {
+        continue;
+      }
+
+      //TODO: do broadphase collision check here.
+    } 
+  }
+
 }
 
 void GameObjectSystem::NarrowPhaseCollisionDetection()
 {
-
+  for (auto& occ : collisionOccurences_)
+  {
+    //perfom narrow phase collision detection here. 
+  }
 }
 
 void GameObjectSystem::ResolveAllOccurences()
@@ -120,13 +112,11 @@ void GameObjectSystem::ResolveAllOccurences()
   {
     return;
   }
-  const static int iterations = 10;
-  for (int i = 0; i < iterations; i++)
+
+  for (auto& occ : collisionOccurences_)
   {
-    for (auto& occ : collisionOccurences_)
-    {
-      occ.ResolveVelocities();
-    }
+    occ.ResolveVelocities();
+    occ.ResolveInterpenetration();
   }
 
   collisionOccurences_.clear();
@@ -175,7 +165,7 @@ void GameObjectSystem::Update(float dt)
   auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);
 
-  CalculateAndResolveCollisions();
+  RunCollisionUpdate();
   
   auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);

@@ -40,12 +40,6 @@
     <Filter Include="Source Files\Systems">
       <UniqueIdentifier>{55b8d9f9-007c-4f89-8cf4-d59515e53d35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems\Input System">
-      <UniqueIdentifier>{56360c79-772c-4554-a395-c5ee9a6a19c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Systems\Game Object System">
-      <UniqueIdentifier>{62c0f9ef-e3e5-47b8-ae84-8ef6b8dd5ba6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Components\Physics Component">
       <UniqueIdentifier>{8cbfafa3-3a06-447c-9ecd-59b4731ad3d1}</UniqueIdentifier>
     </Filter>
@@ -70,23 +64,35 @@
     <Filter Include="Source Files\Game Objects\Transform">
       <UniqueIdentifier>{5a179636-8a3b-45e5-964f-49ea404a0499}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems\Debug Logging System">
-      <UniqueIdentifier>{7985153c-2fcf-48a5-aa61-72f6381f993c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Systems\System Inteface">
-      <UniqueIdentifier>{e8f1c70a-9659-4353-828a-ee872a611a18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Systems\Gameplay System Interface">
-      <UniqueIdentifier>{81dcc77a-f904-4cc0-bb7a-97982638bc88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Components\Rigid Body Component">
       <UniqueIdentifier>{0cda68d9-e6d6-41d6-b010-a8c437eb3f91}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Components\Collision Component\Collision Detection Classes">
       <UniqueIdentifier>{402b6541-a01a-46f0-beb4-ab75e1720941}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Systems\Rendering System">
+    <Filter Include="Source Files\Systems\Gameplay Systems">
+      <UniqueIdentifier>{71a94de5-48a6-432b-b2d9-99cdb1ff37be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Systems">
+      <UniqueIdentifier>{6e801ae8-25c6-46fb-b289-e36fbd5d0109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Gameplay Systems\Input System">
+      <UniqueIdentifier>{56360c79-772c-4554-a395-c5ee9a6a19c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Gameplay Systems\Gameplay System Interface">
+      <UniqueIdentifier>{81dcc77a-f904-4cc0-bb7a-97982638bc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Gameplay Systems\Game Object System">
+      <UniqueIdentifier>{62c0f9ef-e3e5-47b8-ae84-8ef6b8dd5ba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Systems\Debug Logging System">
+      <UniqueIdentifier>{7985153c-2fcf-48a5-aa61-72f6381f993c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Systems\Rendering System">
       <UniqueIdentifier>{afd91ca6-7f9f-4aa2-aa2d-5e7823a09606}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems\Systems\System Inteface">
+      <UniqueIdentifier>{e8f1c70a-9659-4353-828a-ee872a611a18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -103,19 +109,19 @@
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
-      <Filter>Source Files\Systems\Input System</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Input System</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectSystem.cpp">
-      <Filter>Source Files\Systems\Game Object System</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Game Object System</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
       <Filter>Source Files\Components\Physics Component</Filter>
     </ClCompile>
     <ClCompile Include="IGameplaySystem.cpp">
-      <Filter>Source Files\Systems\Gameplay System Interface</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Gameplay System Interface</Filter>
     </ClCompile>
     <ClCompile Include="ICommand.cpp">
       <Filter>Source Files\Commands</Filter>
@@ -142,7 +148,7 @@
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClCompile>
     <ClCompile Include="LoggingSystem.cpp">
-      <Filter>Source Files\Systems\Debug Logging System</Filter>
+      <Filter>Source Files\Systems\Systems\Debug Logging System</Filter>
     </ClCompile>
     <ClCompile Include="..\openGLLib\Include\glad.c">
       <Filter>Source Files</Filter>
@@ -151,7 +157,7 @@
       <Filter>Source Files\Components\Rigid Body Component</Filter>
     </ClCompile>
     <ClCompile Include="ISystem.cpp">
-      <Filter>Source Files\Systems\System Inteface</Filter>
+      <Filter>Source Files\Systems\Systems\System Inteface</Filter>
     </ClCompile>
     <ClCompile Include="BPCollisionProfile.cpp">
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
@@ -166,7 +172,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderingSystem.cpp">
-      <Filter>Source Files\Systems\Rendering System</Filter>
+      <Filter>Source Files\Systems\Systems\Rendering System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -186,19 +192,19 @@
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClInclude>
     <ClInclude Include="InputSystem.h">
-      <Filter>Source Files\Systems\Input System</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Input System</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>Source Files\Systems</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectSystem.h">
-      <Filter>Source Files\Systems\Game Object System</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Game Object System</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Source Files\Components\Physics Component</Filter>
     </ClInclude>
     <ClInclude Include="IGameplaySystem.h">
-      <Filter>Source Files\Systems\Gameplay System Interface</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Gameplay System Interface</Filter>
     </ClInclude>
     <ClInclude Include="ICommand.h">
       <Filter>Source Files\Commands</Filter>
@@ -231,13 +237,13 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="LoggingSystem.h">
-      <Filter>Source Files\Systems\Debug Logging System</Filter>
+      <Filter>Source Files\Systems\Systems\Debug Logging System</Filter>
     </ClInclude>
     <ClInclude Include="RigidBodyComponent.h">
       <Filter>Source Files\Components\Rigid Body Component</Filter>
     </ClInclude>
     <ClInclude Include="ISystem.h">
-      <Filter>Source Files\Systems\System Inteface</Filter>
+      <Filter>Source Files\Systems\Systems\System Inteface</Filter>
     </ClInclude>
     <ClInclude Include="BPCollisionProfile.h">
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
@@ -252,7 +258,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderingSystem.h">
-      <Filter>Source Files\Systems\Rendering System</Filter>
+      <Filter>Source Files\Systems\Systems\Rendering System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

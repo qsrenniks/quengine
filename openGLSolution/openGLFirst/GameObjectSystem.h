@@ -58,16 +58,15 @@ public:
 
 private:
 
-  void CalculateAndResolveCollisions();
-
-  std::list<CollisionOccurence> collisionOccurences_;
-
-  void CalculateCollisions();
+  void RunCollisionUpdate();
 
   void BroadphaseCollisionDetection();
   void NarrowPhaseCollisionDetection();
-
   void ResolveAllOccurences();
+
+  std::list<CollisionOccurence> collisionOccurences_;
+
+
   GameObjectList gameObjectRegistry_;
 
   CollisionList rigidBodyComponentRegistry_;
