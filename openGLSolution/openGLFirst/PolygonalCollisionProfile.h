@@ -17,11 +17,12 @@ enum class CollisionStatus : int;
 class PolygonalCollisionProfile : public NPCollisionProfile
 {
 public:
-  PolygonalCollisionProfile();
+  //#Note class has been graveyarded
+  //PolygonalCollisionProfile();
 
-  virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
+  //virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 
-  CollisionStatus PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const;
+  //CollisionStatus PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const;
 
 private:
 

@@ -95,12 +95,12 @@ void GameObjectSystem::BroadphaseCollisionDetection()
 
       if (status == CollisionStatus::COLLIDING)
       {
-        //std::cout << "Colliding!" << std::endl;
+        std::cout << "Colliding!";
 
         CollisionOccurence occ;
         occ.objectA_ = objectA;
         occ.objectB_ = objectB;
-        collisionOccurences_.push_back(occ);
+        //collisionOccurences_.push_back(occ);
       }
 
     } 

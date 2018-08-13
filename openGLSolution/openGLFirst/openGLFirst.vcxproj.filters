@@ -22,9 +22,6 @@
     <Filter Include="Source Files\Components\Sprite Component">
       <UniqueIdentifier>{2b143743-e1c7-49ef-872f-883217fb4133}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Transform Component">
-      <UniqueIdentifier>{61388cde-2b8a-43b8-8e89-056a6f4995af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{56a25f4b-7b1d-41fe-8136-03e809c816ca}</UniqueIdentifier>
     </Filter>
@@ -46,9 +43,6 @@
     <Filter Include="Source Files\Delegates">
       <UniqueIdentifier>{7319b735-dde3-4f57-94ae-469cfc076d2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Transform Component\Transform Type">
-      <UniqueIdentifier>{72c67f17-0306-4874-9b94-48e1b737075a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Commands">
       <UniqueIdentifier>{f038fdc9-0e54-4d5f-a3f7-d3ea73696c64}</UniqueIdentifier>
     </Filter>
@@ -57,9 +51,6 @@
     </Filter>
     <Filter Include="Source Files\Components\Collision Component">
       <UniqueIdentifier>{4527abf4-2e99-4186-ad3a-b0e16cbf1c9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components\Sprite Component\Mesh">
-      <UniqueIdentifier>{5a2b02c8-91b1-4439-a9cc-e2ce54e0a286}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game Objects\Transform">
       <UniqueIdentifier>{5a179636-8a3b-45e5-964f-49ea404a0499}</UniqueIdentifier>
@@ -96,6 +87,18 @@
     </Filter>
     <Filter Include="Source Files\Components\Collision Component\Collision Profile">
       <UniqueIdentifier>{245f8623-d9bb-47c1-bcf1-5ad73434b09e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\General Classes">
+      <UniqueIdentifier>{87877fe3-6b69-47ae-b815-e2f580a15543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\General Classes\Mesh">
+      <UniqueIdentifier>{07a3c616-18eb-46f4-8f60-097f3da71762}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\General Classes\Transform">
+      <UniqueIdentifier>{e68aa531-9752-4b05-9ac8-5d970c36bf31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\General Classes\Vertex">
+      <UniqueIdentifier>{7ffc31cf-57bd-4f07-81d9-3dac5693094d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,12 +144,6 @@
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Source Files\Components\Collision Component</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\Components\Transform Component\Transform Type</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsBodyGameObject.cpp">
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClCompile>
@@ -179,6 +176,15 @@
     </ClCompile>
     <ClCompile Include="CollisionProfile.cpp">
       <Filter>Source Files\Components\Collision Component\Collision Profile</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\General Classes\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\General Classes\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files\General Classes\Vertex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,20 +227,11 @@
     <ClInclude Include="TileGameObject.h">
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClInclude>
-    <ClInclude Include="Delegate.h">
-      <Filter>Source Files\Game Objects</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CollisionComponent.h">
       <Filter>Source Files\Components\Collision Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Components\Sprite Component\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Source Files\Components\Transform Component\Transform Type</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsBodyGameObject.h">
       <Filter>Source Files\Game Objects\Debug Game Object</Filter>
@@ -269,6 +266,18 @@
     <ClInclude Include="CollisionProfile.h">
       <Filter>Source Files\Components\Collision Component\Collision Profile</Filter>
     </ClInclude>
+    <ClInclude Include="Delegate.h">
+      <Filter>Source Files\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Source Files\General Classes\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\General Classes\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Source Files\General Classes\Vertex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertexShader.vs">
@@ -277,6 +286,5 @@
     <None Include="fragmentShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="NPCollisionProfile" />
   </ItemGroup>
 </Project>

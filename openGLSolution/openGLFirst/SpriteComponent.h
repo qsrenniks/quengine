@@ -16,11 +16,12 @@ public:
 
   virtual void Draw() override;
 
-  Mesh& GetMesh();
+  const Mesh& GetMesh() const; 
   
   void SetColor(const glm::vec4& color);
 
 private:
+  Shader spriteShader_;
   Mesh spriteMesh_;
 
   glm::vec4 color_{1.0f};

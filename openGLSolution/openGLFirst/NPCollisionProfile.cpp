@@ -3,7 +3,7 @@
 #include "PolygonalCollisionProfile.h"
 #include "CollisionOccurence.h"
 
-NPCollisionProfile::NPCollisionProfile(std::initializer_list<glm::vec2> vertexList)
+NPCollisionProfile::NPCollisionProfile(/*std::initializer_list<glm::vec2> vertexList*/)
 {
 
 }

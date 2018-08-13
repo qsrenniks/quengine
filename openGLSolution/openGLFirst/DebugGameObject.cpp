@@ -15,17 +15,18 @@
 //engine commands
 #include "EngineCmder.h"
 #include "RigidBodyComponent.h"
+#include "BPCollisionProfile.h"
 
 DebugGameObject::DebugGameObject()
 {
   sprite_->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
   AddComponent<RigidBodyComponent>(rigidBodyComponent_, 0.0f);
 
-  GetTransform().SetScale(0.5f, 0.5f);
+  //GetTransform().SetScale(0.5f, 0.5f);
 
   //rigidBodyComponent_->GetPhysicsComponent()->SetMass(1.0f);
   //rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
-  //rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
+  rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   auto& a = inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
@@ -37,6 +38,8 @@ DebugGameObject::DebugGameObject()
 
   rigidBodyComponent_->onCollisionEnter_.AddFunction(this, &DebugGameObject::OnCollisionEnter);
   rigidBodyComponent_->onCollisionExit_.AddFunction(this, &DebugGameObject::OnCollisionExit);
+
+  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.25f, 0.25f));
 }
 
 DebugGameObject::~DebugGameObject()

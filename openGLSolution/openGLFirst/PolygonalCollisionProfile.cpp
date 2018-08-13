@@ -8,9 +8,9 @@
 
 //#Bookmark this is where we do the SAT Collision check
 
-PolygonalCollisionProfile::PolygonalCollisionProfile()
-{
-}
+//PolygonalCollisionProfile::PolygonalCollisionProfile()
+//{
+//}
 //
 //void PolygonalCollisionProfile::IsProfileCollidingWith(NPCollisionProfile* otherProfile) const
 //{
@@ -67,40 +67,40 @@ PolygonalCollisionProfile::PolygonalCollisionProfile()
   //collOcc.objectB_->UpdateCollisionWith(collOcc.objectA_, collisionStatus);
 //}
 
-CollisionStatus PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
-{
-  return CollisionStatus::INVALID;
-}
-
-CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
-{
-  for (const glm::vec2& line : axisA)
-  {
-    Mesh::Projection meshAProjected;
-    Mesh::Projection meshBProjected;
-    meshA.Project(line, meshAProjected);
-    meshB.Project(line, meshBProjected);
-
-    //returns collision status
-    CollisionStatus collStatus = meshAProjected.IsOverlapping(meshBProjected);
-
-    //std::cout << int(collStatus) << std::endl;
-
-    if (collStatus == CollisionStatus::NOT_COLLIDING || collStatus == CollisionStatus::TOUCHING)
-    {
-      return collStatus;
-    }
-    else if (collStatus == CollisionStatus::COLLIDING)
-    {
-      float o = meshAProjected.GetOverlap(meshBProjected);
-
-      if (o < overlap)
-      {
-        overlap = o;
-        smallestAxis = line;
-      }
-    }
-  }
-
-  return CollisionStatus::COLLIDING;
-}
+//CollisionStatus PolygonalCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
+//{
+//  return CollisionStatus::INVALID;
+//}
+//
+//CollisionStatus PolygonalCollisionProfile::PerformAxisProjection(const std::vector<glm::vec2>& axisA, Mesh &meshA, Mesh &meshB, float &overlap, glm::vec2 &smallestAxis) const
+//{
+//  for (const glm::vec2& line : axisA)
+//  {
+//    Mesh::Projection meshAProjected;
+//    Mesh::Projection meshBProjected;
+//    meshA.Project(line, meshAProjected);
+//    meshB.Project(line, meshBProjected);
+//
+//    //returns collision status
+//    CollisionStatus collStatus = meshAProjected.IsOverlapping(meshBProjected);
+//
+//    //std::cout << int(collStatus) << std::endl;
+//
+//    if (collStatus == CollisionStatus::NOT_COLLIDING || collStatus == CollisionStatus::TOUCHING)
+//    {
+//      return collStatus;
+//    }
+//    else if (collStatus == CollisionStatus::COLLIDING)
+//    {
+//      float o = meshAProjected.GetOverlap(meshBProjected);
+//
+//      if (o < overlap)
+//      {
+//        overlap = o;
+//        smallestAxis = line;
+//      }
+//    }
+//  }
+//
+//  return CollisionStatus::COLLIDING;
+//}

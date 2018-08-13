@@ -19,7 +19,7 @@ public: //Types
 
 public:
 
-  NPCollisionProfile(std::initializer_list<glm::vec2> vertexList);
+  NPCollisionProfile(/*std::initializer_list<glm::vec2> vertexList*/);
 
   virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 

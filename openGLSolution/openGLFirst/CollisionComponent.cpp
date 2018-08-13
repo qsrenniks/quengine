@@ -38,7 +38,8 @@ void CollisionComponent::Draw()
 
   //#TODO this seems like a lot of typing to just get the rendering system
   glm::vec2 bpExtent = bpCollisionProfile_->GetAABBExtent();
-  Engine::Instance()->GetRenderingSystem()->DrawSquare(bpCollisionProfile_->GetAABBLocation(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) , bpExtent.x / 2.0f, bpExtent.y / 2.0f, true);
+  //bpExtent *= 2.0f;
+  Engine::Instance()->GetRenderingSystem()->DrawSquare(bpCollisionProfile_->GetAABBLocation(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) , bpExtent.x, bpExtent.y, true);
 
 }
 

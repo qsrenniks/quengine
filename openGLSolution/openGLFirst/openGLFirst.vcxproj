@@ -115,6 +115,7 @@
     </ClCompile>
     <ClCompile Include="TileGameObject.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BPCollisionProfile.h" />
@@ -146,10 +147,10 @@
     <ClInclude Include="TextLibrary.h" />
     <ClInclude Include="TileGameObject.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader.fs" />
-    <None Include="NPCollisionProfile" />
     <None Include="vertexShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

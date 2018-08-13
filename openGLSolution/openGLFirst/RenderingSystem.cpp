@@ -2,6 +2,7 @@
 #include "RenderingSystem.h"
 #include "Engine.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "Mesh.h"
 
 static const GLuint NumVertices = 6;
 
@@ -41,6 +42,17 @@ void RenderingSystem::Load()
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
+  square.vertices_ = {
+    {  0.5f,  0.5f, 0.0f }, //top right
+    {  0.5f, -0.5f, 0.0f }, //bottom right
+    { -0.5f, -0.5f, 0.0f }, //bottom left
+    { -0.5f,  0.5f, 0.0f } //top left
+  };
+
+  square.indices_ = { 0, 1, 3, 1, 2, 3 };
+
+  square.SetupMesh();
+
   defaultShader_.use();
 }
 
@@ -50,40 +62,22 @@ void RenderingSystem::Unload()
   //glDeleteVertexArrays(1, &vao_);
 }
 
-void RenderingSystem::DrawSquare(const glm::mat4& transform, const glm::vec4& color, bool wireframeMode)
-{
-  defaultShader_.setMat4("model", transform);
-  defaultShader_.setVec4("aColor", color);
-  
-  RenderSquare(wireframeMode);
-}
-
-void RenderingSystem::DrawSquare(const glm::vec2& location, bool wireframeMode)
-{
-  defaultShader_.setMat4("model", glm::translate(glm::mat4(1.0f), glm::vec3(location, 0.0f)));
-  defaultShader_.setVec4("aColor", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-
-  RenderSquare(wireframeMode);
-}
-
 void RenderingSystem::DrawSquare(const glm::vec2& location, const glm::vec4& color, float width, float height, bool wireframeMode /*= false*/)
 {
   //#Note construct matrix for shader here and then set it in the current shader
-
   glm::mat4 squareMatrix;
-
   //#TODO there might be a better way to construct this. Since I have to deal with this for every object i draw this should be seperated into its 
   //own member function
   glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(location, 0.0f));
   //#Note im not sure i need to do this mathematically but oh well.
   glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0, 1.0f));
-  glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(width, height, 1.0f));
+  glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(width * 2.0f, height * 2.0f, 1.0f));
 
   squareMatrix = translation * rotation * scale;
 
   defaultShader_.setMat4("model", squareMatrix);
   defaultShader_.setVec4("aColor", color);
-  
+
   RenderSquare(wireframeMode);
 }
 
@@ -104,17 +98,13 @@ void RenderingSystem::RenderSquare(bool wireframeMode)
   defaultShader_.setMat4("projection", Engine::Instance()->GetOrthographicTransform());
   defaultShader_.setMat4("view", Engine::Instance()->GetViewTransform().BuildTransform());
 
-  glBindVertexArray(vao_);
-
   if (wireframeMode == true)
   {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   }
-  else
-  {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  }
-  glDrawArrays(GL_TRIANGLES, 0, 6);
+  square.Draw();
+  //#Note this always sets it back to fill so that the next one coming in can set it to what it want
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 //void RenderingSystem::GetShapeVertices(PolygonalShapes shape, int& numOfVerts, const GLfloat* vertices)
