@@ -39,7 +39,7 @@ DebugGameObject::DebugGameObject()
   rigidBodyComponent_->onCollisionEnter_.AddFunction(this, &DebugGameObject::OnCollisionEnter);
   rigidBodyComponent_->onCollisionExit_.AddFunction(this, &DebugGameObject::OnCollisionExit);
 
-  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.25f, 0.25f));
+  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.5f, 0.5f));
 }
 
 DebugGameObject::~DebugGameObject()

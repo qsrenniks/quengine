@@ -17,7 +17,7 @@ TileGameObject::TileGameObject()
   GetTransform().SetScale({ 1.0f, 1.0f });
   rigidBodyComponent_->GetPhysicsComponent()->SetMass(0.0f);
 
-  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(1.0f, 1.0f));
+  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.5f, 0.5f));
 }
 
 TileGameObject::~TileGameObject()

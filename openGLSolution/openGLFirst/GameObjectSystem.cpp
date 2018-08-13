@@ -70,7 +70,7 @@ void GameObjectSystem::RunCollisionUpdate()
   BroadphaseCollisionDetection();
   //runs through those occurences and resolves them one by one.
   //narrow phase does a deeper check of the objects colliding and then fills the occurences with that information
-  //NarrowPhaseCollisionDetection();
+  NarrowPhaseCollisionDetection();
   //now resolve all collision occurences
 }
 
@@ -95,12 +95,12 @@ void GameObjectSystem::BroadphaseCollisionDetection()
 
       if (status == CollisionStatus::COLLIDING)
       {
-        std::cout << "Colliding!";
+        //std::cout << "Colliding!";
 
         CollisionOccurence occ;
         occ.objectA_ = objectA;
         occ.objectB_ = objectB;
-        //collisionOccurences_.push_back(occ);
+        collisionOccurences_.push_back(occ);
       }
 
     } 
@@ -113,7 +113,6 @@ void GameObjectSystem::NarrowPhaseCollisionDetection()
   for (auto& occ : collisionOccurences_)
   {
     //perfom narrow phase collision detection here. 
-    //
 
     CollisionStatus status = occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
 

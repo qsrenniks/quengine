@@ -27,16 +27,19 @@ CollisionStatus BPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
     return CollisionStatus::INVALID;
   }
 
+  glm::vec2 aExtent = extent_;
+  aExtent *= 2.0f;
   glm::vec2 bExtent = bpOtherProfile->GetAABBExtent();
+  bExtent *= 2.0f;
+
+  glm::vec2 aLocation = location_;
   glm::vec2 bLocation = bpOtherProfile->GetAABBLocation();
+  
+  bool isColliding = (std::abs(aLocation.x - bLocation.x) * 2 < (aExtent.x + bExtent.x)) && (std::abs(aLocation.y - bLocation.y) * 2 < (aExtent.y + bExtent.y));
 
   //#Note AABB Collision Check
-  if (location_.x < bLocation.x + bExtent.x && 
-      location_.x + extent_.x > bLocation.x &&
-      location_.y < bLocation.y + bExtent.y &&
-      extent_.y + location_.y > bLocation.y)
+  if(isColliding)
   {
-    //they are colliding
     return CollisionStatus::COLLIDING;
   }
 
