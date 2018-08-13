@@ -26,13 +26,20 @@ CollisionComponent::~CollisionComponent()
 void CollisionComponent::Update(float dt)
 {
   //this is where we update the broadphase collision
+  bpCollisionProfile_->UpdateAABB(GetParent()->GetTransform().GetPosition());
 }
 
 void CollisionComponent::Draw()
 {
   //this might draw the aabb box for the broadphase collision detection system.
-  glm::vec2 position = GetParent()->GetTransform().GetPosition();
-  Engine::Instance()->GetRenderingSystem()->DrawSquare(position, true);
+  //glm::vec2 position = GetParent()->GetTransform().GetPosition();
+  //Engine::Instance()->GetRenderingSystem()->DrawSquare(position, true);
+  //draw aabb bounds
+
+  //#TODO this seems like a lot of typing to just get the rendering system
+  glm::vec2 bpExtent = bpCollisionProfile_->GetAABBExtent();
+  Engine::Instance()->GetRenderingSystem()->DrawSquare(bpCollisionProfile_->GetAABBLocation(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) , bpExtent.x / 2.0f, bpExtent.y / 2.0f, true);
+
 }
 
 void CollisionComponent::Register()
@@ -44,18 +51,32 @@ void CollisionComponent::Register()
   parent->GetComponentUpdateList().AddFunction(this, &CollisionComponent::Update);
 }
 
-void CollisionComponent::IsCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc) const
+NPCollisionProfile* CollisionComponent::GetNPCollisionProfile() const
 {
-  npCollisionProfile_->IsProfileCollidingWith(otherCollider->npCollisionProfile_, collOcc);
+  return npCollisionProfile_;
+}
+
+
+BPCollisionProfile* CollisionComponent::GetBPCollisionProfile() const
+{
+  return bpCollisionProfile_;
+}
+
+CollisionStatus CollisionComponent::IsNPCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc)
+{
+  //#Note here we not only have to determine whether these two objects collided but also how they colliding, meaning
+  //more information is needed after the collision has bee calculated. IsProfileCollidingWith is not enough, it must also calculate
+  //everything needed for a resolution.
+
+  npCollisionProfile_->SetFillerOccurence(collOcc);
+
+  return npCollisionProfile_->IsProfileCollidingWith(otherCollider->GetNPCollisionProfile());
+
+
 }
 
 CollisionStatus CollisionComponent::IsBPCollidingWith(CollisionComponent* otherCollider)
 {
-  
+  //#Note This does an AABB collision check against the other BP collision profile.
+  return bpCollisionProfile_->IsProfileCollidingWith(otherCollider->GetBPCollisionProfile());
 }
-
-CollisionStatus CollisionComponent::IsNPCollidingWith(CollisionComponent* otherCollider)
-{
-
-}
-

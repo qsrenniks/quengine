@@ -10,9 +10,6 @@ class BPCollisionProfile;
 
 enum class CollisionStatus : int;
 
-
-
-
 //
 // This is the definition of the collision component.
 //
@@ -29,10 +26,11 @@ public:
 
   virtual void Register() override;
 
-  void IsCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc) const;
-  
+  NPCollisionProfile* GetNPCollisionProfile() const;
+  BPCollisionProfile* GetBPCollisionProfile() const;
+
+  CollisionStatus IsNPCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc);
   CollisionStatus IsBPCollidingWith(CollisionComponent* otherCollider);
-  CollisionStatus IsNPCollidingWith(CollisionComponent* otherCollider);
 
 private:
 

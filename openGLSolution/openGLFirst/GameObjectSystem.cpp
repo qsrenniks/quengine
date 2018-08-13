@@ -10,9 +10,7 @@
 #include "CollisionComponent.h"
 #include <iostream>
 
-//
-// test
-//
+#include "NPCollisionProfile.h"
 #include "Engine.h"
 #include "InputSystem.h"
 #include <stdlib.h>
@@ -72,7 +70,7 @@ void GameObjectSystem::RunCollisionUpdate()
   BroadphaseCollisionDetection();
   //runs through those occurences and resolves them one by one.
   //narrow phase does a deeper check of the objects colliding and then fills the occurences with that information
-  NarrowPhaseCollisionDetection();
+  //NarrowPhaseCollisionDetection();
   //now resolve all collision occurences
 }
 
@@ -92,7 +90,18 @@ void GameObjectSystem::BroadphaseCollisionDetection()
         continue;
       }
 
-      //TODO: do broadphase collision check here.
+      //#TODO do broadphase collision check here.
+      CollisionStatus status = objectA->GetCollisionComponent()->IsBPCollidingWith(objectB->GetCollisionComponent());
+
+      if (status == CollisionStatus::COLLIDING)
+      {
+        //std::cout << "Colliding!" << std::endl;
+
+        CollisionOccurence occ;
+        occ.objectA_ = objectA;
+        occ.objectB_ = objectB;
+        collisionOccurences_.push_back(occ);
+      }
 
     } 
   }
@@ -104,7 +113,17 @@ void GameObjectSystem::NarrowPhaseCollisionDetection()
   for (auto& occ : collisionOccurences_)
   {
     //perfom narrow phase collision detection here. 
-  }
+    //
+
+    CollisionStatus status = occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
+
+    //this filters out all the ones that are not colliding and just leaves the ones that are colliding
+    if (status == CollisionStatus::NOT_COLLIDING)
+    {
+      //#TODO this might be a problem cause i am removing indexes while moving through the list.
+      collisionOccurences_.remove(occ);
+    }
+  } 
 }
 
 void GameObjectSystem::ResolveAllOccurences()

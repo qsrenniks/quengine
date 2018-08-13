@@ -1,5 +1,6 @@
 #pragma once
 #include "CollisionProfile.h"
+#include <vector>
 
 class CollisionComponent;
 struct CollisionOccurence;
@@ -11,14 +12,26 @@ struct CollisionOccurence;
 //
 class NPCollisionProfile : public CollisionProfile
 {
+public: //Types
+
+  using VertexList = std::vector<glm::vec2>;
+  using EdgeList = std::vector<glm::vec2>;
+
 public:
 
-  NPCollisionProfile();
-  virtual void IsProfileCollidingWith(NPCollisionProfile* otherProfile, CollisionOccurence& collOcc) const = 0;
+  NPCollisionProfile(std::initializer_list<glm::vec2> vertexList);
 
-  CollisionComponent* GetCollisionComponent();
-  void SetCollisionComponent(CollisionComponent* thisCollider);
+  virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
+
+  const VertexList& GetVertexList() const;
+
+  void SetFillerOccurence(CollisionOccurence& collOcc);
 
 protected:
-  CollisionComponent * collisionComponent_ = nullptr;
+
+  CollisionOccurence* fillerOccurence_;
+
+  VertexList vertices_;
+  EdgeList edgeNormals_;
+
 };

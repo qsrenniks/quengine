@@ -4,6 +4,7 @@
 #include "SpriteComponent.h"
 #include "PhysicsComponent.h"
 #include "RigidBodyComponent.h"
+#include "BPCollisionProfile.h"
 
 TileGameObject::TileGameObject()
 {
@@ -15,6 +16,8 @@ TileGameObject::TileGameObject()
   rigidBodyComponent_->GetPhysicsComponent()->SetSimulatePhysics(false);
   GetTransform().SetScale({ 1.0f, 1.0f });
   rigidBodyComponent_->GetPhysicsComponent()->SetMass(0.0f);
+
+  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(2.0f, 2.0f));
 }
 
 TileGameObject::~TileGameObject()

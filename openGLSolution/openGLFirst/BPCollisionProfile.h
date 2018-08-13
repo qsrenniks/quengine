@@ -4,15 +4,24 @@
 class BPCollisionProfile : public CollisionProfile
 {
 public:
-  BPCollisionProfile();
+  BPCollisionProfile(const glm::vec2& extent);
   ~BPCollisionProfile();
 
+
   //re-calculates the objects aabb give the farthest away vertex.
-  void UpdateAABB();
+  void UpdateAABB(const glm::vec2& newLocation);
+
+  virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
+
+  const glm::vec2& GetAABBExtent() const;
+  const glm::vec2& GetAABBLocation() const;
+
+  void SetAABBExtent(const glm::vec2& extent);
 
 protected:
 
-
+  glm::vec2 extent_;
+  glm::vec2 location_;
 
 private:
 
