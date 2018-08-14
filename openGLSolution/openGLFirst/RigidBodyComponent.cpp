@@ -7,6 +7,7 @@
 #include "CollisionComponent.h"
 #include "PolygonalCollisionProfile.h"
 #include "BPCollisionProfile.h"
+#include "MeshDescriptions.h"
 
 RigidBodyComponent::RigidBodyComponent(float bounce /*= 0.0f*/)
   : bounce_(bounce)
@@ -38,13 +39,16 @@ void RigidBodyComponent::Register()
   goSys->RegisterRigidBodyComponent(this);
 }
 
+
 void RigidBodyComponent::Parent(IGameObject* parent)
 {
   IComponent::Parent(parent);
 
   //these go here and not in construction since you need the parent to create the game objects
+  NPCollisionProfile* collisionProfile = new NPCollisionProfile(Shapes::Square_Vertices, Shapes::Square_Indices);
+
   parent->AddComponent<PhysicsComponent>(physics_);
-  parent->AddComponent<CollisionComponent>(collision_, new NPCollisionProfile(), new BPCollisionProfile(glm::vec2(1.0f, 1.0f)));
+  parent->AddComponent<CollisionComponent>(collision_, collisionProfile, new BPCollisionProfile(glm::vec2(1.0f, 1.0f)));
 }
 
 PhysicsComponent* RigidBodyComponent::GetPhysicsComponent()

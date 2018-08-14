@@ -4,7 +4,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 BPCollisionProfile::BPCollisionProfile(const glm::vec2& extent)
-  : extent_(extent)
+  : offsetExtent_(extent)
 {
 }
 
@@ -13,9 +13,16 @@ BPCollisionProfile::~BPCollisionProfile()
 
 }
 
-void BPCollisionProfile::UpdateAABB(const glm::vec2& newLocation)
+void BPCollisionProfile::UpdateAABB(const glm::vec2& newLocation, const glm::vec2& newScale)
 {
   location_ = newLocation;
+  glm::mat4 newTransform{1.0f};
+  auto translation = glm::translate(glm::mat4(1.0f), glm::vec3(newLocation, 0.0f));
+  auto scale = glm::scale(glm::mat4(1.0), glm::vec3(newScale, 1.0f));
+
+  newTransform = scale;
+
+  extent_ = newTransform * glm::vec4(offsetExtent_, 0.0f, 1.0f);
 }
 
 CollisionStatus BPCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
@@ -58,5 +65,5 @@ const glm::vec2& BPCollisionProfile::GetAABBLocation() const
 
 void BPCollisionProfile::SetAABBExtent(const glm::vec2& extent)
 {
-  extent_ = extent;
+  offsetExtent_ = extent;
 }

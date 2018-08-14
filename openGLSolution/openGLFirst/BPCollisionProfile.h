@@ -9,7 +9,7 @@ public:
 
 
   //re-calculates the objects aabb give the farthest away vertex.
-  void UpdateAABB(const glm::vec2& newLocation);
+  void UpdateAABB(const glm::vec2& newLocation, const glm::vec2& newScale);
 
   virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 
@@ -20,6 +20,7 @@ public:
 
 protected:
 
+  glm::vec2 offsetExtent_;
   glm::vec2 extent_;
   glm::vec2 location_;
 

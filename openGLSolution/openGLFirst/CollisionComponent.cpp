@@ -21,21 +21,17 @@ CollisionComponent::CollisionComponent(NPCollisionProfile* npCollisionProfile, B
 CollisionComponent::~CollisionComponent()
 {
   delete npCollisionProfile_;
+  delete bpCollisionProfile_;
 }
 
 void CollisionComponent::Update(float dt)
 {
   //this is where we update the broadphase collision
-  bpCollisionProfile_->UpdateAABB(GetParent()->GetTransform().GetPosition());
+  bpCollisionProfile_->UpdateAABB(GetParent()->GetTransform().GetPosition(), GetParent()->GetTransform().GetScale());
 }
 
 void CollisionComponent::Draw()
 {
-  //this might draw the aabb box for the broadphase collision detection system.
-  //glm::vec2 position = GetParent()->GetTransform().GetPosition();
-  //Engine::Instance()->GetRenderingSystem()->DrawSquare(position, true);
-  //draw aabb bounds
-
   //#TODO this seems like a lot of typing to just get the rendering system
   glm::vec2 bpExtent = bpCollisionProfile_->GetAABBExtent();
   //bpExtent *= 2.0f;

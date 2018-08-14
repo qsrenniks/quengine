@@ -12,7 +12,7 @@ public:
   virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const = 0;
 
   void SetCollisionComponent(CollisionComponent* thisCollider);
-  CollisionComponent* GetCollisionComponent();
+  CollisionComponent* GetCollisionComponent() const;
 
   virtual ~CollisionProfile();
 protected:

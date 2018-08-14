@@ -1,5 +1,6 @@
 #pragma once
 #include "CollisionProfile.h"
+#include "Mesh.h"
 #include <vector>
 
 class CollisionComponent;
@@ -14,24 +15,19 @@ class NPCollisionProfile : public CollisionProfile
 {
 public: //Types
 
-  using VertexList = std::vector<glm::vec2>;
-  using EdgeList = std::vector<glm::vec2>;
+  Mesh npMeshProfile_;
 
 public:
 
-  NPCollisionProfile(/*std::initializer_list<glm::vec2> vertexList*/);
+  NPCollisionProfile(std::initializer_list<Vertex> vertexList, std::initializer_list<unsigned int> indices);
 
   virtual CollisionStatus IsProfileCollidingWith(CollisionProfile* otherProfile) const override;
 
-  const VertexList& GetVertexList() const;
+  const Mesh& GetMesh() const;
 
   void SetFillerOccurence(CollisionOccurence& collOcc);
 
 protected:
 
-  CollisionOccurence* fillerOccurence_;
-
-  VertexList vertices_;
-  EdgeList edgeNormals_;
-
+  CollisionOccurence* fillerOccurence_ = nullptr;
 };

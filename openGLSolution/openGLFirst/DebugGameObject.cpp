@@ -39,7 +39,7 @@ DebugGameObject::DebugGameObject()
   rigidBodyComponent_->onCollisionEnter_.AddFunction(this, &DebugGameObject::OnCollisionEnter);
   rigidBodyComponent_->onCollisionExit_.AddFunction(this, &DebugGameObject::OnCollisionExit);
 
-  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.5f, 0.5f));
+  rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.75f, 0.75f));
 }
 
 DebugGameObject::~DebugGameObject()
@@ -56,6 +56,8 @@ void DebugGameObject::WKeyPress()
 {
   glm::vec2 dir(0.0f, translationalSpeed);
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+
+  //GetTransform().SetScale(GetTransform().GetScale()*2.0f);
 }
 
 void DebugGameObject::SKeyPress()

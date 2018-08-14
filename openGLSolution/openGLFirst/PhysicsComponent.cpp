@@ -31,7 +31,7 @@ void PhysicsComponent::Update(float dt)
 {
   if (simulatePhysics_ == false) return;
 
-  //std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
+  std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
   GatherForceGenerators();
 
   acceleration_ = inverseMass_ * forces_;

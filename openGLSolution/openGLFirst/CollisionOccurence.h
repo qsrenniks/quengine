@@ -20,8 +20,8 @@ public:
   }
 
   CollisionStatus collisionStatus_;
-  float penetration_;
-  float restitution_;
+  float penetration_ = 0.0f;
+  float restitution_ = 0.0f;
   glm::vec2 collisionNormal_;
   RigidBodyComponent* objectA_ = nullptr;
   RigidBodyComponent* objectB_ = nullptr;

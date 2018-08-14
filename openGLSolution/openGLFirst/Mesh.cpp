@@ -5,6 +5,7 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/rotate_vector.hpp"
+#include <glm/geometric.hpp>
 //
 //Mesh::Mesh(SpriteComponent* spriteComponent, float width, float height)
 //  : spriteComponent_(spriteComponent)
@@ -244,5 +245,58 @@ void Mesh::SetupMesh()
 
   //glEnableVertexAttribArray(2);
   //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+  SetupEdgeNormals();
+  SetupFarVertex();
+}
+
+void Mesh::SetupEdgeNormals()
+{
+  //go through indices creating edge normals.
+  unsigned int vertSize = vertices_.size();
+  for (unsigned int i = 1; i <= vertSize; i++)
+  {
+    bool isFinished = false;
+
+    Vertex a = vertices_[i - 1];
+    if (i == vertSize)
+    {
+      i = 0;
+      isFinished = true;
+    }
+    Vertex b = vertices_[i];
+
+    //normalize and rotate outwards
+    glm::vec3 unNormalizedEdge = a - b;
+    std::swap(unNormalizedEdge.x, unNormalizedEdge.y);
+    unNormalizedEdge.y *= -1;
+    edgeNormals_.emplace_back(glm::normalize(unNormalizedEdge));
+
+    if (isFinished)
+    {
+      break;
+    }
+  }
+}
+
+void Mesh::SetupFarVertex()
+{
+  //loops through each vert and compares with another to find the max distance between two verts.
+  float maxDistance = 0.0f;
+  for (unsigned int i = 0; i < vertices_.size(); i++)
+  {
+    Vertex a = vertices_[i];
+    for (unsigned int j = 0; j < vertices_.size(); j++)
+    {
+      Vertex b = vertices_[j];
+
+      float length = glm::distance(glm::vec3(a), glm::vec3(b));
+      if (length > maxDistance)
+      {
+        maxDistance = length;
+        farVertex_.first = a;
+        farVertex_.second = b;
+      }
+    }
+  }
 
 }

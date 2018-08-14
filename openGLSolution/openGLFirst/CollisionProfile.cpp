@@ -12,7 +12,7 @@ CollisionProfile::~CollisionProfile()
 {
 }
 
-CollisionComponent* CollisionProfile::GetCollisionComponent()
+CollisionComponent* CollisionProfile::GetCollisionComponent() const
 {
   return collisionComponent_;
 }

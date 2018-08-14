@@ -100,6 +100,9 @@
     <Filter Include="Source Files\General Classes\Vertex">
       <UniqueIdentifier>{7ffc31cf-57bd-4f07-81d9-3dac5693094d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Collision Component\Collision Manifold">
+      <UniqueIdentifier>{834d7db7-ceef-43a6-b601-362e35972790}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\General Classes\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManifold.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +283,12 @@
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Source Files\General Classes\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDescriptions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManifold.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

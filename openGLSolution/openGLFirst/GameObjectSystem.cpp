@@ -56,11 +56,11 @@ void GameObjectSystem::RemoveCollisonComponent(RigidBodyComponent* collisionComp
 
 void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
 {
-  //SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(mousePos);
-  glm::vec2 currentScale = Engine::Instance()->GetViewTransform().GetScale();
-  currentScale.x += 2.0f;
-  currentScale.y += 2.0f;
-  Engine::Instance()->GetViewTransform().SetScale(currentScale);
+  SpawnGameObject<PhysicsBodyGameObject>()->GetTransform().SetPosition(mousePos);
+  //glm::vec2 currentScale = Engine::Instance()->GetViewTransform().GetScale();
+  //currentScale.x += 2.0f;
+  //currentScale.y += 2.0f;
+  //Engine::Instance()->GetViewTransform().SetScale(currentScale);
 }
 
 void GameObjectSystem::RunCollisionUpdate()
@@ -72,6 +72,7 @@ void GameObjectSystem::RunCollisionUpdate()
   //narrow phase does a deeper check of the objects colliding and then fills the occurences with that information
   NarrowPhaseCollisionDetection();
   //now resolve all collision occurences
+  ResolveAllOccurences();
 }
 
 void GameObjectSystem::BroadphaseCollisionDetection()
@@ -102,10 +103,8 @@ void GameObjectSystem::BroadphaseCollisionDetection()
         occ.objectB_ = objectB;
         collisionOccurences_.push_back(occ);
       }
-
     } 
   }
-
 }
 
 void GameObjectSystem::NarrowPhaseCollisionDetection()
@@ -113,16 +112,16 @@ void GameObjectSystem::NarrowPhaseCollisionDetection()
   for (auto& occ : collisionOccurences_)
   {
     //perfom narrow phase collision detection here. 
-
-    CollisionStatus status = occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
-
-    //this filters out all the ones that are not colliding and just leaves the ones that are colliding
-    if (status == CollisionStatus::NOT_COLLIDING)
-    {
-      //#TODO this might be a problem cause i am removing indexes while moving through the list.
-      collisionOccurences_.remove(occ);
-    }
+    occ.collisionStatus_ = occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
   } 
+
+  //then filter the list to only hold colliding occurences
+  auto removalLambda = [&](CollisionOccurence& coll) -> bool
+  {
+    return (coll.collisionStatus_ != CollisionStatus::COLLIDING);
+  };
+
+  collisionOccurences_.remove_if(removalLambda);
 }
 
 void GameObjectSystem::ResolveAllOccurences()
@@ -157,12 +156,12 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -0.0f));//down
-  SpawnGameObject<DebugGameObject>();
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -13.0f));//down
+  //SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
-  //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
-  //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
+  PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
+  PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, -100.0f));

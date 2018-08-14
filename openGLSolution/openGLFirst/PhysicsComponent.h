@@ -72,7 +72,7 @@ struct GravityForceGenerator : public ForceGenerator
     return gravity * body_->GetMass();
   }
 
-  glm::vec2 gravity = {0.0f, -350.0f};
+  glm::vec2 gravity = {0.0f, -9.8f};
 };
 
 //struct DragForceGenerator : public ForceGenerator

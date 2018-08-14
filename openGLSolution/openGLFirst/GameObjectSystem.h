@@ -37,7 +37,7 @@ public:
   {
     std::unique_ptr<GameObject> newGameObject = std::make_unique<GameObject>(_Args...);
   
-    //move invalidates the object so i store the ptr to return later.
+    //move invalidates the object so i store the ptr to areturn later.
     GameObject* newGameObjectPTR = newGameObject.get();
 
     AddGameObject(std::move(newGameObject));

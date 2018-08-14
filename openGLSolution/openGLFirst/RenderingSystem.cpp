@@ -3,18 +3,7 @@
 #include "Engine.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "Mesh.h"
-
-static const GLuint NumVertices = 6;
-
-static const GLfloat square_vertices[NumVertices][3] =
-{
-  { -1.0f, 1.0f },
-{ 1.0f, -1.0f },
-{ 1.0f, 1.0f },
-{ -1.0f, 1.0f },
-{ -1.0f, -1.0f },
-{ 1.0f, -1.0f },
-};
+#include "MeshDescriptions.h"
 
 RenderingSystem::RenderingSystem()
   : defaultShader_(R"(..\vertexShader.vs)", R"(..\fragmentShader.fs)")
@@ -29,30 +18,22 @@ void RenderingSystem::Load()
 {
   defaultShader_.init();
 
-  //polygonList_.reserve(1);
-  ////create the objects
-  glGenBuffers(1, &vbo_);
-  glGenVertexArrays(1, &vao_);
-  //glCreateBuffers(BufferCount, buffers);
+  ////polygonList_.reserve(1);
+  //////create the objects
+  //glGenBuffers(1, &vbo_);
+  //glGenVertexArrays(1, &vao_);
+  ////glCreateBuffers(BufferCount, buffers);
 
-  //putting the memory in the right places
-  glBindVertexArray(vao_);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(square_vertices), square_vertices, GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-  glEnableVertexAttribArray(0);
+  ////putting the memory in the right places
+  //glBindVertexArray(vao_);
+  //glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+  //glBufferData(GL_ARRAY_BUFFER, sizeof(square_vertices), square_vertices, GL_STATIC_DRAW);
+  //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  //glEnableVertexAttribArray(0);
 
-  square.vertices_ = {
-    {  0.5f,  0.5f, 0.0f }, //top right
-    {  0.5f, -0.5f, 0.0f }, //bottom right
-    { -0.5f, -0.5f, 0.0f }, //bottom left
-    { -0.5f,  0.5f, 0.0f } //top left
-  };
-
-  square.indices_ = { 0, 1, 3, 1, 2, 3 };
-
+  square.vertices_ = Shapes::Square_Vertices;
+  square.indices_ = Shapes::Square_Indices;
   square.SetupMesh();
-
   defaultShader_.use();
 }
 
