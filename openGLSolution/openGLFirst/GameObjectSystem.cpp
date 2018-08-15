@@ -160,7 +160,7 @@ void GameObjectSystem::Load()
   //SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
-  PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
+  //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
   PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   
@@ -179,6 +179,8 @@ void GameObjectSystem::Update(float dt)
 {
   auto DestroyGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { DestroyGameObject(i); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
+
+  PhysicsComponent::ForceGeneratorRegistry.ApplyForces();
 
   auto UpdateGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->UpdateGameObject(dt); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), UpdateGameObjectLambda);

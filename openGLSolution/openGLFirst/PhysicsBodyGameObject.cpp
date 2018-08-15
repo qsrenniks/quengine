@@ -4,6 +4,7 @@
 #include "PhysicsComponent.h"
 #include "SpriteComponent.h"
 #include "RigidBodyComponent.h"
+#include "PhysicsForceGenerator.h"
 
 PhysicsBodyGameObject::PhysicsBodyGameObject()
 {
@@ -11,8 +12,9 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
 
   AddComponent<RigidBodyComponent>(rigidBody_);
 
-  rigidBody_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
-  rigidBody_->GetPhysicsComponent()->SetMass(10.0f);
+  PhysicsComponent::ForceGeneratorRegistry.RegisterForceGenerator(rigidBody_->GetPhysicsComponent(), new GravityForceGenerator());
+
+  rigidBody_->GetPhysicsComponent()->SetMass(1.0f);
   GetTransform().SetScale(glm::vec2(0.5f, 0.5f));
 
   //rigidBody_->GetPhysicsComponent()->SetRotationalVelocity(45.0f);

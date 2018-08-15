@@ -103,6 +103,9 @@
     <Filter Include="Source Files\Components\Collision Component\Collision Manifold">
       <UniqueIdentifier>{834d7db7-ceef-43a6-b601-362e35972790}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Physics Component\Physics Force Generator">
+      <UniqueIdentifier>{96fbf2a5-16d7-44ba-9f34-6ad97f7ad4e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -190,6 +193,9 @@
       <Filter>Source Files\General Classes\Vertex</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManifold.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsForceGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -288,6 +294,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="CollisionManifold.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsForceGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

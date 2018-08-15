@@ -7,8 +7,11 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <algorithm>
 #include "Engine.h"
-
 #include <iostream>
+#include "PhysicsForceGenerator.h"
+
+PhysicsForceGenerator PhysicsComponent::ForceGeneratorRegistry;
+
 //PhysicsConstants
 
 PhysicsComponent::PhysicsComponent()
@@ -32,7 +35,6 @@ void PhysicsComponent::Update(float dt)
   if (simulatePhysics_ == false) return;
 
   std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
-  GatherForceGenerators();
 
   acceleration_ = inverseMass_ * forces_;
   velocity_ = velocity_ + (acceleration_ * dt);
@@ -146,7 +148,7 @@ const glm::vec2& PhysicsComponent::GetForce()
   return forces_;
 }
 
-void PhysicsComponent::AddForce(glm::vec2& force)
+void PhysicsComponent::AddForce(const glm::vec2& force)
 {
   forces_ += force;
 }
@@ -165,20 +167,6 @@ void PhysicsComponent::AddImpulse(glm::vec2& impulse)
 const glm::vec2& PhysicsComponent::GetForceLastFrame()
 {
   return lastFrameForce_;
-}
-
-void PhysicsComponent::GatherForceGenerators()
-{
-  for (ForceGenerator* gen : forceGenerators_)
-  {
-    forces_ += gen->GenerateForce();
-  }
-}
-
-void PhysicsComponent::AddForceGenerator(ForceGenerator* forceGenerator)
-{
-  forceGenerator->body_ = this;
-  forceGenerators_.push_back(forceGenerator);
 }
 
 void PhysicsComponent::AddVelocity(const glm::vec2& velToAdd)

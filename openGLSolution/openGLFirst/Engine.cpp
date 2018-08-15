@@ -91,11 +91,12 @@ void Engine::Update()
     {
       deltaTime_ = 0.0f;
     }
-
-    inputSystem_.Update(GetDeltaTime());
-    const static float dt = 0.01667f;
-    //gameObjectSystem_.Update(GetDeltaTime());
+    float dt = GetDeltaTime();
+    dt /= 1000.0f;
+    inputSystem_.Update(dt);
+    //const static float dt = 0.01667f;
     gameObjectSystem_.Update(dt);
+    //gameObjectSystem_.Update(dt);
   }
 
   std::chrono::system_clock::time_point tickEndTime = std::chrono::system_clock::now();

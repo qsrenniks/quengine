@@ -41,6 +41,16 @@ void CollisionOccurence::ResolveVelocities()
   glm::vec2 additiveAVelocity = -physicsA->GetInverseMass() * impulse;
   glm::vec2 additiveBVelocity = physicsB->GetInverseMass() * impulse;
 
+  //glm::vec2 aForce = physicsA->GetMass() * physicsA->GetAcceleration();
+  //glm::vec2 bForce = physicsB->GetMass() * physicsB->GetAcceleration();
+
+  ////force in dir of contact normal
+  //aForce = -collisionNormal_ * glm::length(aForce);
+  //bForce = collisionNormal_ * glm::length(bForce);
+
+  //physicsA->AddForce(aForce);
+  //physicsB->AddForce(bForce);
+
   physicsA->AddVelocity(additiveAVelocity);
   physicsB->AddVelocity(additiveBVelocity);
 }
