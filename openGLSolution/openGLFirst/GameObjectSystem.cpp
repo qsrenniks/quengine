@@ -72,9 +72,10 @@ void GameObjectSystem::RunCollisionUpdate()
   BroadphaseCollisionDetection();
   //runs through those occurences and resolves them one by one.
   //narrow phase does a deeper check of the objects colliding and then fills the occurences with that information
+  //#note this is a very long operation
   NarrowPhaseCollisionDetection();
   //now resolve all collision occurences
-  ResolveAllOccurences();
+  //ResolveAllOccurences();
 }
 
 void GameObjectSystem::BroadphaseCollisionDetection()
@@ -103,6 +104,11 @@ void GameObjectSystem::BroadphaseCollisionDetection()
         CollisionOccurence occ;
         occ.objectA_ = objectA;
         occ.objectB_ = objectB;
+
+        //these two objects might be colliding with one another.
+        //broadPhaseCollisionPossibilities_.push_back(objectA);
+        //broadPhaseCollisionPossibilities_.push_back(objectB);
+
         collisionOccurences_.push_back(occ);
       }
     } 
@@ -111,23 +117,31 @@ void GameObjectSystem::BroadphaseCollisionDetection()
 
 void GameObjectSystem::NarrowPhaseCollisionDetection()
 {
-  for (auto& occ : collisionOccurences_)
+  //iterating throught this multiple times makes sure that they are no longer colliding after the frame.
+  //#note this is to reduce the effect of a collision resolution pushing an object back into another object causing another collision
+  //#note This could also be improved go going through the list recursively until no collision are registered or at least just the objects are touching. 
+  const static int iterations = 15;
+  for (int i = 0; i < iterations; i++)
   {
-    //perfom narrow phase collision detection here. 
-    occ.collisionStatus_ = occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
-  } 
+    for (auto& occ : collisionOccurences_)
+    {
+      occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
+    }
+    ResolveAllOccurences();
 
-  //then filter the list to only hold colliding occurences
-  auto removalLambda = [&](CollisionOccurence& coll) -> bool
-  {
-    return (coll.collisionStatus_ != CollisionStatus::COLLIDING);
-  };
+    //then do another check to make sure they are no longer colliding with anything
+    //if they are then redo this.
+  }
 
-  collisionOccurences_.remove_if(removalLambda);
+  //loop through all occurences to make sure no more contacts are occuring.
+  //keep going until no more contancts are present.
+  collisionOccurences_.clear();
 }
 
 void GameObjectSystem::ResolveAllOccurences()
 {
+  //essentially keep resolving until the objects in all occurences are not penetrating.
+
   if (collisionOccurences_.empty() == true)
   {
     return;
@@ -135,11 +149,13 @@ void GameObjectSystem::ResolveAllOccurences()
 
   for (auto& occ : collisionOccurences_)
   {
-    occ.ResolveVelocities();
-    occ.ResolveInterpenetration();
+    if (occ.collisionStatus_ == CollisionStatus::COLLIDING)
+    {
+      occ.ResolveVelocities();
+      occ.ResolveInterpenetration();
+    }
   }
 
-  collisionOccurences_.clear();
 }
 
 std::string GameObjectSystem::GameObjectSystemLog = "GameObjectSystemLog";

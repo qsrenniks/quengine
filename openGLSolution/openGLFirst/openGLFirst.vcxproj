@@ -94,6 +94,7 @@
     <ClCompile Include="DebugGameObject.cpp" />
     <ClCompile Include="EngineCmder.cpp" />
     <ClCompile Include="GameObjectSystem.cpp" />
+    <ClCompile Include="GameStateSystem.cpp" />
     <ClCompile Include="ICommand.cpp" />
     <ClCompile Include="IComponent.cpp" />
     <ClCompile Include="IGameObject.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="EngineCmder.h" />
     <ClInclude Include="GameObjectSystem.h" />
+    <ClInclude Include="GameStateSystem.h" />
     <ClInclude Include="ICommand.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="IGameObject.h" />

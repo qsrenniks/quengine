@@ -73,7 +73,7 @@ CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
       objectB_Manifold.ProjectVerticesOntoEdge(bFirst, bSecond, edge);
 
       currentStatus = objectA_Manifold.IsOverlapping(objectB_Manifold);
-
+      fillerOccurence_->collisionStatus_ = currentStatus;
       //then compare to see if the lines are touching
       
       if (currentStatus == CollisionStatus::NOT_COLLIDING)
@@ -97,6 +97,7 @@ CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
     fillerOccurence_->collisionNormal_ = *smallestEdge;
   }
 
+  fillerOccurence_->collisionStatus_ = CollisionStatus::COLLIDING;
   return CollisionStatus::COLLIDING;
 }
 

@@ -106,6 +106,9 @@
     <Filter Include="Source Files\Components\Physics Component\Physics Force Generator">
       <UniqueIdentifier>{96fbf2a5-16d7-44ba-9f34-6ad97f7ad4e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Systems\Gameplay Systems\Game State System">
+      <UniqueIdentifier>{56f76e3a-7f3a-4edb-a4d6-28c8d313866d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -196,6 +199,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsForceGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -297,6 +303,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsForceGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
