@@ -9,11 +9,10 @@ public:
   LoggingSystem();
   virtual ~LoggingSystem();
 
-  std::ofstream& GetLogStream(std::string& logStream);
 
-
-
-  void AddLogStream(std::string& fileName);
+  void PrintToLog(const std::string& fileName, std::string& output);
+  std::ofstream& GetLogStream(const std::string& logStream);
+  void AddLogStream(const std::string& fileName);
 
   virtual void Load() override;
   virtual void Unload() override;
@@ -22,7 +21,7 @@ protected:
 
 private:
 
-  std::map<std::string, std::ofstream> logMap_;
+  std::map<std::string, std::ofstream> logCollection_;
 
 };
 

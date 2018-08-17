@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "LoggingSystem.h"
-
+#include <iostream>
 
 LoggingSystem::LoggingSystem()
 {
@@ -11,20 +11,19 @@ LoggingSystem::~LoggingSystem()
 {
 }
 
-std::ofstream& LoggingSystem::GetLogStream(std::string& logStream)
+void LoggingSystem::PrintToLog(const std::string& fileName, std::string& output)
 {
-  return logMap_[logStream];
+  logCollection_[fileName] << output.data();
 }
 
-
-
-void LoggingSystem::AddLogStream(std::string& fileName)
+std::ofstream& LoggingSystem::GetLogStream(const std::string& logStream)
 {
-  std::string filePath = R"(data\LogFiles\)";
-  filePath += fileName;
-  filePath += ".log";
+  return logCollection_[logStream];
+}
 
-  logMap_[fileName] = std::ofstream(filePath);
+void LoggingSystem::AddLogStream(const std::string& fileName)
+{
+  logCollection_[fileName] = std::ofstream(fileName);
 }
 
 void LoggingSystem::Load()
@@ -33,7 +32,9 @@ void LoggingSystem::Load()
 
 void LoggingSystem::Unload()
 {
-  for (auto itr = logMap_.begin(); itr != logMap_.end(); itr++)
+  //#Todo close all streams when the game unloads
+
+  for (auto itr = logCollection_.begin(); itr != logCollection_.end(); itr++)
   {
     itr->second.close();
   }

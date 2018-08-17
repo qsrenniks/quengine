@@ -32,6 +32,8 @@ void GameObjectSystem::AddGameObject(std::unique_ptr<IGameObject>&& gameObject)
   //this could be a simple perf improvement
   gameObjectRegistry_.push_back(std::move(gameObject));
 
+
+
   //log to the game object system logger
   Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystemLog) << "GameObjectSystem: Objects In System: " << gameObjectRegistry_.size() << std::endl;
 }
@@ -157,7 +159,7 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -13.0f));//down
-  //SpawnGameObject<DebugGameObject>();
+  SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();

@@ -34,7 +34,7 @@ void PhysicsComponent::Update(float dt)
 {
   if (simulatePhysics_ == false) return;
 
-  std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
+  //std::cout << "A: X: " << velocity_.x << " Y:" << velocity_.y << std::endl;
 
   acceleration_ = inverseMass_ * forces_;
   velocity_ = velocity_ + (acceleration_ * dt);
