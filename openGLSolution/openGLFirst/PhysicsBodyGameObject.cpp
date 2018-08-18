@@ -16,8 +16,9 @@ PhysicsBodyGameObject::PhysicsBodyGameObject()
 
   rigidBody_->GetPhysicsComponent()->SetMass(0.0f);
   GetTransform().SetScale(glm::vec2(0.5f, 0.5f));
-
-  rigidBody_->GetPhysicsComponent()->SetRotationalVelocity(45.0f);
+  
+  GetTransform().SetRotation(45.0f);
+  //rigidBody_->GetPhysicsComponent()->SetRotationalVelocity(45.0f);
 
 }
 

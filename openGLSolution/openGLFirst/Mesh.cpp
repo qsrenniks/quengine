@@ -207,7 +207,7 @@
 //}
 
 Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
-  : vertices_(vertices)
+  : relativeVertices_(vertices)
   , indices_(indices)
 {
   SetupMesh();
@@ -230,7 +230,7 @@ void Mesh::SetupMesh()
   glBindVertexArray(vao_);
   glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 
-  glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(Vertex), (&vertices_[0]), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, relativeVertices_.size() * sizeof(Vertex), (&relativeVertices_[0]), GL_STATIC_DRAW);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), &indices_[0], GL_STATIC_DRAW);
@@ -249,27 +249,48 @@ void Mesh::SetupMesh()
   SetupFarVertex();
 }
 
+void Mesh::RecalculateEdgeNormals(const glm::mat4& newTransform)
+{
+  //#note this is where we should recalculate the edge normals of the mesh in order to get the proper lines for sat projection.
+
+  if (isDirty_ == true)
+  {
+    for (glm::vec2& normal : edgeNormals_)
+    {
+      normal = newTransform * glm::vec4(normal, 0.0f, 1.0f);
+    }
+    isDirty_ = false;
+  }
+  return;
+}
+
+glm::vec2&& Mesh::CalculateEdgeNormal(const Vertex& a, const Vertex& b) const
+{
+  glm::vec3 unNormalizedEdge = a - b;
+  std::swap(unNormalizedEdge.x, unNormalizedEdge.y);
+  unNormalizedEdge.y *= -1;
+
+  return glm::normalize(unNormalizedEdge);
+}
+
 void Mesh::SetupEdgeNormals()
 {
   //go through indices creating edge normals.
-  unsigned int vertSize = vertices_.size();
+  unsigned int vertSize = relativeVertices_.size();
   for (unsigned int i = 1; i <= vertSize; i++)
   {
     bool isFinished = false;
 
-    Vertex a = vertices_[i - 1];
+    Vertex a = relativeVertices_[i - 1];
     if (i == vertSize)
     {
       i = 0;
       isFinished = true;
     }
-    Vertex b = vertices_[i];
+    
+    Vertex b = relativeVertices_[i];
 
-    //normalize and rotate outwards
-    glm::vec3 unNormalizedEdge = a - b;
-    std::swap(unNormalizedEdge.x, unNormalizedEdge.y);
-    unNormalizedEdge.y *= -1;
-    edgeNormals_.emplace_back(glm::normalize(unNormalizedEdge));
+    edgeNormals_.emplace_back(CalculateEdgeNormal(a, b));
 
     if (isFinished)
     {
@@ -282,12 +303,12 @@ void Mesh::SetupFarVertex()
 {
   //loops through each vert and compares with another to find the max distance between two verts.
   float maxDistance = 0.0f;
-  for (unsigned int i = 0; i < vertices_.size(); i++)
+  for (unsigned int i = 0; i < relativeVertices_.size(); i++)
   {
-    Vertex a = vertices_[i];
-    for (unsigned int j = 0; j < vertices_.size(); j++)
+    Vertex a = relativeVertices_[i];
+    for (unsigned int j = 0; j < relativeVertices_.size(); j++)
     {
-      Vertex b = vertices_[j];
+      Vertex b = relativeVertices_[j];
 
       float length = glm::distance(glm::vec3(a), glm::vec3(b));
       if (length > maxDistance)

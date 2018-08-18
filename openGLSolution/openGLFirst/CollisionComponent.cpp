@@ -5,6 +5,8 @@
 #include "CollisionOccurence.h"
 #include "RigidBodyComponent.h"
 
+#include "glm/gtc/matrix_transform.hpp"
+
 #include "NPCollisionProfile.h"
 #include "BPCollisionProfile.h"
 #include "Engine.h"
@@ -28,6 +30,14 @@ void CollisionComponent::Update(float dt)
 {
   //this is where we update the broadphase collision
   bpCollisionProfile_->UpdateAABB(GetParent()->GetTransform().GetPosition(), GetParent()->GetTransform().GetScale());
+
+  //if (GetParent()->GetTransform().IsDirty() == true)
+  //{
+    //recalculate normals
+    //glm::mat4 rotationalMatrix = glm::rotate(glm::mat4(1.0f), GetParent()->GetTransform().GetRotationD(), glm::vec3(0.0f, 0.0f, 1.0f));
+    //npCollisionProfile_->UpdateMesh(rotationalMatrix);
+  //}
+  npCollisionProfile_->npMeshProfile_.RecalculateEdgeNormals(GetParent()->GetTransform().GetRotationR());
 }
 
 void CollisionComponent::Draw()

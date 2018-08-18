@@ -5,6 +5,7 @@
 #include "CollisionManifold.h"
 #include <limits>
 #include "CollisionComponent.h"
+#include "RigidBodyComponent.h"
 #include "IGameObject.h"
 #include "Transform.h"
 #include <utility>
@@ -15,7 +16,7 @@ NPCollisionProfile::NPCollisionProfile(std::initializer_list<Vertex> vertexList,
 }
 
 CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* otherProfile) const
-{
+  {
   //#Todo remove this statement when ready to debug.
   //return CollisionStatus::INVALID;
   
@@ -38,6 +39,9 @@ CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
     
     //Collect all edge normals into a single list.
     Mesh::EdgeList edgeNormalList;
+    //objectA_Mesh.RecalculateEdgeNormals(fillerOccurence_->objectA_->GetParent()->GetTransform().GetRotationR());
+    //objectB_Mesh.RecalculateEdgeNormals(fillerOccurence_->objectB_->GetParent()->GetTransform().GetRotationR());
+
     edgeNormalList.insert(edgeNormalList.end(), objectA_Mesh.edgeNormals_.cbegin(), objectA_Mesh.edgeNormals_.cend());
     edgeNormalList.insert(edgeNormalList.end(), objectB_Mesh.edgeNormals_.cbegin(), objectB_Mesh.edgeNormals_.cend());
 
@@ -62,8 +66,8 @@ CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
     {
       //project the far vertexes onto the edge
       //we have to pass in the transformed vertexes
-      objectA_Manifold.ProjectVerticesOntoEdge(objectA_Mesh.vertices_, objectA_Mat, edge);
-      objectB_Manifold.ProjectVerticesOntoEdge(objectB_Mesh.vertices_, objectB_Mat, edge);
+      objectA_Manifold.ProjectVerticesOntoEdge(objectA_Mesh.relativeVertices_, objectA_Mat, edge);
+      objectB_Manifold.ProjectVerticesOntoEdge(objectB_Mesh.relativeVertices_, objectB_Mat, edge);
 
       currentStatus = objectA_Manifold.IsOverlapping(objectB_Manifold);
       fillerOccurence_->collisionStatus_ = currentStatus;

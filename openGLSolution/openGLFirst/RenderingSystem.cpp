@@ -31,7 +31,7 @@ void RenderingSystem::Load()
   //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   //glEnableVertexAttribArray(0);
 
-  square.vertices_ = Shapes::Square_Vertices;
+  square.relativeVertices_ = Shapes::Square_Vertices;
   square.indices_ = Shapes::Square_Indices;
   square.SetupMesh();
   defaultShader_.use();

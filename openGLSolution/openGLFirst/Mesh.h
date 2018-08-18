@@ -23,15 +23,22 @@ public:
 
   void Draw();
 
-  std::vector<Vertex> vertices_;
+  std::vector<Vertex> relativeVertices_;
   std::vector<unsigned int> indices_;
   void SetupMesh();
+
+  void RecalculateEdgeNormals(const glm::mat4& newTransform);
 
   EdgeList edgeNormals_;
 
   std::pair<Vertex, Vertex> farVertex_;
 
 private:
+
+  glm::vec2&& CalculateEdgeNormal(const Vertex& a, const Vertex& b) const;
+
+  bool isDirty_ = true;
+
   unsigned int vao_, vbo_, ebo_;
 
   void SetupEdgeNormals();

@@ -11,7 +11,7 @@ SpriteComponent::SpriteComponent(glm::vec4 color, int z, float width, float heig
   , spriteMesh_()
   , color_(color)
 {
-  spriteMesh_.vertices_ = 
+  spriteMesh_.relativeVertices_ = 
   {
     {  0.5f * width,  0.5f * height, 0.0f }, //top right
     {  0.5f * width, -0.5f * height, 0.0f }, //bottom right

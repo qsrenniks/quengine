@@ -43,7 +43,7 @@ void PhysicsComponent::Update(float dt)
   Transform& transform = GetParent()->GetTransform();
   glm::vec2 newPos = transform.GetPosition() + velocity_ * dt;
 
-  float rotation = transform.GetRotation();
+  float rotation = transform.GetRotationD();
   rotation += rotationalVelocity_ * dt;
 
   velocityAtFrameStart_ = velocity_;

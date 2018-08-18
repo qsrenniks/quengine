@@ -67,6 +67,11 @@ void Transform::SetScale(glm::vec2&& newScale)
   SetScale(std::forward<glm::vec2&>(newScale));
 }
 
+bool Transform::IsDirty() const
+{
+  return isDirty_;
+}
+
 //const glm::vec2& Transform::GetUpVector() const
 //{
 //  return relativeUpVector_;
@@ -82,9 +87,14 @@ const glm::vec2& Transform::GetPosition() const
   return position_;
 }
 
-float Transform::GetRotation()
+float Transform::GetRotationD()
 {
   return glm::degrees(rotation_);
+}
+
+float Transform::GetRotationR()
+{
+  return glm::radians(rotation_);
 }
 
 glm::vec2& Transform::GetScale()

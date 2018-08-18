@@ -8,7 +8,14 @@ Vertex::Vertex(float x, float y, float z)
   position_.z = z;
 }
 
-glm::vec3 Vertex::operator-(const Vertex& rhs) 
+Vertex::Vertex(const glm::vec2& vec)
+{
+  position_.x = vec.x;
+  position_.y = vec.y;
+  position_.z = 0.0f;
+}
+
+glm::vec3 Vertex::operator-(const Vertex& rhs) const
 {
   return position_ - rhs.position_;
 }
