@@ -42,8 +42,8 @@ CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
     //objectA_Mesh.RecalculateEdgeNormals(fillerOccurence_->objectA_->GetParent()->GetTransform().GetRotationR());
     //objectB_Mesh.RecalculateEdgeNormals(fillerOccurence_->objectB_->GetParent()->GetTransform().GetRotationR());
 
-    edgeNormalList.insert(edgeNormalList.end(), objectA_Mesh.edgeNormals_.cbegin(), objectA_Mesh.edgeNormals_.cend());
-    edgeNormalList.insert(edgeNormalList.end(), objectB_Mesh.edgeNormals_.cbegin(), objectB_Mesh.edgeNormals_.cend());
+    edgeNormalList.insert(edgeNormalList.end(), objectA_Mesh.transformedEdgeNormals_.cbegin(), objectA_Mesh.transformedEdgeNormals_.cend());
+    edgeNormalList.insert(edgeNormalList.end(), objectB_Mesh.transformedEdgeNormals_.cbegin(), objectB_Mesh.transformedEdgeNormals_.cend());
 
     CollisionManifold objectA_Manifold;
     CollisionManifold objectB_Manifold;
@@ -72,7 +72,7 @@ CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
       currentStatus = objectA_Manifold.IsOverlapping(objectB_Manifold);
       fillerOccurence_->collisionStatus_ = currentStatus;
       //then compare to see if the lines are touching
-      
+
       if (currentStatus == CollisionStatus::NOT_COLLIDING)
       {
         return CollisionStatus::NOT_COLLIDING;

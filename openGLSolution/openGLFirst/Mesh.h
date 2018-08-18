@@ -14,7 +14,7 @@ class Mesh
 {
 public: //Types
 
-  using EdgeList = std::list<glm::vec2>;
+  using EdgeList = std::vector<glm::vec2>;
 
 public:
 
@@ -27,15 +27,16 @@ public:
   std::vector<unsigned int> indices_;
   void SetupMesh();
 
-  void RecalculateEdgeNormals(const glm::mat4& newTransform);
+  void RecalculateEdgeNormals(float newRotationR);
 
+  EdgeList transformedEdgeNormals_;
   EdgeList edgeNormals_;
 
   std::pair<Vertex, Vertex> farVertex_;
 
 private:
 
-  glm::vec2&& CalculateEdgeNormal(const Vertex& a, const Vertex& b) const;
+  glm::vec2 CalculateEdgeNormal(const Vertex& a, const Vertex& b) const;
 
   bool isDirty_ = true;
 

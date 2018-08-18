@@ -94,7 +94,7 @@ float Transform::GetRotationD()
 
 float Transform::GetRotationR()
 {
-  return glm::radians(rotation_);
+  return rotation_;
 }
 
 glm::vec2& Transform::GetScale()

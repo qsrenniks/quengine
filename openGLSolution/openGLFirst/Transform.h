@@ -39,7 +39,9 @@ private:
   bool isDirty_ = true;
 
   glm::vec2 position_;
-
+  
+  //#note this is stored as rotation but all accessor functions will return it in degrees.
+  //this might want to be changed later
   float rotation_;
   glm::vec2 scale_;
 

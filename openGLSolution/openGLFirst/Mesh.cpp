@@ -249,22 +249,21 @@ void Mesh::SetupMesh()
   SetupFarVertex();
 }
 
-void Mesh::RecalculateEdgeNormals(const glm::mat4& newTransform)
+void Mesh::RecalculateEdgeNormals(float newRotationR)
 {
+  glm::mat4 rotationMat = glm::rotate(glm::mat4(1.0f), newRotationR, glm::vec3(0.0f, 0.0f, 1.0f));
   //#note this is where we should recalculate the edge normals of the mesh in order to get the proper lines for sat projection.
-
-  if (isDirty_ == true)
+  //for (glm::vec2& normal : edgeNormals_)
+  for (unsigned int i = 0 ; i < edgeNormals_.size(); i++)
   {
-    for (glm::vec2& normal : edgeNormals_)
-    {
-      normal = newTransform * glm::vec4(normal, 0.0f, 1.0f);
-    }
-    isDirty_ = false;
+    glm::vec2& normal = edgeNormals_[i];
+                                                 //0.0f because this is rotating a vector not a point
+    //these two lists should always be kept updated. So if they are not the same size at a certain point in runtime then something is wrong.
+    transformedEdgeNormals_[i]= rotationMat * glm::vec4(normal, 0.0f, 0.0f);
   }
-  return;
 }
 
-glm::vec2&& Mesh::CalculateEdgeNormal(const Vertex& a, const Vertex& b) const
+glm::vec2 Mesh::CalculateEdgeNormal(const Vertex& a, const Vertex& b) const
 {
   glm::vec3 unNormalizedEdge = a - b;
   std::swap(unNormalizedEdge.x, unNormalizedEdge.y);
@@ -290,7 +289,9 @@ void Mesh::SetupEdgeNormals()
     
     Vertex b = relativeVertices_[i];
 
-    edgeNormals_.emplace_back(CalculateEdgeNormal(a, b));
+    glm::vec2 edgeNormal = CalculateEdgeNormal(a, b);
+    edgeNormals_.emplace_back(edgeNormal);
+    transformedEdgeNormals_.emplace_back(edgeNormal);
 
     if (isFinished)
     {
