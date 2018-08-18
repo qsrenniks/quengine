@@ -56,6 +56,8 @@ public:
 
   void OnMouseClick(glm::vec2 mousePos);
 
+  void SaveAllObject();
+
 private:
 
   void RunCollisionUpdate();
@@ -65,11 +67,6 @@ private:
   void ResolveAllOccurences();
 
   std::list<CollisionOccurence> collisionOccurences_;
-
   GameObjectList gameObjectRegistry_;
-
   CollisionList rigidBodyComponentRegistry_;
-  //CollisionList broadPhaseCollisionPossibilities_;
-  //CollisionResolution collisionResolutionSystem_;
-  
 };

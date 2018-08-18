@@ -17,6 +17,11 @@
 #include "RigidBodyComponent.h"
 #include "BPCollisionProfile.h"
 
+#include <rapidjson/document.h>
+#include <rapidjson/ostreamwrapper.h>
+#include <rapidjson/writer.h>
+#include <fstream>
+
 DebugGameObject::DebugGameObject()
 {
   sprite_->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
@@ -73,6 +78,13 @@ void DebugGameObject::AKeyPress()
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
 }
 
+void DebugGameObject::DKeyPress()
+{
+  glm::vec2 dir(translationalSpeed, 0.0f);
+
+  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+}
+
 void DebugGameObject::OnCollisionEnter(RigidBodyComponent* otherObject)
 {
   std::cout << "On Collision Enter" << std::endl;
@@ -83,10 +95,4 @@ void DebugGameObject::OnCollisionExit(RigidBodyComponent* otherObject)
   std::cout << "On Collision Exit" << std::endl;
 }
 
-void DebugGameObject::DKeyPress()
-{
-  glm::vec2 dir(translationalSpeed, 0.0f);
-
-  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
-}
 

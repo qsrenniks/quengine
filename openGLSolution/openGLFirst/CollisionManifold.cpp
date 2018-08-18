@@ -14,23 +14,30 @@ CollisionManifold::~CollisionManifold()
 {
 }
 
-void CollisionManifold::ProjectVerticesOntoEdge(const glm::vec3& first, const glm::vec3& second, const glm::vec2& edge)
+void CollisionManifold::ProjectVerticesOntoEdge(const std::vector<Vertex>& verticeList, const glm::mat4& transformMat, const glm::vec2& edge)
 {
-  //project the vertexes onto the edge
-  //edge is always normalized so just project
-  float a = glm::dot(first, glm::vec3(edge, 0.0f));
-  float b = glm::dot(second, glm::vec3(edge, 0.0f));
+  //this projects all vertices onto the edge specified. then grabs the min and the max from the projection
+  float min = std::numeric_limits<float>::max();
+  float max = -std::numeric_limits<float>::max();
+  
+  for (const Vertex& vert : verticeList)
+  {
+    glm::vec2 transformVert = glm::vec2(transformMat * glm::vec4(glm::vec3(vert), 1.0f));
 
-  if (a < b)
-  {
-    min_ = a;
-    max_ = b;
+    float projectedVert = glm::dot(transformVert, edge);
+
+    if (projectedVert < min)
+    {
+      min = projectedVert;
+    }
+    if (projectedVert >= max)
+    {
+      max = projectedVert;
+    }
   }
-  else
-  {
-    min_ = b;
-    max_ = a;
-  }
+
+  min_ = min;
+  max_ = max;
 }
 
 CollisionStatus CollisionManifold::IsOverlapping(const CollisionManifold& otherManifold)

@@ -75,3 +75,12 @@ void InputSystem::SetWindow(GLFWwindow * window)
 {
   currentWindow_ = window;
 }
+
+bool InputSystem::KeyActionPair::operator==(const std::string& actionName)
+{
+  if (ActionName_ == actionName)
+  {
+    return true;
+  }
+  return false;
+}

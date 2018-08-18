@@ -3,6 +3,7 @@
   "Move Left": ["A"],
   "Move Down": ["S"],
   "Move Right": ["D"],
+  "Debug Serialize": ["F"],
   "Screen 1": ["1"],
   "Screen 2": ["2"],
   "Screen 3": ["3"],

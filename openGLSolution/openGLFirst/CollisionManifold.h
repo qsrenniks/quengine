@@ -1,6 +1,7 @@
 #pragma once
 #include "Vertex.h"
 #include <utility>
+#include <vector>
 
 enum class CollisionStatus : int;
 
@@ -10,7 +11,7 @@ public:
   CollisionManifold(float min = 0.0f, float max = 0.0f);
   ~CollisionManifold();
 
-  void ProjectVerticesOntoEdge(const glm::vec3& first, const glm::vec3& second, const glm::vec2& edge);
+  void ProjectVerticesOntoEdge(const std::vector<Vertex>& second, const glm::mat4& transformMat, const glm::vec2& edge);
 
   CollisionStatus IsOverlapping(const CollisionManifold& otherManifold);
 

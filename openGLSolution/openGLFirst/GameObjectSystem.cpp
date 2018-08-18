@@ -65,6 +65,11 @@ void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
   //Engine::Instance()->GetViewTransform().SetScale(currentScale);
 }
 
+void GameObjectSystem::SaveAllObject()
+{
+  
+}
+
 void GameObjectSystem::RunCollisionUpdate()
 {
   //generates a list of occurences.
@@ -120,12 +125,15 @@ void GameObjectSystem::NarrowPhaseCollisionDetection()
   //iterating throught this multiple times makes sure that they are no longer colliding after the frame.
   //#note this is to reduce the effect of a collision resolution pushing an object back into another object causing another collision
   //#note This could also be improved go going through the list recursively until no collision are registered or at least just the objects are touching. 
-  const static int iterations = 15;
+  const static int iterations = 1;
   for (int i = 0; i < iterations; i++)
   {
     for (auto& occ : collisionOccurences_)
     {
       occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
+
+      occ.objectA_->UpdateCollisionWith(occ.objectB_, occ.collisionStatus_);
+      occ.objectB_->UpdateCollisionWith(occ.objectA_, occ.collisionStatus_);
     }
     ResolveAllOccurences();
 
@@ -208,6 +216,8 @@ void GameObjectSystem::Update(float dt)
   auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
 }
+
+
 
 void GameObjectSystem::Unload()
 {

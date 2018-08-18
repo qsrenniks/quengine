@@ -31,6 +31,8 @@ public:
       , executeDelegate_(true)
     {};
 
+    bool operator==(const std::string& actionName);
+
     unsigned int Key_;
     bool consumeInput_;
     bool executeDelegate_;
@@ -38,8 +40,11 @@ public:
   };
 
   template<class UserClass>
-  KeyActionPair& AddInputAction(std::string actionName, UserClass* instigatorObject, void (UserClass::*objectAction)(void))
+  KeyActionPair& AddInputAction(const std::string& actionName, UserClass* instigatorObject, void (UserClass::*objectAction)(void))
   {
+    //#note failed to find action name, maybe its misspelled?
+    assert(!(std::find(registeredInputs_.begin(), registeredInputs_.end(), actionName) == registeredInputs_.end()));
+
     delegateFunctionMap_[actionName].AddFunction(instigatorObject, objectAction);
 
     auto findKeyActionPair = [&](const KeyActionPair& action) -> bool

@@ -27,6 +27,8 @@ public:
   void OnCollisionExit(RigidBodyComponent* otherObject);
 protected:
 
+  float health = 69.0f;
+
   RigidBodyComponent * rigidBodyComponent_ = nullptr;
 
 private:

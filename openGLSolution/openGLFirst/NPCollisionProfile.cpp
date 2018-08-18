@@ -55,22 +55,15 @@ CollisionStatus NPCollisionProfile::IsProfileCollidingWith(CollisionProfile* oth
     const glm::mat4& objectB_Mat = objectBTransform.BuildTransform();
 
     CollisionStatus currentStatus;
-
     float minOverlap = std::numeric_limits<float>::max();
     const glm::vec2* smallestEdge = nullptr;
-
-    glm::vec3&& aFirst = objectA_Mat * glm::vec4(glm::vec3(objectA_Mesh.farVertex_.first), 1.0f);
-    glm::vec3&& aSecond = objectA_Mat * glm::vec4(glm::vec3(objectA_Mesh.farVertex_.second), 1.0f);
-
-    glm::vec3&& bFirst = objectB_Mat * glm::vec4(glm::vec3(objectB_Mesh.farVertex_.first), 1.0f);
-    glm::vec3&& bSecond = objectB_Mat * glm::vec4(glm::vec3(objectB_Mesh.farVertex_.second), 1.0f);
 
     for (const glm::vec2& edge : edgeNormalList)
     {
       //project the far vertexes onto the edge
       //we have to pass in the transformed vertexes
-      objectA_Manifold.ProjectVerticesOntoEdge(aFirst, aSecond, edge);
-      objectB_Manifold.ProjectVerticesOntoEdge(bFirst, bSecond, edge);
+      objectA_Manifold.ProjectVerticesOntoEdge(objectA_Mesh.vertices_, objectA_Mat, edge);
+      objectB_Manifold.ProjectVerticesOntoEdge(objectB_Mesh.vertices_, objectB_Mat, edge);
 
       currentStatus = objectA_Manifold.IsOverlapping(objectB_Manifold);
       fillerOccurence_->collisionStatus_ = currentStatus;
