@@ -26,6 +26,13 @@ CollisionComponent::~CollisionComponent()
   delete bpCollisionProfile_;
 }
 
+//#Features_Missing CollisionComponent
+// - collision filtering. right now everything collides with everything.
+// - no support for overlap colliders.
+// - bpCollisionProfile only supports aabb. Line and circle broad phase collision profiles should also be supported at some time.
+// - friction has not been implemented.
+// - rotation has also been ignored for simplicity.
+
 void CollisionComponent::Update(float dt)
 {
   //this is where we update the broadphase collision
