@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "NPCollisionProfile.h"
-#include "PolygonalCollisionProfile.h"
 #include "CollisionOccurence.h"
 #include "CollisionManifold.h"
 #include <limits>

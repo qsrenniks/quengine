@@ -109,6 +109,18 @@
     <Filter Include="Source Files\Systems\Gameplay Systems\Game State System">
       <UniqueIdentifier>{56f76e3a-7f3a-4edb-a4d6-28c8d313866d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game Objects\Debug Game Object\Serialization Game Object">
+      <UniqueIdentifier>{f3ecc5be-dd65-40e3-acd8-7c1f1060b592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Objects\Debug Game Object\User Input Objects">
+      <UniqueIdentifier>{bbf8a0a2-662e-4f53-a01a-a33a511b53b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Collision Component\Collision Detection Classes\BP Profiles">
+      <UniqueIdentifier>{71b4bc24-2199-4c85-bf63-f50bc3ef064d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles">
+      <UniqueIdentifier>{cced62d1-a268-4390-9de3-8e44925db5e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -119,9 +131,6 @@
     </ClCompile>
     <ClCompile Include="IGameObject.cpp">
       <Filter>Source Files\Game Objects\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugGameObject.cpp">
-      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>Source Files\Systems\Gameplay Systems\Input System</Filter>
@@ -168,17 +177,8 @@
     <ClCompile Include="ISystem.cpp">
       <Filter>Source Files\Systems\Systems\System Inteface</Filter>
     </ClCompile>
-    <ClCompile Include="BPCollisionProfile.cpp">
-      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionOccurence.cpp">
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="NPCollisionProfile.cpp">
-      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="PolygonalCollisionProfile.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderingSystem.cpp">
       <Filter>Source Files\Systems\Systems\Rendering System</Filter>
@@ -195,14 +195,23 @@
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\General Classes\Vertex</Filter>
     </ClCompile>
+    <ClCompile Include="DebugGameObject.cpp">
+      <Filter>Source Files\Game Objects\Debug Game Object\User Input Objects</Filter>
+    </ClCompile>
     <ClCompile Include="CollisionManifold.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsForceGenerator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Components\Physics Component\Physics Force Generator</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateSystem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="SerializationTesting.cpp">
+      <Filter>Source Files\Game Objects\Debug Game Object\Serialization Game Object</Filter>
+    </ClCompile>
+    <ClCompile Include="BPCollisionProfile.cpp">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes\BP Profiles</Filter>
+    </ClCompile>
+    <ClCompile Include="NPCollisionProfile.cpp">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="IGameObject.h">
       <Filter>Source Files\Game Objects\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugGameObject.h">
-      <Filter>Source Files\Game Objects\Debug Game Object</Filter>
     </ClInclude>
     <ClInclude Include="InputSystem.h">
       <Filter>Source Files\Systems\Gameplay Systems\Input System</Filter>
@@ -266,17 +272,8 @@
     <ClInclude Include="ISystem.h">
       <Filter>Source Files\Systems\Systems\System Inteface</Filter>
     </ClInclude>
-    <ClInclude Include="BPCollisionProfile.h">
-      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionOccurence.h">
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="NPCollisionProfile.h">
-      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="PolygonalCollisionProfile.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderingSystem.h">
       <Filter>Source Files\Systems\Systems\Rendering System</Filter>
@@ -296,17 +293,26 @@
     <ClInclude Include="Vertex.h">
       <Filter>Source Files\General Classes\Vertex</Filter>
     </ClInclude>
-    <ClInclude Include="MeshDescriptions.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="DebugGameObject.h">
+      <Filter>Source Files\Game Objects\Debug Game Object\User Input Objects</Filter>
     </ClInclude>
     <ClInclude Include="CollisionManifold.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SerializationTesting.h">
+      <Filter>Source Files\Game Objects\Debug Game Object\Serialization Game Object</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsForceGenerator.h">
+      <Filter>Source Files\Components\Physics Component\Physics Force Generator</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDescriptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameStateSystem.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="BPCollisionProfile.h">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes\BP Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="NPCollisionProfile.h">
+      <Filter>Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

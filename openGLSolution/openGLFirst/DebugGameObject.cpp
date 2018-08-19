@@ -17,11 +17,6 @@
 #include "RigidBodyComponent.h"
 #include "BPCollisionProfile.h"
 
-#include <rapidjson/document.h>
-#include <rapidjson/ostreamwrapper.h>
-#include <rapidjson/writer.h>
-#include <fstream>
-
 DebugGameObject::DebugGameObject()
 {
   sprite_->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
@@ -83,10 +78,7 @@ void DebugGameObject::AKeyPress()
 
 void DebugGameObject::OnMousePress(glm::vec2 mousePosition)
 {
-  //do something
-
-  //spawn a game object that does stuff.
-
+  //spawn arrow that has a set velocity and also ignores collision from the player
 }
 
 void DebugGameObject::DKeyPress()

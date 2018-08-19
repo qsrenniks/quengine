@@ -5,8 +5,8 @@
 #include "Engine.h"
 #include "PhysicsComponent.h"
 #include "CollisionComponent.h"
-#include "PolygonalCollisionProfile.h"
 #include "BPCollisionProfile.h"
+#include "NPCollisionProfile.h"
 #include "MeshDescriptions.h"
 
 RigidBodyComponent::RigidBodyComponent(float bounce /*= 0.0f*/)

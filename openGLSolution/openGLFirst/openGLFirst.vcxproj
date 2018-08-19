@@ -94,7 +94,6 @@
     <ClCompile Include="DebugGameObject.cpp" />
     <ClCompile Include="EngineCmder.cpp" />
     <ClCompile Include="GameObjectSystem.cpp" />
-    <ClCompile Include="GameStateSystem.cpp" />
     <ClCompile Include="ICommand.cpp" />
     <ClCompile Include="IComponent.cpp" />
     <ClCompile Include="IGameObject.cpp" />
@@ -107,9 +106,9 @@
     <ClCompile Include="PhysicsBodyGameObject.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PhysicsForceGenerator.cpp" />
-    <ClCompile Include="PolygonalCollisionProfile.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
+    <ClCompile Include="SerializationTesting.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -130,7 +129,6 @@
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="EngineCmder.h" />
     <ClInclude Include="GameObjectSystem.h" />
-    <ClInclude Include="GameStateSystem.h" />
     <ClInclude Include="ICommand.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="IGameObject.h" />
@@ -144,9 +142,9 @@
     <ClInclude Include="PhysicsBodyGameObject.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PhysicsForceGenerator.h" />
-    <ClInclude Include="PolygonalCollisionProfile.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="RigidBodyComponent.h" />
+    <ClInclude Include="SerializationTesting.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Engine.h" />
