@@ -125,7 +125,7 @@ void GameObjectSystem::NarrowPhaseCollisionDetection()
   //iterating throught this multiple times makes sure that they are no longer colliding after the frame.
   //#note this is to reduce the effect of a collision resolution pushing an object back into another object causing another collision
   //#note This could also be improved go going through the list recursively until no collision are registered or at least just the objects are touching. 
-  const static int iterations = 1;
+  const static int iterations = 8;
   for (int i = 0; i < iterations; i++)
   {
     for (auto& occ : collisionOccurences_)
@@ -182,7 +182,7 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -13.0f));//down
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -13.0f));//down
   SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
@@ -191,7 +191,7 @@ void GameObjectSystem::Load()
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, -100.0f));
-
+  
   //objA->GetTransform().SetPosition(glm::vec2(-100.0f, 0.0f));
   //objB->GetTransform().SetPosition(glm::vec2(100.0f, 0.0f));
 

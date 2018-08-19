@@ -4,11 +4,11 @@
 #include <memory>
 
 template <typename Signature>
-class delegate;
+class Delegate;
 
 //parameter expansion
 template<typename ...Args>
-class delegate<void(Args...)>
+class Delegate<void(Args...)>
 {
 private:
 
@@ -58,11 +58,11 @@ private:
   };
 
 public:
-  delegate()
+  Delegate()
   {
   };
 
-  ~delegate()
+  ~Delegate()
   {
     //deletes the instances of callback in the invocation list.
     for (auto a : invocationList)

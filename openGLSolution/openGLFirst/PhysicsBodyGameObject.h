@@ -11,7 +11,6 @@ public:
   virtual ~PhysicsBodyGameObject();
 
   virtual void Update(float dt) override;
-  
 protected:
 
   RigidBodyComponent* rigidBody_ = nullptr;

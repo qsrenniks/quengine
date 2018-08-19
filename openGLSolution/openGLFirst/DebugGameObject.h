@@ -21,6 +21,8 @@ public:
   void SKeyPress();
   void DKeyPress();
   void AKeyPress();
+  
+  void OnMousePress(glm::vec2 mousePosition);
 
   //virtual CollisionOccurence GetCollisionOccurence() override;
   void OnCollisionEnter(RigidBodyComponent* otherObject);

@@ -67,8 +67,8 @@ public:
   SpriteComponent* GetSpriteComponent();
 
 
-  delegate<void(float)>& GetComponentUpdateList();
-  delegate<void(void)>& GetDrawList();
+  Delegate<void(float)>& GetComponentUpdateList();
+  Delegate<void(void)>& GetDrawList();
   //delegate<void(void)>& GetOnObjectCreatedList();
 protected:
 
@@ -77,8 +77,8 @@ protected:
 
 private:
 
-  delegate<void(float)> componentUpdateList_;
-  delegate<void(void)> componentDrawList_;
+  Delegate<void(float)> componentUpdateList_;
+  Delegate<void(void)> componentDrawList_;
   //delegate<void(void)> onObjectCreated_;
 
   using ComponentList = std::vector<std::unique_ptr<IComponent>>;

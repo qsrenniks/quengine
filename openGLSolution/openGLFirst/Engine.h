@@ -61,8 +61,8 @@ public:
   
   const glm::vec2& GetMousePosition();
 
-  delegate<void(glm::vec2)> OnMousePress_;
-  delegate<void(glm::vec2)> OnMouseRelease_;
+  Delegate<void(glm::vec2 mousePosition)> OnMousePress_;
+  Delegate<void(glm::vec2 mousePosition)> OnMouseRelease_;
   
   Transform& GetViewTransform();
   glm::mat4 GetOrthographicTransform();

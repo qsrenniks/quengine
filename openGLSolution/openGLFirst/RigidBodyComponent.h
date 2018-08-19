@@ -29,8 +29,8 @@ public:
 
   const float bounce_ = 0.0f;
 
-  delegate<void(RigidBodyComponent* otherObject)> onCollisionEnter_;
-  delegate<void(RigidBodyComponent* otherObject)> onCollisionExit_;
+  Delegate<void(RigidBodyComponent* otherObject)> onCollisionEnter_;
+  Delegate<void(RigidBodyComponent* otherObject)> onCollisionExit_;
 
   void UpdateCollisionWith(RigidBodyComponent* otherBody, CollisionStatus status);
   CollisionList& GetOverlappingBodies();

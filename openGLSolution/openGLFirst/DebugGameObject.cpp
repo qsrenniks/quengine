@@ -31,12 +31,13 @@ DebugGameObject::DebugGameObject()
 
   //rigidBodyComponent_->GetPhysicsComponent()->SetMass(1.0f);
   //rigidBodyComponent_->GetPhysicsComponent()->AddForceGenerator(new GravityForceGenerator());
-  rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.95f);
+  PhysicsComponent::ForceGeneratorRegistry.RegisterForceGenerator(rigidBodyComponent_->GetPhysicsComponent(), new GravityForceGenerator());
+  rigidBodyComponent_->GetPhysicsComponent()->SetVelocityDecay(0.97f);
 
   InputSystem* inSystem = Engine::Instance()->GetInputSystem();
   auto& a = inSystem->AddInputAction("Move Up", this, &DebugGameObject::WKeyPress);
   //TODO: switch this to true for juming
-  a.consumeInput_ = false;
+  a.consumeInput_ = true;
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress );
@@ -45,6 +46,8 @@ DebugGameObject::DebugGameObject()
   rigidBodyComponent_->onCollisionExit_.AddFunction(this, &DebugGameObject::OnCollisionExit);
 
   rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.75f, 0.75f));
+
+  Engine::Instance()->OnMousePress_.AddFunction(this, &DebugGameObject::OnMousePress);
 }
 
 DebugGameObject::~DebugGameObject()
@@ -60,7 +63,7 @@ constexpr static float translationalSpeed = 10;
 void DebugGameObject::WKeyPress()
 {
   glm::vec2 dir(0.0f, translationalSpeed);
-  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+  rigidBodyComponent_->GetPhysicsComponent()->AddImpulse(dir);
 
   //GetTransform().SetScale(GetTransform().GetScale()*2.0f);
 }
@@ -76,6 +79,14 @@ void DebugGameObject::AKeyPress()
   glm::vec2 dir(-translationalSpeed, 0.0f);
 
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+}
+
+void DebugGameObject::OnMousePress(glm::vec2 mousePosition)
+{
+  //do something
+
+  //spawn a game object that does stuff.
+
 }
 
 void DebugGameObject::DKeyPress()

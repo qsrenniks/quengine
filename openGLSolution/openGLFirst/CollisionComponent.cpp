@@ -37,6 +37,9 @@ void CollisionComponent::Update(float dt)
     //glm::mat4 rotationalMatrix = glm::rotate(glm::mat4(1.0f), GetParent()->GetTransform().GetRotationD(), glm::vec3(0.0f, 0.0f, 1.0f));
     //npCollisionProfile_->UpdateMesh(rotationalMatrix);
   //}
+  //#note this is recalculated every frame. there might be room for optimization when recalculating these values.
+  //#note this is also an optimization i could do it in the place where i am actually using the edge normals but then it would happen every iterations. So this needs to be put there
+  //and opimized better.
   npCollisionProfile_->npMeshProfile_.RecalculateEdgeNormals(GetParent()->GetTransform().GetRotationR());
 }
 

@@ -66,7 +66,7 @@ private:
   std::vector<KeyActionPair> registeredInputs_;
 
   //TODO: Make this auto pointers
-  using DelegateMap = std::map<std::string, delegate<void(void)>>;
+  using DelegateMap = std::map<std::string, Delegate<void(void)>>;
 
   DelegateMap delegateFunctionMap_;
 

@@ -48,12 +48,12 @@ SpriteComponent* IGameObject::GetSpriteComponent()
   return sprite_;
 }
 
-delegate<void(float)>& IGameObject::GetComponentUpdateList()
+Delegate<void(float)>& IGameObject::GetComponentUpdateList()
 {
   return componentUpdateList_;
 }
 
-delegate<void(void)>& IGameObject::GetDrawList()
+Delegate<void(void)>& IGameObject::GetDrawList()
 {
   return componentDrawList_;
 }
