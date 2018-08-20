@@ -25,8 +25,5 @@ IGameObject* IComponent::GetParent() const
 
 void IComponent::Register()
 {
-  IGameObject* parent = GetParent();
-
-  parent->GetComponentUpdateList().AddFunction(this, &IComponent::Update);
-  parent->GetDrawList().AddFunction(this, &IComponent::Draw);
-} 
+  //nothing
+}

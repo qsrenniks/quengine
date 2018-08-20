@@ -182,7 +182,7 @@ void GameObjectSystem::Load()
   //SpawnGameObject<PhysicsBodyGameObject>();
   SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));//down
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1.0f, 0.0f));//down
-  //SpawnGameObject<DebugGameObject>();
+  SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
@@ -218,7 +218,7 @@ void GameObjectSystem::Update(float dt)
 
   RunCollisionUpdate();
   
-  auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->GetDrawList().Broadcast(); };
+  auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->Draw(); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
 }
 

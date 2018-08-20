@@ -20,7 +20,13 @@ IGameObject::~IGameObject()
 void IGameObject::UpdateGameObject(float dt)
 {
   //update components first
-  componentUpdateList_.Broadcast(dt);
+  //componentUpdateList_.Broadcast(dt);
+  //run through components and update them
+  for (auto& component : componentList_)
+  {
+    component->Update(dt);
+  }
+
   //then game object since this may be dependent on the state of other components
   //gameObjectUpdateList_.Broadcast(dt);
   Update(dt);
@@ -38,6 +44,14 @@ bool IGameObject::IsMarkedForDestroy()
   return markForDestroy_;
 }
 
+void IGameObject::Draw()
+{
+  for (auto& component : componentList_)
+  {
+    component->Draw();
+  }
+}
+
 Transform& IGameObject::GetTransform()
 {
   return transform_;
@@ -47,13 +61,13 @@ SpriteComponent* IGameObject::GetSpriteComponent()
 {
   return sprite_;
 }
-
-Delegate<void(float)>& IGameObject::GetComponentUpdateList()
-{
-  return componentUpdateList_;
-}
-
-Delegate<void(void)>& IGameObject::GetDrawList()
-{
-  return componentDrawList_;
-}
+//
+//Delegate<void(float)>& IGameObject::GetComponentUpdateList()
+//{
+//  return componentUpdateList_;
+//}
+//
+//Delegate<void(void)>& IGameObject::GetDrawList()
+//{
+//  return componentDrawList_;
+//}

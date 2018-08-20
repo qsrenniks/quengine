@@ -22,8 +22,8 @@ CollisionComponent::CollisionComponent(NPCollisionProfile* npCollisionProfile, B
 
 CollisionComponent::~CollisionComponent()
 {
-  GetParent()->GetDrawList().RemoveFunction(this, &CollisionComponent::Draw);
-  GetParent()->GetComponentUpdateList().RemoveFunction(this, &CollisionComponent::Update);
+  //GetParent()->GetDrawList().RemoveFunction(this, &CollisionComponent::Draw);
+  //GetParent()->GetComponentUpdateList().RemoveFunction(this, &CollisionComponent::Update);
 
   delete npCollisionProfile_;
   delete bpCollisionProfile_;
@@ -67,8 +67,8 @@ void CollisionComponent::Register()
   IGameObject* parent = GetParent();
 
   //i am not registering update function since collision component is updated differently.
-  parent->GetDrawList().AddFunction(this, &CollisionComponent::Draw);
-  parent->GetComponentUpdateList().AddFunction(this, &CollisionComponent::Update);
+  //parent->GetDrawList().AddFunction(this, &CollisionComponent::Draw);
+  //parent->GetComponentUpdateList().AddFunction(this, &CollisionComponent::Update);
 }
 
 NPCollisionProfile* CollisionComponent::GetNPCollisionProfile() const

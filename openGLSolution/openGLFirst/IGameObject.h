@@ -63,12 +63,13 @@ public:
   bool IsMarkedForDestroy();
   //virtual IGameObject* Clone() = 0;
   virtual void Update(float dt) = 0;
+  void Draw();
   Transform& GetTransform();
   SpriteComponent* GetSpriteComponent();
 
 
-  Delegate<void(float)>& GetComponentUpdateList();
-  Delegate<void(void)>& GetDrawList();
+  //Delegate<void(float)>& GetComponentUpdateList();
+  //Delegate<void(void)>& GetDrawList();
   //delegate<void(void)>& GetOnObjectCreatedList();
 protected:
 
@@ -77,8 +78,8 @@ protected:
 
 private:
 
-  Delegate<void(float)> componentUpdateList_;
-  Delegate<void(void)> componentDrawList_;
+  //Delegate<void(float)> componentUpdateList_;
+  //Delegate<void(void)> componentDrawList_;
   //delegate<void(void)> onObjectCreated_;
 
   using ComponentList = std::vector<std::unique_ptr<IComponent>>;
