@@ -43,15 +43,7 @@ void GameObjectSystem::RegisterRigidBodyComponent(RigidBodyComponent* object)
   rigidBodyComponentRegistry_.push_back(object);
 }
 
-void GameObjectSystem::DestroyGameObject(std::unique_ptr<IGameObject>& gameObjectToDestroy)
-{
-  if (gameObjectToDestroy->IsMarkedForDestroy())
-  {
-    gameObjectRegistry_.remove(gameObjectToDestroy);
-  }
-}
-
-void GameObjectSystem::RemoveCollisonComponent(RigidBodyComponent* collisionComponent)
+void GameObjectSystem::RemoveRigidBodyComponent(RigidBodyComponent* collisionComponent)
 {
   rigidBodyComponentRegistry_.remove(collisionComponent);
 }
@@ -68,6 +60,11 @@ void GameObjectSystem::OnMouseClick(glm::vec2 mousePos)
 void GameObjectSystem::SaveAllObject()
 {
   
+}
+
+LevelManager& GameObjectSystem::GetLevelManager()
+{
+  return levelManager_;
 }
 
 void GameObjectSystem::RunCollisionUpdate()
@@ -182,12 +179,13 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -13.0f));//down
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));//down
+  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1.0f, 0.0f));//down
   SpawnGameObject<DebugGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
-  PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
+  //PhysicsBodyGameObject* objB = SpawnGameObject<PhysicsBodyGameObject>();
   //PhysicsBodyGameObject* objC = SpawnGameObject<PhysicsBodyGameObject>();
   
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, -100.0f));
@@ -203,8 +201,14 @@ void GameObjectSystem::Load()
 
 void GameObjectSystem::Update(float dt)
 {
-  auto DestroyGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { DestroyGameObject(i); };
-  std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
+  //auto DestroyGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { DestroyGameObject(i); };
+  //std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DestroyGameObjectLambda);
+  auto gameObjectDestructionPredicate = [&](std::unique_ptr<IGameObject>& i) -> bool
+  {
+    return i->IsMarkedForDestroy();
+  };
+
+  gameObjectRegistry_.remove_if(gameObjectDestructionPredicate);
 
   PhysicsComponent::ForceGeneratorRegistry.ApplyForces();
 

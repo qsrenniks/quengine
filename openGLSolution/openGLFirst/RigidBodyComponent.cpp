@@ -17,7 +17,8 @@ RigidBodyComponent::RigidBodyComponent(float bounce /*= 0.0f*/)
 
 RigidBodyComponent::~RigidBodyComponent()
 {
-
+  GameObjectSystem* goSys = Engine::Instance()->GetGameObjectSystem();
+  goSys->RemoveRigidBodyComponent(this);
 }
 
 void RigidBodyComponent::Update(float dt)

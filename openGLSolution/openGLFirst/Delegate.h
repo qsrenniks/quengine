@@ -47,11 +47,13 @@ private:
     {
     };
 
-    ObjectInstance* oI;
+    std::weak_ptr<ObjectInstance> oI;
     void (ObjectInstance::*d)(Args...);
 
     void operator()(Args... args) override
     {
+      //#note is oI is deleted in a frame then this will crash.
+      //we have to check to make sure that oI is valid. and if its not then we need to remove references.
       //forwarding to preserver move construction
       ((*oI).*d)(std::forward<Args>(args)...);
     };

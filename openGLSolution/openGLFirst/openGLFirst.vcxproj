@@ -100,6 +100,7 @@
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="IGameplaySystem.cpp" />
     <ClCompile Include="ISystem.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LoggingSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="NPCollisionProfile.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="IGameplaySystem.h" />
     <ClInclude Include="ISystem.h" />
+    <ClInclude Include="LevelManager.h" />
     <ClInclude Include="LoggingSystem.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshDescriptions.h" />

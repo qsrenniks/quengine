@@ -213,6 +213,9 @@
     <ClCompile Include="NPCollisionProfile.cpp">
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles</Filter>
     </ClCompile>
+    <ClCompile Include="LevelManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="NPCollisionProfile.h">
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

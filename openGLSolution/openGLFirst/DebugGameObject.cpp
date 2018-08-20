@@ -67,6 +67,8 @@ void DebugGameObject::SKeyPress()
 {
   glm::vec2 dir(0.0f, -translationalSpeed);
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+
+  DestroyGameObject();
 }
 
 void DebugGameObject::AKeyPress()

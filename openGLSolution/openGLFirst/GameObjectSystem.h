@@ -3,11 +3,13 @@
 #include <list>
 #include <memory>
 #include "CollisionOccurence.h"
+#include "LevelManager.h"
 
 class IGameObject;
 class CollisionComponent;
 class PhysicsComponent;
 class RigidBodyComponent;
+
 //
 // game object system definition
 //
@@ -51,12 +53,13 @@ public:
   void AddGameObject(std::unique_ptr<IGameObject>&& gameObject);
   void RegisterRigidBodyComponent(RigidBodyComponent* object);
 
-  void DestroyGameObject(std::unique_ptr<IGameObject>& gameObjectToDestroy);
-  void RemoveCollisonComponent(RigidBodyComponent* collisionComponent);
+  void RemoveRigidBodyComponent(RigidBodyComponent* collisionComponent);
 
   void OnMouseClick(glm::vec2 mousePos);
 
   void SaveAllObject();
+
+  LevelManager& GetLevelManager();
 
 private:
 
@@ -69,4 +72,6 @@ private:
   std::list<CollisionOccurence> collisionOccurences_;
   GameObjectList gameObjectRegistry_;
   CollisionList rigidBodyComponentRegistry_;
+
+  LevelManager levelManager_;
 };
