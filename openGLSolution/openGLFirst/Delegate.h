@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <list>
 #include <functional>
 #include <memory>
 
@@ -18,7 +18,10 @@ private:
   //callback interface that the delegate creates based on the type of the function passed in.
   struct callback
   {
+    virtual ~callback() = default;
+
     virtual void operator()(Args... args) = 0;
+    virtual bool equal(unsigned int pointer) = 0;
   };
 
   //this is entirely for static calls
@@ -34,6 +37,12 @@ private:
     {
       func(std::forward<Args>(args)...);
     };
+
+    virtual bool equal(unsigned int pointer) override
+    {
+      return false;
+    }
+
   };
 
   //this is for member calls to object instnaces
@@ -47,7 +56,7 @@ private:
     {
     };
 
-    std::weak_ptr<ObjectInstance> oI;
+    ObjectInstance* oI;
     void (ObjectInstance::*d)(Args...);
 
     void operator()(Args... args) override
@@ -57,6 +66,12 @@ private:
       //forwarding to preserver move construction
       ((*oI).*d)(std::forward<Args>(args)...);
     };
+
+    virtual bool equal(unsigned int pointer) override
+    {
+      return pointer == (unsigned int)(oI);
+    }
+
   };
 
 public:
@@ -94,6 +109,27 @@ public:
     invocationList.push_back(new memberCB<ObjectInstance>(oI, mFunc));
   }
 
+  template<class ObjectInstance>
+  void RemoveFunction(ObjectInstance* oI, void (ObjectInstance::*mFunc)(Args...))
+  {
+    auto lambdaPred = [&](callback* point) -> bool
+    {
+      memberCB<ObjectInstance>* mcb = dynamic_cast<memberCB<ObjectInstance>*>(point);
+
+      if (mcb == nullptr)
+      {
+        return false;
+      }
+      else
+      {
+        return mcb->oI == oI && mcb->d == mFunc;
+      }
+    };
+    //find the object in the list and remove it
+    invocationList.remove_if(lambdaPred);
+  }
+
+
   //broadcast the pack to the rest of the invocation list.
   void Broadcast(Args... args)
   {
@@ -110,5 +146,6 @@ public:
   }
 
 private:
-  std::vector<callback*> invocationList;
+  //#note made this a list because i want quick adding and quick removing from the list.
+  std::list<callback*> invocationList;
 };

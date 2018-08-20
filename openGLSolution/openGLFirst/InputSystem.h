@@ -58,7 +58,21 @@ public:
 
     return *std::find_if(registeredInputs_.begin(), registeredInputs_.end(), findKeyActionPair);
   }
+  
+  template<class UserClass>
+  void RemoveInputAction(const std::string& actionName, UserClass* instigatorObject, void (UserClass::*objectAction)(void))
+  {
+    //find delegate in the map
+    //  remove delegate call from delegate
+    //auto itr = std::find(delegateFunctionMap_.begin(), delegateFunctionMap_.end(), actionName);
 
+    auto itr = delegateFunctionMap_.find(actionName);
+
+    if (itr != delegateFunctionMap_.end())
+    {
+      delegateFunctionMap_[actionName].RemoveFunction(instigatorObject, objectAction);
+    }
+  }
 private:
 
   GLFWwindow* currentWindow_;

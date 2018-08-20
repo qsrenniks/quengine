@@ -1,9 +1,9 @@
 #pragma once
 
-#include <array>
 #include "IComponent.h"
 #include "Delegate.h"
 #include "Transform.h"
+#include <vector>
 #include <string>
 
 struct CollisionOccurence;

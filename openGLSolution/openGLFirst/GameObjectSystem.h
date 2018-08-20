@@ -70,8 +70,12 @@ private:
   void ResolveAllOccurences();
 
   std::list<CollisionOccurence> collisionOccurences_;
-  GameObjectList gameObjectRegistry_;
+
   CollisionList rigidBodyComponentRegistry_;
+
+  //#note this has to be last in the list of game object registries, since it must be destroyed 
+  //last in order to maintain the other lists for object clean up during gameplay.
+  GameObjectList gameObjectRegistry_;
 
   LevelManager levelManager_;
 };

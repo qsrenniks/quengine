@@ -39,7 +39,6 @@ DebugGameObject::DebugGameObject()
 
   rigidBodyComponent_->onCollisionEnter_.AddFunction(this, &DebugGameObject::OnCollisionEnter);
   rigidBodyComponent_->onCollisionExit_.AddFunction(this, &DebugGameObject::OnCollisionExit);
-
   rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.75f, 0.75f));
 
   Engine::Instance()->OnMousePress_.AddFunction(this, &DebugGameObject::OnMousePress);
@@ -47,6 +46,15 @@ DebugGameObject::DebugGameObject()
 
 DebugGameObject::~DebugGameObject()
 {
+  //here is where we need to RemoveFunction from the delegates that have been touched
+  InputSystem *inSystem = Engine::Instance()->GetInputSystem();
+  inSystem->RemoveInputAction("Move Up", this, &DebugGameObject::WKeyPress);
+  inSystem->RemoveInputAction("Move Left", this, &DebugGameObject::AKeyPress);
+  inSystem->RemoveInputAction("Move Right", this, &DebugGameObject::DKeyPress);
+  inSystem->RemoveInputAction("Move Down", this, &DebugGameObject::SKeyPress);
+
+  rigidBodyComponent_->onCollisionEnter_.RemoveFunction(this, &DebugGameObject::OnCollisionEnter);
+  rigidBodyComponent_->onCollisionExit_.RemoveFunction(this, &DebugGameObject::OnCollisionExit);
 }
 
 void DebugGameObject::Update(float dt)

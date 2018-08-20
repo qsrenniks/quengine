@@ -22,6 +22,9 @@ CollisionComponent::CollisionComponent(NPCollisionProfile* npCollisionProfile, B
 
 CollisionComponent::~CollisionComponent()
 {
+  GetParent()->GetDrawList().RemoveFunction(this, &CollisionComponent::Draw);
+  GetParent()->GetComponentUpdateList().RemoveFunction(this, &CollisionComponent::Update);
+
   delete npCollisionProfile_;
   delete bpCollisionProfile_;
 }
