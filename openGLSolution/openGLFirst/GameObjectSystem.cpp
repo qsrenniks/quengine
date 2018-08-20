@@ -32,8 +32,6 @@ void GameObjectSystem::AddGameObject(std::unique_ptr<IGameObject>&& gameObject)
   //this could be a simple perf improvement
   gameObjectRegistry_.push_back(std::move(gameObject));
 
-
-
   //log to the game object system logger
   Engine::Instance()->GetLoggingSystem()->GetLogStream(GameObjectSystemLog) << "GameObjectSystem: Objects In System: " << gameObjectRegistry_.size() << std::endl;
 }
@@ -221,8 +219,6 @@ void GameObjectSystem::Update(float dt)
   auto DrawGameObjectLambda = [&](std::unique_ptr<IGameObject>& i) { i->Draw(); };
   std::for_each(gameObjectRegistry_.begin(), gameObjectRegistry_.end(), DrawGameObjectLambda);
 }
-
-
 
 void GameObjectSystem::Unload()
 {
