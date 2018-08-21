@@ -1,5 +1,13 @@
 {
-    "GameObject": {
-        "Health": 7.849188327789307
+    "Sprite Component": {
+        "Sprite Color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+        }
+    },
+    "CerealTest": {
+        "Health": 8.0445556640625
     }
 }

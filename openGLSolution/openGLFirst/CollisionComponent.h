@@ -32,6 +32,10 @@ public:
   CollisionStatus IsNPCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc);
   CollisionStatus IsBPCollidingWith(CollisionComponent* otherCollider);
 
+
+  virtual void Serialize(rapidjson::Document& doc) override;
+  virtual void Deserialize(rapidjson::Document& doc) override;
+
 private:
 
   NPCollisionProfile* npCollisionProfile_ = nullptr;

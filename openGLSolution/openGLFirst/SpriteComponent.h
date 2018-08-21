@@ -20,6 +20,9 @@ public:
   
   void SetColor(const glm::vec4& color);
 
+  virtual void Serialize(rapidjson::Document& doc) override;
+  virtual void Deserialize(rapidjson::Document& doc) override;
+
 private:
   Shader spriteShader_;
   Mesh spriteMesh_;

@@ -1,4 +1,5 @@
 #pragma once
+#include <rapidjson/document.h>
 #include <memory>
 #include <string>
 

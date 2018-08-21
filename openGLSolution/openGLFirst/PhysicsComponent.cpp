@@ -109,6 +109,14 @@ float PhysicsComponent::GetInverseMass()
   return inverseMass_;
 }
 
+void PhysicsComponent::Serialize(rapidjson::Document& doc)
+{
+}
+
+void PhysicsComponent::Deserialize(rapidjson::Document& doc)
+{
+}
+
 const glm::vec2& PhysicsComponent::GetVelocity() const
 {
   return velocity_;

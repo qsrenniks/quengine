@@ -34,6 +34,10 @@ public:
 
   void UpdateCollisionWith(RigidBodyComponent* otherBody, CollisionStatus status);
   CollisionList& GetOverlappingBodies();
+
+  virtual void Serialize(rapidjson::Document& doc) override;
+  virtual void Deserialize(rapidjson::Document& doc) override;
+
 protected:
 
 

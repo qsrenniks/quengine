@@ -30,7 +30,6 @@ public:
   void ResetForces();
   void AddImpulse(glm::vec2& impulse);
   const glm::vec2& GetForceLastFrame();
-  void AddForceGenerator(ForceGenerator* forceGenerator);
   const glm::vec2& GetVelocity() const;
   const glm::vec2& GetVelocityAtFrameStart() const;
   void AddVelocity(const glm::vec2& velToAdd);
@@ -42,6 +41,12 @@ public:
   void ZeroOutAcceleration();
   float GetMass();
   float GetInverseMass();
+
+  virtual void Serialize(rapidjson::Document& doc) override;
+
+
+  virtual void Deserialize(rapidjson::Document& doc) override;
+
 private:
 
   void SetAcceleration(const glm::vec2& newAcceleration);

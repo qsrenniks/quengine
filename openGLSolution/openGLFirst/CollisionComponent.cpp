@@ -100,3 +100,11 @@ CollisionStatus CollisionComponent::IsBPCollidingWith(CollisionComponent* otherC
   //#Note This does an AABB collision check against the other BP collision profile.
   return bpCollisionProfile_->IsProfileCollidingWith(otherCollider->GetBPCollisionProfile());
 }
+
+void CollisionComponent::Serialize(rapidjson::Document& doc)
+{
+}
+
+void CollisionComponent::Deserialize(rapidjson::Document& doc)
+{
+}

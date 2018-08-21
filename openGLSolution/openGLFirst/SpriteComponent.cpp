@@ -54,6 +54,27 @@ void SpriteComponent::SetColor(const glm::vec4& color)
   color_ = color;
 }
 
+void SpriteComponent::Serialize(rapidjson::Document& doc)
+{
+  using namespace rapidjson;
+
+  Value spriteComponent(kObjectType);
+  Value color(kObjectType);
+
+  color.AddMember("r", color_.r, doc.GetAllocator());
+  color.AddMember("g", color_.b, doc.GetAllocator());
+  color.AddMember("b", color_.g, doc.GetAllocator());
+  color.AddMember("a", color_.a, doc.GetAllocator());
+  spriteComponent.AddMember("Sprite Color", color, doc.GetAllocator());
+
+  doc.AddMember("Sprite Component", spriteComponent, doc.GetAllocator());
+}
+
+void SpriteComponent::Deserialize(rapidjson::Document& doc)
+{
+
+}
+
 void SpriteComponent::Update(float dt)
 {
 }

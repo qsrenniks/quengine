@@ -85,6 +85,14 @@ RigidBodyComponent::CollisionList& RigidBodyComponent::GetOverlappingBodies()
   return rigidBodyCollisions_;
 }
 
+void RigidBodyComponent::Serialize(rapidjson::Document& doc)
+{
+}
+
+void RigidBodyComponent::Deserialize(rapidjson::Document& doc)
+{
+}
+
 bool RigidBodyComponent::IsBodyUnique(RigidBodyComponent* otherBody)
 {
   //if it equals end it did not find the body so it is unique

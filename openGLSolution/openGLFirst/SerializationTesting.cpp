@@ -34,18 +34,18 @@ void SerializationTesting::Serialize(rapidjson::Document& doc)
   //object.SetString("GameObject");
   object.AddMember("Health", health, doc.GetAllocator());
 
-  doc.AddMember("GameObject", object, doc.GetAllocator());
+  doc.AddMember("CerealTest", object, doc.GetAllocator());
 }
 
 void SerializationTesting::Deserialize(rapidjson::Document& doc)
 {
   IGameObject::Deserialize(doc);
 
-  for (auto memberStart = doc.MemberBegin(); memberStart != doc.MemberEnd(); memberStart++)
+  auto val = doc.FindMember("CerealTest");
+
+  if (val->value.IsObject() == true)
   {
-    if (memberStart->name == "GameObject")
-    {
-      health = memberStart->value.GetObjectA().FindMember("Health")->value.GetFloat();
-    }
+    health = val->value.GetObjectA().FindMember("Health")->value.GetFloat();
   }
+
 }
