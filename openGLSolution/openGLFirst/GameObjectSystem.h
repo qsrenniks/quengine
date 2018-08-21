@@ -46,6 +46,9 @@ public:
 
     return newGameObjectPTR;
   }
+  
+  void SaveGame();
+  void LoadGame();
 
   void AddCollisionOccurence(const CollisionOccurence& occurence);
   //void RemoveCollisionOccurence();

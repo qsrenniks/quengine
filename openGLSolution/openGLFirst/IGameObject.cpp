@@ -44,6 +44,16 @@ bool IGameObject::IsMarkedForDestroy()
   return markForDestroy_;
 }
 
+void IGameObject::Serialize(rapidjson::Document& doc)
+{
+  //serialize all components and their properties
+}
+
+void IGameObject::Deserialize(rapidjson::Document& doc)
+{
+  //deserialize all components and their properties
+}
+
 void IGameObject::Draw()
 {
   for (auto& component : componentList_)

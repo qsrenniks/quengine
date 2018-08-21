@@ -5,6 +5,7 @@
 #include "Transform.h"
 #include <vector>
 #include <string>
+#include <rapidjson/document.h>
 
 struct CollisionOccurence;
 class SpriteComponent;
@@ -63,6 +64,8 @@ public:
   bool IsMarkedForDestroy();
   //virtual IGameObject* Clone() = 0;
   virtual void Update(float dt) = 0;
+  virtual void Serialize(rapidjson::Document& doc);
+  virtual void Deserialize(rapidjson::Document& doc);
   void Draw();
   Transform& GetTransform();
   SpriteComponent* GetSpriteComponent();

@@ -12,6 +12,9 @@ public:
 
   virtual void Update(float dt) = 0;
   virtual void Draw() = 0;
+  
+  virtual void Serialize(rapidjson::Document& doc) = 0;
+  virtual void Deserialize(rapidjson::Document& doc) = 0;
 
   //override this to add new behaviors when parenting a component to a game object
   virtual void Parent(IGameObject* parent);

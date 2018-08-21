@@ -9,6 +9,10 @@ public:
 
   virtual void Update(float dt) override;
 
+
+  virtual void Serialize(rapidjson::Document& doc) override;
+  virtual void Deserialize(rapidjson::Document& doc) override;
+
 private:
   float health = 3.14159f;
 };

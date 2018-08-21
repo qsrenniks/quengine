@@ -10,6 +10,13 @@
 #include "CollisionComponent.h"
 #include <iostream>
 
+#include <rapidjson/document.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/istreamwrapper.h>
+#include <fstream>
+
 #include "NPCollisionProfile.h"
 #include "Engine.h"
 #include "InputSystem.h"
@@ -20,6 +27,7 @@
 #include "CollisionOccurence.h"
 #include "RigidBodyComponent.h"
 #include "LoggingSystem.h"
+#include "SerializationTesting.h"
 
 void GameObjectSystem::AddCollisionOccurence(const CollisionOccurence& occurence)
 {
@@ -178,9 +186,10 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1500.0f, 0.0f)); //right
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
-  SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));//down
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));//down
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1.0f, 0.0f));//down
-  SpawnGameObject<DebugGameObject>();
+  //SpawnGameObject<DebugGameObject>();
+  SpawnGameObject<SerializationTesting>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
@@ -194,6 +203,8 @@ void GameObjectSystem::Load()
 
   //objA->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(100.0f, 0.0f)); // left
   //objB->GetComponent<RigidBodyComponent>()->GetPhysicsComponent()->SetVelocity(glm::vec2(-100.0f, 0.0f)); // right
+
+  LoadGame();
 
   Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
 }
@@ -222,5 +233,58 @@ void GameObjectSystem::Update(float dt)
 
 void GameObjectSystem::Unload()
 {
+  SaveGame();
+}
 
+//#todo this should change to support different save files
+static const char *saveFile = R"(..\data\SaveFiles\debugGameObject.sav)";
+
+void GameObjectSystem::SaveGame()
+{
+  //write to file if it exists
+  using namespace rapidjson;
+
+  //const char json[] = "[1,2,3,4]";
+  Document d;
+  //d.Parse(json);
+  d.SetObject();
+  //d.AddMember("Health", health, d.GetAllocator());
+
+  for (auto& gO : gameObjectRegistry_)
+  {
+    gO->Serialize(d);
+  }
+
+  StringBuffer buffer;
+  PrettyWriter<StringBuffer> writer(buffer);
+  d.Accept(writer);
+
+  const char* output = buffer.GetString();
+
+  std::ofstream save(saveFile);
+  save << output;
+
+  save.close();
+}
+
+void GameObjectSystem::LoadGame()
+{
+  //read from file if it exists
+
+  std::ifstream save(saveFile);
+
+  if (save.is_open() == false)
+  {
+    assert(false);
+  }
+
+  rapidjson::IStreamWrapper isW(save);
+
+  rapidjson::Document saveDoc;
+  saveDoc.ParseStream(isW);
+
+  for (auto& gO : gameObjectRegistry_)
+  {
+    gO->Deserialize(saveDoc);
+  }
 }

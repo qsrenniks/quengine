@@ -214,7 +214,7 @@
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles</Filter>
     </ClCompile>
     <ClCompile Include="LevelManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Game Object System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,7 +318,7 @@
       <Filter>Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles</Filter>
     </ClInclude>
     <ClInclude Include="LevelManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Systems\Gameplay Systems\Game Object System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
