@@ -88,6 +88,7 @@
     </ClCompile>
     <ClCompile Include="BPCollisionProfile.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="CollisionFilter.cpp" />
     <ClCompile Include="CollisionManifold.cpp" />
     <ClCompile Include="CollisionOccurence.cpp" />
     <ClCompile Include="CollisionProfile.cpp" />
@@ -123,6 +124,7 @@
   <ItemGroup>
     <ClInclude Include="BPCollisionProfile.h" />
     <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionFilter.h" />
     <ClInclude Include="CollisionManifold.h" />
     <ClInclude Include="CollisionOccurence.h" />
     <ClInclude Include="CollisionProfile.h" />

@@ -20,7 +20,7 @@ Transform::~Transform()
 {
 }
 
-void Transform::SetPosition(glm::vec2& newPosition)
+void Transform::SetPosition(const glm::vec2& newPosition)
 {
   position_ = newPosition;
 

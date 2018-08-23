@@ -178,6 +178,11 @@ RenderingSystem* Engine::GetRenderingSystem()
   return &renderingSystem_;
 }
 
+void Engine::SetViewLocation(const glm::vec2& viewLocation)
+{
+  viewCamera_.SetPosition(-viewLocation * viewCamera_.GetScale());
+}
+
 void Engine::TogglePauseGame()
 {
   isPaused_ = !isPaused_;

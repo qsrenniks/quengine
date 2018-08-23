@@ -8,7 +8,7 @@ public:
   Transform();
   ~Transform();
 
-  void SetPosition(glm::vec2& newPosition);
+  void SetPosition(const glm::vec2& newPosition);
   void SetPosition(glm::vec2&& newPosition);
   void SetPosition(float x, float y);
 

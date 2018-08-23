@@ -8,6 +8,12 @@ IGameObject::IGameObject()
   AddComponent<SpriteComponent>(sprite_, glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f }, 0);
 }
 
+IGameObject::IGameObject(const glm::vec2& spawnLocation)
+  : IGameObject()
+{
+  transform_.SetPosition(spawnLocation);
+}
+
 IGameObject::~IGameObject()
 {
 }
@@ -79,6 +85,12 @@ SpriteComponent* IGameObject::GetSpriteComponent()
 {
   return sprite_;
 }
+
+void IGameObject::SetLocation(const glm::vec2& newLocation)
+{
+  transform_.SetPosition(newLocation);
+}
+
 //
 //Delegate<void(float)>& IGameObject::GetComponentUpdateList()
 //{

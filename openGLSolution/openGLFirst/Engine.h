@@ -57,6 +57,8 @@ public:
   LoggingSystem* GetLoggingSystem();
   RenderingSystem* GetRenderingSystem();
 
+  void SetViewLocation(const glm::vec2& viewLocation);
+
   void TogglePauseGame();
   
   const glm::vec2& GetMousePosition();

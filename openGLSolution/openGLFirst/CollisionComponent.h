@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include <vector>
+#include "CollisionFilter.h"
 
 class CollisionComponent;
 class Mesh;
@@ -31,12 +32,15 @@ public:
 
   CollisionStatus IsNPCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc);
   CollisionStatus IsBPCollidingWith(CollisionComponent* otherCollider);
-
+  
+  CollisionFilter& GetCollisionFilter();
 
   virtual void Serialize(rapidjson::Document& doc) override;
   virtual void Deserialize(rapidjson::Document& doc) override;
 
 private:
+
+  CollisionFilter collisionFilter_;
 
   NPCollisionProfile* npCollisionProfile_ = nullptr;
   BPCollisionProfile* bpCollisionProfile_ = nullptr;

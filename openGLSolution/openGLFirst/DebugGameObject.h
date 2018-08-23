@@ -21,7 +21,11 @@ public:
   void SKeyPress();
   void DKeyPress();
   void AKeyPress();
-  
+
+  void JKeyPress();
+  void KKeyPress();
+  void LKeyPress();
+
   void OnMousePress(glm::vec2 mousePosition);
 
   //virtual CollisionOccurence GetCollisionOccurence() override;

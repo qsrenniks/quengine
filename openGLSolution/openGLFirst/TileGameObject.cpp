@@ -18,6 +18,12 @@ TileGameObject::TileGameObject()
   rigidBodyComponent_->GetPhysicsComponent()->SetMass(0.0f);
 
   rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.5f, 0.5f));
+
+
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionType(CT_WorldStatic);
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_Player, CollisionResponseType::Blocking);
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Ignore);
+
 }
 
 TileGameObject::~TileGameObject()

@@ -62,6 +62,11 @@ CollisionComponent* RigidBodyComponent::GetCollisionComponent()
   return collision_;
 }
 
+CollisionFilter& RigidBodyComponent::GetCollisionFilter() const
+{
+  return collision_->GetCollisionFilter();
+}
+
 void RigidBodyComponent::UpdateCollisionWith(RigidBodyComponent* otherBody, CollisionStatus status)
 {
   //this is where we broadcast the status delegates

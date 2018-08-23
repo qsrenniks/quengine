@@ -46,6 +46,20 @@ public:
 
     return newGameObjectPTR;
   }
+
+  template<typename GameObject, class... _Types>
+  GameObject* SpawnGameObjectAtLocation(const glm::vec2& location, _Types&&... _Args)
+  {
+    std::unique_ptr<GameObject> newGameObject = std::make_unique<GameObject>(_Args...);
+  
+    GameObject* newGameObjectPtr = newGameObject.get();
+
+    newGameObjectPtr->SetLocation(location);
+
+    AddGameObject(std::move(newGameObject));
+
+    return newGameObjectPtr;
+  }
   
   void SaveGame();
   void LoadGame();

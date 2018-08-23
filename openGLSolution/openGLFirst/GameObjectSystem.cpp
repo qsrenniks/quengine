@@ -28,6 +28,7 @@
 #include "RigidBodyComponent.h"
 #include "LoggingSystem.h"
 #include "SerializationTesting.h"
+#include "CollisionFilter.h"
 
 void GameObjectSystem::AddCollisionOccurence(const CollisionOccurence& occurence)
 {
@@ -76,6 +77,7 @@ LevelManager& GameObjectSystem::GetLevelManager()
 
 void GameObjectSystem::RunCollisionUpdate()
 {
+  //#todo this might want to be moved out into its own collision system object
   //generates a list of occurences.
   //the occurence is just filled with the objects that might be colliding.
   BroadphaseCollisionDetection();
@@ -106,19 +108,24 @@ void GameObjectSystem::BroadphaseCollisionDetection()
       //#TODO do broadphase collision check here.
       CollisionStatus status = objectA->GetCollisionComponent()->IsBPCollidingWith(objectB->GetCollisionComponent());
 
+
       if (status == CollisionStatus::COLLIDING)
       {
         //std::cout << "Colliding!";
+        CollisionResponseType response = CollisionFilter::GetResponseFrom(objectA->GetCollisionFilter(), objectB->GetCollisionFilter());
+        
+        if (response != CollisionResponseType::Ignore)
+        {
+          CollisionOccurence occ;
+          occ.objectA_ = objectA;
+          occ.objectB_ = objectB;
 
-        CollisionOccurence occ;
-        occ.objectA_ = objectA;
-        occ.objectB_ = objectB;
+          //these two objects might be colliding with one another.
+          //broadPhaseCollisionPossibilities_.push_back(objectA);
+          //broadPhaseCollisionPossibilities_.push_back(objectB);
 
-        //these two objects might be colliding with one another.
-        //broadPhaseCollisionPossibilities_.push_back(objectA);
-        //broadPhaseCollisionPossibilities_.push_back(objectB);
-
-        collisionOccurences_.push_back(occ);
+          collisionOccurences_.push_back(occ);
+        }
       }
     } 
   }
@@ -128,19 +135,26 @@ void GameObjectSystem::NarrowPhaseCollisionDetection()
 {
   //iterating throught this multiple times makes sure that they are no longer colliding after the frame.
   //#note this is to reduce the effect of a collision resolution pushing an object back into another object causing another collision
+  // commonly known as the stacking box problem
   //#note This could also be improved go going through the list recursively until no collision are registered or at least just the objects are touching. 
   const static int iterations = 8;
   for (int i = 0; i < iterations; i++)
   {
     for (auto& occ : collisionOccurences_)
     {
+      //this generates collision information about the two objects. Does not modify the objects
       occ.objectA_->GetCollisionComponent()->IsNPCollidingWith(occ.objectB_->GetCollisionComponent(), occ);
+      
+      occ.response_ = CollisionFilter::GetResponseFrom(occ.objectA_->GetCollisionFilter(), occ.objectB_->GetCollisionFilter());
 
-      occ.objectA_->UpdateCollisionWith(occ.objectB_, occ.collisionStatus_);
-      occ.objectB_->UpdateCollisionWith(occ.objectA_, occ.collisionStatus_);
+      //this emits the on collision enter and exit events
+      if (occ.response_ == CollisionResponseType::Blocking || occ.response_ == CollisionResponseType::Overlap)
+      {
+        occ.objectA_->UpdateCollisionWith(occ.objectB_, occ.collisionStatus_);
+        occ.objectB_->UpdateCollisionWith(occ.objectA_, occ.collisionStatus_);
+      }
     }
     ResolveAllOccurences();
-
     //then do another check to make sure they are no longer colliding with anything
     //if they are then redo this.
   }
@@ -161,7 +175,7 @@ void GameObjectSystem::ResolveAllOccurences()
 
   for (auto& occ : collisionOccurences_)
   {
-    if (occ.collisionStatus_ == CollisionStatus::COLLIDING)
+    if (occ.collisionStatus_ == CollisionStatus::COLLIDING && occ.response_ == CollisionResponseType::Blocking)
     {
       occ.ResolveVelocities();
       occ.ResolveInterpenetration();
@@ -187,9 +201,9 @@ void GameObjectSystem::Load()
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 1500.0f)); //up
   //SpawnGameObject<PhysicsBodyGameObject>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, 0.0f));//down
-  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(1.0f, 0.0f));//down
+  //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(0.0f, -1.5f));//down
   //SpawnGameObject<DebugGameObject>();
-  SpawnGameObject<SerializationTesting>();
+  //SpawnGameObject<SerializationTesting>();
   //SpawnGameObject<TileGameObject>()->GetTransform().SetPosition(glm::vec2(-700.0f, 0.0f));  //left
  
   //PhysicsBodyGameObject* objA = SpawnGameObject<PhysicsBodyGameObject>();
@@ -241,50 +255,55 @@ static const char *saveFile = R"(..\data\SaveFiles\debugGameObject.sav)";
 
 void GameObjectSystem::SaveGame()
 {
-  //write to file if it exists
-  using namespace rapidjson;
+  //#todo uncomment to continue working on serialization
+  ////write to file if it exists
+  //using namespace rapidjson;
 
-  //const char json[] = "[1,2,3,4]";
-  Document d;
-  //d.Parse(json);
-  d.SetObject();
-  //d.AddMember("Health", health, d.GetAllocator());
+  ////const char json[] = "[1,2,3,4]";
+  //Document d;
+  ////d.Parse(json);
+  //d.SetObject();
+  ////d.AddMember("Health", health, d.GetAllocator());
 
-  for (auto& gO : gameObjectRegistry_)
-  {
-    gO->Serialize(d);
-  }
+  //for (auto& gO : gameObjectRegistry_)
+  //{
+  //  gO->Serialize(d);
+  //}
 
-  StringBuffer buffer;
-  PrettyWriter<StringBuffer> writer(buffer);
-  d.Accept(writer);
+  //StringBuffer buffer;
+  //PrettyWriter<StringBuffer> writer(buffer);
+  //d.Accept(writer);
 
-  const char* output = buffer.GetString();
+  //const char* output = buffer.GetString();
 
-  std::ofstream save(saveFile);
-  save << output;
+  //std::ofstream save(saveFile);
+  //save << output;
 
-  save.close();
+  //save.close();
 }
 
 void GameObjectSystem::LoadGame()
 {
+  //#todo uncomment to continue working on serialization
+  //#note changed this so that it loads the first level
+  levelManager_.LoadLevel(0);
+
   //read from file if it exists
 
-  std::ifstream save(saveFile);
+  //std::ifstream save(saveFile);
 
-  if (save.is_open() == false)
-  {
-    assert(false);
-  }
+  //if (save.is_open() == false)
+  //{
+  //  assert(false);
+  //}
 
-  rapidjson::IStreamWrapper isW(save);
+  //rapidjson::IStreamWrapper isW(save);
 
-  rapidjson::Document saveDoc;
-  saveDoc.ParseStream(isW);
+  //rapidjson::Document saveDoc;
+  //saveDoc.ParseStream(isW);
 
-  for (auto& gO : gameObjectRegistry_)
-  {
-    gO->Deserialize(saveDoc);
-  }
+  //for (auto& gO : gameObjectRegistry_)
+  //{
+  //  gO->Deserialize(saveDoc);
+  //}
 }

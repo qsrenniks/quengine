@@ -101,6 +101,11 @@ CollisionStatus CollisionComponent::IsBPCollidingWith(CollisionComponent* otherC
   return bpCollisionProfile_->IsProfileCollidingWith(otherCollider->GetBPCollisionProfile());
 }
 
+CollisionFilter& CollisionComponent::GetCollisionFilter()
+{
+  return collisionFilter_;
+}
+
 void CollisionComponent::Serialize(rapidjson::Document& doc)
 {
 }

@@ -24,6 +24,9 @@ private:
 
   std::vector<std::string> levelFileNames_;
   std::ifstream levelConfigFile_;
+  
+  glm::vec2 startLocation_;
+  glm::vec2 iterativeLocation_;
 
   int currentLevel_ = -1;
   

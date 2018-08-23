@@ -216,6 +216,9 @@
     <ClCompile Include="LevelManager.cpp">
       <Filter>Source Files\Systems\Gameplay Systems\Game Object System</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionFilter.cpp">
+      <Filter>Source Files\Components\Collision Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IComponent.h">
@@ -319,6 +322,9 @@
     </ClInclude>
     <ClInclude Include="LevelManager.h">
       <Filter>Source Files\Systems\Gameplay Systems\Game Object System</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionFilter.h">
+      <Filter>Source Files\Components\Collision Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

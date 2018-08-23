@@ -7,7 +7,7 @@
 
 class PhysicsComponent;
 class CollisionComponent;
-
+class CollisionFilter;
 enum class CollisionStatus : int;
 
 class RigidBodyComponent : public IComponent
@@ -26,7 +26,7 @@ public:
 
   PhysicsComponent* GetPhysicsComponent();
   CollisionComponent* GetCollisionComponent();
-
+  CollisionFilter& GetCollisionFilter() const;
   const float bounce_ = 0.0f;
 
   Delegate<void(RigidBodyComponent* otherObject)> onCollisionEnter_;

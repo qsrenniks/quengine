@@ -15,6 +15,7 @@ class IGameObject
 public:
 
   IGameObject();
+  IGameObject(const glm::vec2& spawnLocation);
   virtual ~IGameObject();
 
   //Add Component
@@ -70,7 +71,7 @@ public:
   Transform& GetTransform();
   SpriteComponent* GetSpriteComponent();
 
-
+  void SetLocation(const glm::vec2& newLocation);
   //Delegate<void(float)>& GetComponentUpdateList();
   //Delegate<void(void)>& GetDrawList();
   //delegate<void(void)>& GetOnObjectCreatedList();

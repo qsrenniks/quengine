@@ -2,11 +2,18 @@
 #include <sstream>
 #include "LevelManager.h"
 #include <iostream>
+#include "GameObjectSystem.h"
+#include "Engine.h"
+
+//All game object that spawn through text based level loading go here.
+#include "TileGameObject.h"
+#include "DebugGameObject.h"
 
 const char* LevelManager::levelConfigLoc = R"(..\data\LevelFiles\lvlconfig.lcon)";
 const char* LevelManager::levelLocation = R"(..\data\LevelFiles\)";
 
 LevelManager::LevelManager()
+  : startLocation_(0.0f, 0.0f)
 {
   levelConfigFile_.open(levelConfigLoc);
 
@@ -17,8 +24,6 @@ LevelManager::LevelManager()
   }
 
   SetupLevelFileNames();
-
-  LoadLevel(0);
 }
 
 LevelManager::~LevelManager()
@@ -42,18 +47,21 @@ void LevelManager::LoadLevel(int levelIndex)
     assert(false);
   }
 
+  iterativeLocation_ = startLocation_;
 
   std::string line;
-  while (currentLevel >> line)
+  while (std::getline(currentLevel, line))
   {
     std::stringstream stringStream(line);
 
     char cInput = 0;
-    while (stringStream >> cInput)
+    while (stringStream.get(cInput))
     {
-      std::cout << cInput;
+      //std::cout << cInput;
+      LevelCharacterParser(cInput);
     }
-    std::cout << '\n';
+    LevelCharacterParser('\n');
+    //std::cout << '\n';
   }
 
   currentLevel.close();
@@ -61,12 +69,30 @@ void LevelManager::LoadLevel(int levelIndex)
 
 void LevelManager::LevelCharacterParser(char inputChar)
 {
+  const static float hStride = 1.0f;
+  const static float vStride = 1.0f;
+
+
+  GameObjectSystem* objSystem = Engine::Instance()->GetGameObjectSystem();
+
   switch (inputChar)
   {
   case 'a':
+    //spawn objecst here
+    objSystem->SpawnGameObjectAtLocation<TileGameObject>(iterativeLocation_);
     break;
+  case 'p':
+    objSystem->SpawnGameObjectAtLocation<DebugGameObject>(iterativeLocation_);
   default:
     break;
+  }
+
+  iterativeLocation_.x += hStride;
+
+  if (inputChar == '\n')
+  {
+    iterativeLocation_.x = startLocation_.x;
+    iterativeLocation_.y -= vStride;
   }
 }
 

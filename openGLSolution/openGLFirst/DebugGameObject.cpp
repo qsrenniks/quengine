@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "DebugGameObject.h"
 #include "SpriteComponent.h"
@@ -36,10 +37,17 @@ DebugGameObject::DebugGameObject()
   inSystem->AddInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->AddInputAction("Move Right", this, &DebugGameObject::DKeyPress);
   inSystem->AddInputAction("Move Down", this, &DebugGameObject::SKeyPress );
+  inSystem->AddInputAction("Debug Key J", this, &DebugGameObject::JKeyPress);
+  inSystem->AddInputAction("Debug Key K", this, &DebugGameObject::KKeyPress);
+  inSystem->AddInputAction("Debug Key L", this, &DebugGameObject::LKeyPress);
 
   rigidBodyComponent_->onCollisionEnter_.AddFunction(this, &DebugGameObject::OnCollisionEnter);
   rigidBodyComponent_->onCollisionExit_.AddFunction(this, &DebugGameObject::OnCollisionExit);
   rigidBodyComponent_->GetCollisionComponent()->GetBPCollisionProfile()->SetAABBExtent(glm::vec2(0.75f, 0.75f));
+
+  //setup collision responses to other objects in the world
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionType(CT_Player);
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Blocking);
 
   Engine::Instance()->OnMousePress_.AddFunction(this, &DebugGameObject::OnMousePress);
 }
@@ -52,6 +60,9 @@ DebugGameObject::~DebugGameObject()
   inSystem->RemoveInputAction("Move Left", this, &DebugGameObject::AKeyPress);
   inSystem->RemoveInputAction("Move Right", this, &DebugGameObject::DKeyPress);
   inSystem->RemoveInputAction("Move Down", this, &DebugGameObject::SKeyPress);
+  inSystem->RemoveInputAction("Debug Key J", this, &DebugGameObject::JKeyPress);
+  inSystem->RemoveInputAction("Debug Key K", this, &DebugGameObject::KKeyPress);
+  inSystem->RemoveInputAction("Debug Key L", this, &DebugGameObject::LKeyPress);
 
   rigidBodyComponent_->onCollisionEnter_.RemoveFunction(this, &DebugGameObject::OnCollisionEnter);
   rigidBodyComponent_->onCollisionExit_.RemoveFunction(this, &DebugGameObject::OnCollisionExit);
@@ -59,6 +70,7 @@ DebugGameObject::~DebugGameObject()
 
 void DebugGameObject::Update(float dt)
 {
+  Engine::Instance()->SetViewLocation(transform_.GetPosition());
 }
 
 constexpr static float jumpHeight = 15.0f;
@@ -76,7 +88,7 @@ void DebugGameObject::SKeyPress()
   glm::vec2 dir(0.0f, -translationalSpeed);
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
 
-  DestroyGameObject();
+  //DestroyGameObject();
 }
 
 void DebugGameObject::AKeyPress()
@@ -84,6 +96,21 @@ void DebugGameObject::AKeyPress()
   glm::vec2 dir(-translationalSpeed, 0.0f);
 
   rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+}
+
+void DebugGameObject::JKeyPress()
+{
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Blocking);
+}
+
+void DebugGameObject::KKeyPress()
+{
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Ignore);
+}
+
+void DebugGameObject::LKeyPress()
+{
+  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Overlap);
 }
 
 void DebugGameObject::OnMousePress(glm::vec2 mousePosition)
@@ -100,12 +127,12 @@ void DebugGameObject::DKeyPress()
 
 void DebugGameObject::OnCollisionEnter(RigidBodyComponent* otherObject)
 {
-  std::cout << "On Collision Enter" << std::endl;
+  //std::cout << "On Collision Enter" << std::endl;
 }
 
 void DebugGameObject::OnCollisionExit(RigidBodyComponent* otherObject)
 {
-  std::cout << "On Collision Exit" << std::endl;
+  //std::cout << "On Collision Exit" << std::endl;
 }
 
 
