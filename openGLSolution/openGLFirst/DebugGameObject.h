@@ -3,6 +3,7 @@
 #include "IGameObject.h"
 
 class RigidBodyComponent;
+class ParticleComponent;
 
 class DebugGameObject : public IGameObject
 {
@@ -34,6 +35,7 @@ public:
 protected:
 
   RigidBodyComponent * rigidBodyComponent_ = nullptr;
+  ParticleComponent* particleComponent_ = nullptr;
 
 private:
   

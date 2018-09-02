@@ -69,7 +69,7 @@ public:
   virtual void Deserialize(rapidjson::Document& doc);
   void Draw();
   Transform& GetTransform();
-  SpriteComponent* GetSpriteComponent();
+  //SpriteComponent* GetSpriteComponent();
 
   void SetLocation(const glm::vec2& newLocation);
   //Delegate<void(float)>& GetComponentUpdateList();

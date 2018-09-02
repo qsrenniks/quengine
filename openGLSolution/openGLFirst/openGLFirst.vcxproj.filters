@@ -121,6 +121,12 @@
     <Filter Include="Source Files\Components\Collision Component\Collision Detection Classes\NP Profiles">
       <UniqueIdentifier>{cced62d1-a268-4390-9de3-8e44925db5e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components\Particle Component">
+      <UniqueIdentifier>{3e295ea7-3fb6-41b0-8fdb-0783336b780d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Particle Component\Particle">
+      <UniqueIdentifier>{55aba867-1389-4a5d-a978-8bf178cf35e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IComponent.cpp">
@@ -218,6 +224,12 @@
     </ClCompile>
     <ClCompile Include="CollisionFilter.cpp">
       <Filter>Source Files\Components\Collision Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleComponent.cpp">
+      <Filter>Source Files\Components\Particle Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleGameObject.cpp">
+      <Filter>Source Files\Components\Particle Component\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +337,12 @@
     </ClInclude>
     <ClInclude Include="CollisionFilter.h">
       <Filter>Source Files\Components\Collision Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleComponent.h">
+      <Filter>Source Files\Components\Particle Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGameObject.h">
+      <Filter>Source Files\Components\Particle Component\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

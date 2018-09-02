@@ -137,7 +137,7 @@ void GameObjectSystem::NarrowPhaseCollisionDetection()
   //#note this is to reduce the effect of a collision resolution pushing an object back into another object causing another collision
   // commonly known as the stacking box problem
   //#note This could also be improved go going through the list recursively until no collision are registered or at least just the objects are touching. 
-  const static int iterations = 8;
+  const static int iterations = 16;
   for (int i = 0; i < iterations; i++)
   {
     for (auto& occ : collisionOccurences_)

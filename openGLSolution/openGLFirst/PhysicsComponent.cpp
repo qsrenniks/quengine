@@ -167,7 +167,7 @@ void PhysicsComponent::ResetForces()
   forces_.y = 0.0f;
 }
 
-void PhysicsComponent::AddImpulse(glm::vec2& impulse)
+void PhysicsComponent::AddImpulse(const glm::vec2& impulse)
 {
   velocity_ = velocity_ + inverseMass_ * impulse;
 }

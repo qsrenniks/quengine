@@ -63,9 +63,11 @@ void CollisionOccurence::ResolveInterpenetration()
   Transform& transformA = objectA_->GetParent()->GetTransform();
   Transform& transformB = objectB_->GetParent()->GetTransform();
 
-  const float k_slop = 0.01f; // Penetration allowance
-  const float percent = 1.0f; // Penetration percentage to correct
+  const float k_slop = 0.001f; // Penetration allowance
+  const float percent = 0.8f; // Penetration percentage to correct
   glm::vec2 correction = (std::max(penetration_ - k_slop, 0.0f) / (physicsA->GetInverseMass() + physicsB->GetInverseMass())) * percent * collisionNormal_;
+
   transformA.SetPosition(transformA.GetPosition() - physicsA->GetInverseMass() * correction);
   transformB.SetPosition(transformB.GetPosition() + physicsB->GetInverseMass() * correction);
+
 }

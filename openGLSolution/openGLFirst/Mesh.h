@@ -26,7 +26,7 @@ public:
   std::vector<Vertex> relativeVertices_;
   std::vector<unsigned int> indices_;
   void SetupMesh();
-
+  void ResetMesh();
   void RecalculateEdgeNormals(float newRotationR);
 
   EdgeList transformedEdgeNormals_;

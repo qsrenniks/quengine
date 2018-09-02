@@ -81,10 +81,10 @@ Transform& IGameObject::GetTransform()
   return transform_;
 }
 
-SpriteComponent* IGameObject::GetSpriteComponent()
-{
-  return sprite_;
-}
+//SpriteComponent* IGameObject::GetSpriteComponent()
+//{
+//  return sprite_;
+//}
 
 void IGameObject::SetLocation(const glm::vec2& newLocation)
 {

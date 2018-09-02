@@ -105,6 +105,8 @@
     <ClCompile Include="LoggingSystem.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="NPCollisionProfile.cpp" />
+    <ClCompile Include="ParticleComponent.cpp" />
+    <ClCompile Include="ParticleGameObject.cpp" />
     <ClCompile Include="PhysicsBodyGameObject.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PhysicsForceGenerator.cpp" />
@@ -143,6 +145,8 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshDescriptions.h" />
     <ClInclude Include="NPCollisionProfile.h" />
+    <ClInclude Include="ParticleComponent.h" />
+    <ClInclude Include="ParticleGameObject.h" />
     <ClInclude Include="PhysicsBodyGameObject.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PhysicsForceGenerator.h" />

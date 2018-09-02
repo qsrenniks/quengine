@@ -28,7 +28,7 @@ public:
   const glm::vec2& GetForce();
   void AddForce(const glm::vec2& force);
   void ResetForces();
-  void AddImpulse(glm::vec2& impulse);
+  void AddImpulse(const glm::vec2& impulse);
   const glm::vec2& GetForceLastFrame();
   const glm::vec2& GetVelocity() const;
   const glm::vec2& GetVelocityAtFrameStart() const;
