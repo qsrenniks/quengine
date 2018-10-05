@@ -9,7 +9,6 @@
 #include "ICommand.h"
 #include <memory>
 #include <iostream>
-#include <chrono>
 #include <thread>
 
 Engine* Engine::instance_ = nullptr;
@@ -57,14 +56,23 @@ void Engine::AddCommand(ICommand* command)
   commandStack_.push_back(command);
 }
 
+void Engine::CalculateDeltaTime(std::chrono::system_clock::time_point tickEndTime, std::chrono::system_clock::time_point tickStartTime)
+{
+  std::chrono::duration<double, std::milli> elapsedTime = tickEndTime - tickStartTime;
+  deltaTime_ = float(elapsedTime.count()) / 1000.0f;
+}
+static std::chrono::milliseconds MaxTickRateInMilli(16);
+
 void Engine::Update()
 {
   //rendering commands here
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
+  //std::chrono::system_clock::time_point tickEndTime = std::chrono::system_clock::now();
   std::chrono::system_clock::time_point tickStartTime = std::chrono::system_clock::now();
 
+  //std::chrono::duration<double, std::milli> elapsedTime = tickEndTime - tickStartTime;
   //MAIN LOOP
   {
     if (commandStack_.empty() == false)
@@ -91,33 +99,30 @@ void Engine::Update()
     {
       deltaTime_ = 0.0f;
     }
-    float dt = GetDeltaTime();
-    dt /= 1000.0f;
-    inputSystem_.Update(dt);
+    //dt /= 1000.0f;
+    inputSystem_.Update(deltaTime_);
     //const static float dt = 0.01667f;
-    gameObjectSystem_.Update(dt);
+    gameObjectSystem_.Update(deltaTime_);
     //gameObjectSystem_.Update(dt);
   }
 
+  //this is the primary game tick function
+
   std::chrono::system_clock::time_point tickEndTime = std::chrono::system_clock::now();
 
-  std::chrono::duration<double, std::milli> elapsedTime = tickEndTime - tickStartTime;
-  
-  deltaTime_ = float(elapsedTime.count()) / 1000.0f;
+  CalculateDeltaTime(tickEndTime, tickStartTime);
 
-  //gets sixty fps in terms of milliseconds.
-  static float SixtyFPS = (1.0f / 60.0f) * 1000.0f;
-  if (elapsedTime.count() < SixtyFPS)
+  std::chrono::duration<double, std::milli> elapsedTime = tickEndTime - tickStartTime;
+
+  //this limits the machine to 60 fps, if FPSINMILLI is zero then the limitation is turned off
+  std::chrono::duration<double, std::milli> leftOverTime(MaxTickRateInMilli - elapsedTime);
+  if (leftOverTime > std::chrono::duration<double, std::milli>(0) && MaxTickRateInMilli != std::chrono::milliseconds(0))
   {
-    std::chrono::duration<double, std::milli> leftOverTime(SixtyFPS - elapsedTime.count());
-    auto delta_ms = std::chrono::duration_cast<std::chrono::milliseconds>(leftOverTime);
-    std::this_thread::sleep_for(std::chrono::milliseconds(delta_ms));
-    deltaTime_ += delta_ms.count();
-  }
-  else
-  {
-    loggingSystem_.GetLogStream(EngineLog) << "Lag Detected" << std::endl;
-    std::cout << "lag Detected" << std::endl;
+    std::this_thread::sleep_for(leftOverTime);
+    tickEndTime = std::chrono::system_clock::now();
+
+    //after left over tick time is slept on we recalculate delta time to the proper speed
+    CalculateDeltaTime(tickEndTime, tickStartTime);
   }
 
   //check and call events and swap the buffers

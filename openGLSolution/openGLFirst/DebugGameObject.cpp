@@ -81,16 +81,16 @@ constexpr static float translationalSpeed = 10;
 void DebugGameObject::WKeyPress()
 {
   glm::vec2 dir(0.0f, translationalSpeed);
-  //rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
-  particleComponent_->StartEmitter();
+  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+  //particleComponent_->StartEmitter();
   //GetTransform().SetScale(GetTransform().GetScale()*2.0f);
 }
 
 void DebugGameObject::SKeyPress()
 {
   glm::vec2 dir(0.0f, -translationalSpeed);
-  //rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
-  particleComponent_->StopEmitter();
+  rigidBodyComponent_->GetPhysicsComponent()->AddForce(dir);
+  //particleComponent_->StopEmitter();
 
   //DestroyGameObject();
 }
@@ -111,17 +111,19 @@ void DebugGameObject::DKeyPress()
 
 void DebugGameObject::JKeyPress()
 {
-  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Blocking);
+  particleComponent_->StartEmitter();
+  //rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Blocking);
 }
 
 void DebugGameObject::KKeyPress()
 {
-  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Ignore);
+  particleComponent_->StopEmitter();
+  //rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Ignore);
 }
 
 void DebugGameObject::LKeyPress()
 {
-  rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Overlap);
+  //rigidBodyComponent_->GetCollisionFilter().SetCollisionResponseTo(CT_WorldStatic, CollisionResponseType::Overlap);
 }
 
 void DebugGameObject::OnMousePress(glm::vec2 mousePosition)

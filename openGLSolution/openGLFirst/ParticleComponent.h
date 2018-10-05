@@ -20,6 +20,8 @@ public:
 
   void StartEmitter();
   void StopEmitter();
+  
+  void ResetEmitter();
 
   //#note if particles per second is zero then spawn rate is one per second
   void SetSpawnRatePerSecond(float particlesPerSecond);

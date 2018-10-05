@@ -44,7 +44,6 @@ public:
 
   virtual void Serialize(rapidjson::Document& doc) override;
 
-
   virtual void Deserialize(rapidjson::Document& doc) override;
 
 private:

@@ -11,6 +11,7 @@
 #include "GameObjectSystem.h"
 #include "LoggingSystem.h"
 #include "RenderingSystem.h"
+#include <chrono>
 
 //class InputSystem;
 //class GameObjectSystem;
@@ -75,6 +76,8 @@ protected:
 
 private:
   
+  void CalculateDeltaTime(std::chrono::system_clock::time_point tickEndTime, std::chrono::system_clock::time_point tickStartTime);
+
   float deltaTime_ = 0.0f;
 
   int mouseState_ = 0;

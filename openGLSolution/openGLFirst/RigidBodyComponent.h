@@ -40,7 +40,6 @@ public:
 
 protected:
 
-
   CollisionList rigidBodyCollisions_;
 
   PhysicsComponent* physics_ = nullptr;

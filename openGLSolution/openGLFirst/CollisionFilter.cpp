@@ -54,6 +54,7 @@ CollisionResponseType CollisionFilter::GetResponseFrom(const CollisionFilter& fi
       return CollisionResponseType::Overlap;
     }
   }
+  return CollisionResponseType::Ignore;
 }
 
 CollisionResponseType CollisionFilter::GetResponseTo(const CollisionFilter& filterOther) const

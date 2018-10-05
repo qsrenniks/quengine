@@ -35,9 +35,9 @@ void ParticleComponent::Update(float dt)
       spawnTimer_ -= spawnRate_;
 
       //spawn Particles
-      glm::vec2 randomVelocity;
-      CreateRandomVelocity(randomVelocity);
-      SpawnParticle(glm::vec4(1.0f,1.0f,1.0f,1.0f), GetParent()->GetTransform().GetPosition(), randomVelocity);
+      //glm::vec2 randomVelocity;
+      //CreateRandomVelocity(randomVelocity);
+      SpawnParticle(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), GetParent()->GetTransform().GetPosition(), glm::vec2(0.0f, 0.0f));
     }
   }
 
@@ -73,7 +73,7 @@ void ParticleComponent::StartEmitter()
 void ParticleComponent::StopEmitter()
 {
   emitterPlaying_ = false;
-}
+} 
 
 void ParticleComponent::SetSpawnRatePerSecond(float particlesPerSecond)
 {

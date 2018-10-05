@@ -56,9 +56,9 @@ void CollisionComponent::Update(float dt)
 void CollisionComponent::Draw()
 {
   //#TODO this seems like a lot of typing to just get the rendering system
-  glm::vec2 bpExtent = bpCollisionProfile_->GetAABBExtent();
+  //glm::vec2 bpExtent = bpCollisionProfile_->GetAABBExtent();
   //bpExtent *= 2.0f;
-  Engine::Instance()->GetRenderingSystem()->DrawSquare(bpCollisionProfile_->GetAABBLocation(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) , bpExtent.x, bpExtent.y, true);
+  //Engine::Instance()->GetRenderingSystem()->DrawSquare(bpCollisionProfile_->GetAABBLocation(), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f) , bpExtent.x, bpExtent.y, true);
 
 }
 
@@ -82,6 +82,15 @@ BPCollisionProfile* CollisionComponent::GetBPCollisionProfile() const
   return bpCollisionProfile_;
 }
 
+//************************************
+// Method:    IsNPCollidingWith
+// FullName:  CollisionComponent::IsNPCollidingWith
+// Access:    public 
+// Returns:   CollisionStatus
+// Qualifier: 
+// Parameter: CollisionComponent * otherCollider
+// Parameter: CollisionOccurence & collOcc
+//************************************
 CollisionStatus CollisionComponent::IsNPCollidingWith(CollisionComponent* otherCollider, CollisionOccurence& collOcc)
 {
   //#Note here we not only have to determine whether these two objects collided but also how they colliding, meaning
