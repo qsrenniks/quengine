@@ -61,6 +61,8 @@ public:
     return newGameObjectPtr;
   }
   
+  void SavePlayerGameObject();
+
   void SaveGame();
   void LoadGame();
 
@@ -79,6 +81,8 @@ public:
   LevelManager& GetLevelManager();
 
 private:
+
+  class GameObject* playerGameObject_ = nullptr;
 
   void RunCollisionUpdate();
 

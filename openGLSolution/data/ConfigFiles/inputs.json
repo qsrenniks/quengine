@@ -1,5 +1,6 @@
 {
   "Move Up": ["W", "O"],
+  "Move Up": ["O", "W"],
   "Move Left": ["A"],
   "Move Down": ["S"],
   "Move Right": ["D"],

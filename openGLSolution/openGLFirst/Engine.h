@@ -41,6 +41,8 @@ public:
 
   void AddCommand(ICommand* command);
 
+  void jsonParsing();
+
   ENGINE_DECL void Load();
 
   ENGINE_DECL void Update();

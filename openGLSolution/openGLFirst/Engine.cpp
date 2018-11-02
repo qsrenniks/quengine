@@ -11,6 +11,10 @@
 #include <iostream>
 #include <thread>
 
+#include <rapidjson/document.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/stringbuffer.h>
+
 Engine* Engine::instance_ = nullptr;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -54,6 +58,33 @@ Engine::Engine()
 void Engine::AddCommand(ICommand* command)
 {
   commandStack_.push_back(command);
+}
+
+void Engine::jsonParsing()
+{
+  using namespace rapidjson;
+  Document doc;
+  doc.SetObject();
+  StringBuffer sb;
+  PrettyWriter<StringBuffer> pWrite(sb);
+
+  Value gameObject;
+  gameObject.SetObject();
+  gameObject.AddMember("waddup", "asdf", doc.GetAllocator());
+  Value component;
+  component.SetObject();
+  component.AddMember("Hello", 2.14f, doc.GetAllocator());
+  
+  gameObject.AddMember("Component", component, doc.GetAllocator());
+
+  doc.AddMember("GameObject", gameObject, doc.GetAllocator());
+  doc.Accept(pWrite);
+
+  std::ofstream out("..\\test.json");
+  if (out)
+  {
+    out.write(sb.GetString(), sb.GetSize());
+  }
 }
 
 void Engine::CalculateDeltaTime(std::chrono::system_clock::time_point tickEndTime, std::chrono::system_clock::time_point tickStartTime)
@@ -270,6 +301,9 @@ void Engine::ShutDown()
 
 void Engine::Load()
 {
+
+  jsonParsing();
+
   loggingSystem_.Load();
   loggingSystem_.AddLogStream(EngineLog);
   loggingSystem_.AddLogStream(GameObjectSystem::GameObjectSystemLog);

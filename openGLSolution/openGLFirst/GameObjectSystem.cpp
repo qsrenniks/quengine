@@ -120,10 +120,6 @@ void GameObjectSystem::BroadphaseCollisionDetection()
           occ.objectA_ = objectA;
           occ.objectB_ = objectB;
 
-          //these two objects might be colliding with one another.
-          //broadPhaseCollisionPossibilities_.push_back(objectA);
-          //broadPhaseCollisionPossibilities_.push_back(objectB);
-
           collisionOccurences_.push_back(occ);
         }
       }
@@ -221,6 +217,8 @@ void GameObjectSystem::Load()
   LoadGame();
 
   Engine::Instance()->OnMousePress_.AddFunction(this, &GameObjectSystem::OnMouseClick);
+  Engine::Instance()->GetInputSystem()->AddInputAction("Debug Key L", this, &GameObjectSystem::SavePlayerGameObject);
+
 }
 
 void GameObjectSystem::Update(float dt)
@@ -252,6 +250,11 @@ void GameObjectSystem::Unload()
 
 //#todo this should change to support different save files
 static const char *saveFile = R"(..\data\SaveFiles\debugGameObject.sav)";
+
+void GameObjectSystem::SavePlayerGameObject()
+{
+
+}
 
 void GameObjectSystem::SaveGame()
 {
